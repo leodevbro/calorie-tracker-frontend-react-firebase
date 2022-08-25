@@ -9,14 +9,6 @@ import { getFirestore } from "firebase/firestore";
 
 import { IMyEnv } from "src/main-interfaces/sweet";
 
-// REACT_APP_DBAPI_KEY=AIzaSyBG1gweU0nWrT7OwJApcMCiKg8x0mAtqMw
-// REACT_APP_AUTHDOMAIN=tcomfybike.firebaseapp.com
-// REACT_APP_PROJECT_ID=tcomfybike
-// REACT_APP_STORAGE_BUCKET=tcomfybike.appspot.com
-// REACT_APP_MESSAGING_SENDER_ID=1004394863027
-// REACT_APP_APPID_FOR_DB=1:1004394863027:web:88065c3850b4436b2793c6
-// REACT_APP_MEASUREMENT_ID=G-5YYTFPNRXY
-
 const myEnv = process.env as IMyEnv;
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
