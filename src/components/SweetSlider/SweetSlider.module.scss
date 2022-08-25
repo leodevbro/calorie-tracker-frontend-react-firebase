@@ -1,0 +1,142 @@
+@import "src/styling-constants/colors.scss";
+
+// $distLeftRight: clamp(20px, 5%, 96px);
+
+.ground {
+  max-width: 100%;
+}
+
+.mySwiper.mySwiper.mySwiper {
+  // padding-left: $distLeftRight;
+  // padding-right: $distLeftRight;
+
+  .sl {
+    // border: 1px solid red;
+    // background-color: antiquewhite;
+    min-height: 100px;
+    height: 640px;
+    width: 500px;
+
+    padding-right: 48px;
+
+    &:last-child {
+      padding-right: 0px;
+    }
+
+    @media (max-width: 800px) {
+      padding-right: 20px;
+    }
+
+    @media (max-width: 1250px) {
+      width: 334px;
+      height: 398px;
+    }
+
+    @media (max-width: 500px) {
+      width: 246px;
+      height: 336px;
+    }
+  }
+
+  .goLeft.goLeft,
+  .goRight.goRight {
+    // prevent selecting text
+    user-select: none; /* standard syntax */
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+
+    @media (max-width: 800px) {
+      display: none;
+    }
+  }
+
+  .goLeft {
+    z-index: 2;
+    position: absolute;
+
+    // left: $distLeftRight;
+    left: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    // border: 1px solid red;
+    background-color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .svgOfArrow {
+      transform: scale(-1.4) translateX(1px);
+    }
+
+    &:hover {
+      cursor: pointer;
+      color: rgb(63, 63, 63);
+      background-color: rgb(248, 248, 248);
+    }
+  }
+
+  .goRight {
+    z-index: 2;
+    position: absolute;
+    // right: $distLeftRight;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .svgOfArrow {
+      transform: scale(1.4) translateX(1px);
+    }
+
+    &:hover {
+      cursor: pointer;
+      color: rgb(63, 63, 63);
+      background-color: (248, 248, 248);
+    }
+  }
+
+  :global {
+    .swiper-pagination {
+      position: relative;
+      // bottom: -20px;
+      padding-top: 20px;
+
+      .swiper-pagination-bullet {
+        background-color: transparent;
+        border-radius: 0px;
+        width: 18px;
+        height: 8px;
+
+        display: inline-flex;
+        align-items: center;
+
+        &.swiper-pagination-bullet-active {
+          .inSwiperBullet {
+            background-color: $black17;
+          }
+        }
+
+        .inSwiperBullet {
+          width: 100%;
+          height: 3px;
+          background-color: rgb(158, 158, 158);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,141 @@
+@import "src/styling-constants/colors.scss";
+
+.ground {
+  .inpWrap {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+
+    .radioCheckWrap {
+      margin-right: 8px;
+      background-color: $lightGray;
+      border-radius: 100px;
+
+      width: 20px;
+      height: 20px;
+
+      min-width: 20px;
+      min-height: 20px;
+
+      &.checkbox {
+        border-radius: 6px;
+
+        &.checked {
+          background-color: rgb(17, 17, 17);
+        }
+      }
+
+      .myInput {
+        display: block;
+        -webkit-appearance: none;
+        appearance: none;
+        margin: 0px;
+
+        width: 100%;
+        height: 100%;
+
+        z-index: 1;
+
+        // &.checkbox {
+        //   &.checked {
+        //     // background-color: rgb(17, 17, 17);
+        //     // &::before {
+        //     //   content: "";
+        //     //   display: block;
+        //     //   position: absolute;
+        //     //   top: 50%;
+        //     //   left: 50%;
+        //     //   transform: translate(-50%, -50%);
+        //     //   width: 10px;
+        //     //   height: 10px;
+        //     //   // clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+        //     //   clip-path: path(
+        //     //     "M20.687,38.332c-2.072,2.072-5.434,2.072-7.505,0L1.554,26.704c-2.072-2.071-2.072-5.433,0-7.504 c2.071-2.072,5.433-2.072,7.505,0l6.928,6.927c0.523,0.522,1.372,0.522,1.896,0L36.642,7.368c2.071-2.072,5.433-2.072,7.505,0 c0.995,0.995,1.554,2.345,1.554,3.752c0,1.407-0.559,2.757-1.554,3.752L20.687,38.332z"
+        //     //   );
+        //     //   background-color: rgb(140, 191, 223);
+        //     //   // border-radius: 100px;
+        //     // }
+        //   }
+        // }
+
+        &.radio {
+          border-radius: 100px;
+          &.checked {
+            border: 1px solid #000000;
+            background-color: transparent;
+
+            &::before {
+              content: "";
+              display: block;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 14px;
+              height: 14px;
+              background-color: rgb(0, 0, 0);
+              border-radius: 100px;
+            }
+          }
+        }
+      }
+
+      .checkSvg {
+        display: none;
+        // display: block;
+        position: absolute;
+        top: calc(50% - 0px);
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: 13px;
+        height: 13px;
+
+        // z-index: -200;
+
+        &.show {
+          display: block;
+        }
+      }
+    }
+
+    .label {
+      color: $gray600;
+
+      &.isOther {
+        width: 0px;
+        height: 0px;
+        transform: scale(0);
+      }
+    }
+
+    .textInpOfOther {
+      border-bottom: 1px solid $gray400;
+      width: 100%;
+      background-color: transparent;
+
+      color: $gray400;
+      // font-family: "Neue Haas Grotesk Display Std";
+      line-height: 20px;
+      font-size: 1rem;
+
+      &::placeholder {
+        color: $gray400;
+        // font-family: "Neue Haas Grotesk Display Std";
+        line-height: 20px;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .error {
+    z-index: 1;
+    position: relative;
+    color: red;
+
+    white-space: normal;
+    overflow-wrap: anywhere;
+    // border: 1px solid red;
+    // height: 80px;
+  }
+}

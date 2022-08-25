@@ -1,0 +1,94 @@
+@import "src/styling-constants/colors.scss";
+@import "src/styling-constants/coolEffects.scss";
+
+.ground {
+  position: relative;
+  display: flex;
+  background: white;
+
+  // border: 1px solid rgb(128, 0, 122);
+
+  .leftBox {
+    // height: 300px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 100%;
+    padding: 16px;
+    // flex-shrink: 1;
+    // width: 100%;
+    // flex-shrink: 0;
+    // flex-grow: 0.5;
+
+    // border: 1px solid green;
+
+    @media (min-width: 650px) {
+      flex-basis: 48%;
+    }
+
+    .registerBox {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: center;
+      row-gap: 16px;
+      width: clamp(60%, calc(600px - 40%), 350px);
+      max-width: 350px;
+
+      .inp {
+        // margin-bottom: 16px;
+        width: 100%;
+      }
+
+      .forgWrap {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        margin-bottom: 16px;
+
+        .text {
+          font-size: 0.875rem;
+          color: $blue500;
+          font-weight: 400;
+          padding: 3px 6px;
+          border-radius: 6px;
+
+          &:hover {
+            cursor: pointer;
+            box-shadow: $coolBlueShadow;
+          }
+        }
+      }
+
+      .wideB {
+        margin-bottom: 16px;
+      }
+
+      .ho {
+        margin-bottom: 16px;
+      }
+    }
+  }
+
+  .rightBox {
+    // box-sizing: content-box;
+    position: relative;
+    display: none;
+    // padding: 2%;
+    @media (min-width: 650px) {
+      display: flex;
+    }
+
+    justify-content: center;
+    flex-basis: 52%;
+    // flex-shrink: 20;
+    // border: 1px solid rgb(19, 202, 235);
+  }
+}
+
+
+.bigError {
+  color: red;
+}

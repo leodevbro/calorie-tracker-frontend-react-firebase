@@ -1,0 +1,35 @@
+@import "src/styling-constants/colors.scss";
+@import "src/styling-constants/coolEffects.scss";
+
+.ground {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  column-gap: 10px;
+  color: $black17;
+  font-size: 1rem;
+  font-weight: 600;
+
+  width: 100%;
+  // height: 100%;
+
+  &:hover {
+    color: #0967d2b7;
+
+    svg * {
+      stroke: #0967d2b7;
+    }
+  }
+
+  .iconWrap {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .textWrap {
+    display: flex;
+    flex-wrap: nowrap;
+    // align-items: center;
+  }
+}

@@ -1,0 +1,231 @@
+@import "src/styling-constants/colors.scss";
+@import "src/styling-constants/coolEffects.scss";
+
+// .simpleDiv {
+//   // max-width: 1200px;
+//   position: relative;
+//   margin-left: 16px;
+//   margin-right: 16px;
+//   // max-height: 200px;
+//   // overflow-y: scroll;
+// }
+
+.ground {
+  min-height: 100%;
+  // border: 4px solid green;
+  position: relative;
+  padding-top: 45px;
+  padding-bottom: 45px;
+  padding-left: clamp(16px, calc(8% - 22px), 90px);
+  padding-right: clamp(16px, calc(8% - 22px), 90px);
+  // background-color: #f3f3f3;
+  background-color: $coolBack;
+
+  .pageTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 32px;
+  }
+
+  .metaInfo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 24px;
+    row-gap: 28px;
+    margin-bottom: 38px;
+    font-size: 1rem;
+
+    .customerAccounts {
+      margin-right: 24px;
+      .title {
+        margin-right: 8px;
+      }
+
+      .indicator {
+        font-size: 1.125rem;
+        padding: 4px 14px;
+        border-radius: 6px;
+        color: rgb(17, 17, 17);
+        font-weight: 600;
+        // background-color: $lightGray;
+      }
+    }
+
+    .branch {
+      max-width: 100%;
+
+      .title {
+        margin-right: 8px;
+      }
+
+      // .indicator {
+      //   font-size: 1.125rem;
+      //   font-weight: 600;
+      // }
+
+      .accountSelectDropdown {
+        display: inline-flex;
+
+        min-width: 200px;
+
+        @media (max-width: 600px) {
+          min-width: 160px;
+        }
+
+        .headOfDrop {
+          min-width: 200px;
+
+          @media (max-width: 600px) {
+            min-width: 160px;
+            max-width: 160px;
+          }
+        }
+
+        .branchChoice {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .statementsTable {
+    position: relative;
+
+    .statusDataWrap {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+
+      font-size: 1rem;
+
+      height: 28px;
+      // min-width: 90px;
+      // overflow-wrap: normal;
+      // word-break: keep-all;
+      white-space: nowrap;
+
+      border-radius: 77px;
+
+      padding-left: 10px;
+      padding-right: 10px;
+
+      &.completed {
+        background-color: $lightGreen;
+        color: $darkGreen;
+      }
+
+      &.open {
+        background-color: $blue3;
+        color: $blue2;
+      }
+    }
+  }
+}
+
+.narrowRowTopBoxContent {
+  .orderNumber {
+    font-size: 20px;
+    color: black;
+  }
+}
+
+.narrowBottomBoxContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  color: $blue500;
+  .preview {
+    padding: 3px 6px;
+    border-radius: 6px;
+    &:hover {
+      cursor: pointer;
+      box-shadow: $coolBlueShadow;
+    }
+  }
+
+  // .download {
+  //   padding: 3px 6px;
+  //   border-radius: 6px;
+  //   &:hover {
+  //     cursor: pointer;
+  //     box-shadow: $coolBlueShadow;
+  //   }
+  // }
+}
+
+.downloadIconWrap {
+  width: 36px;
+  height: 36px;
+  padding: 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: $coolBlueShadow0;
+  }
+  // .downloadIcon {
+
+  // }
+}
+
+.eyeIconWrap {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: $coolBlueShadow;
+  }
+  // .eyeIcon {
+
+  // }
+}
+
+.download {
+  font-size: 14px;
+  padding: 3px 3px;
+  border-radius: 6px;
+  &:hover {
+    cursor: pointer;
+    box-shadow: $coolBlueShadow0;
+  }
+}
+
+.infoSign {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid gray;
+  border-radius: 100px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  // .inner {
+  // transform: translateY(-1px);
+  // }
+}
+
+.popInfo {
+  background-color: white;
+  white-space: nowrap;
+  padding: 4px 8px;
+  outline: 1px solid rgba(128, 128, 128, 0.342);
+  border-radius: 6px;
+}

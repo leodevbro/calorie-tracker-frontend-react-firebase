@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="11.5" height="11.5" viewBox="0 0 11.5 11.5">
+  <defs>
+    <style>
+      .cls-111 {
+        fill: none;
+        stroke: #111;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <g>
+        <path class="cls-111" d="M10.75.75l-10,10"/>
+        <path class="cls-111" d="M.75.75l10,10"/>
+      </g>
+    </g>
+  </g>
+</svg>

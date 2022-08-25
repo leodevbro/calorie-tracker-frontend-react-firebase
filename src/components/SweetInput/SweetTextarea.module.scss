@@ -1,0 +1,71 @@
+@import "src/styling-constants/colors.scss";
+
+.ground {
+  //
+
+  .inputWrap {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    background: #f3f3f3;
+
+    .label {
+      font-size: 0.75rem;
+      color: #626262;
+      // font-family: "Neue Haas Grotesk Display Std";
+      font-weight: 600;
+
+      margin-left: 14px;
+      margin-right: 14px;
+      margin-top: 10px;
+
+      &.hide {
+        display: none;
+      }
+    }
+
+    .myInput {
+      resize: none;
+      // border-radius: 100px !important;
+      padding: 14px;
+      padding-top: 6px;
+      &.empty {
+        padding-top: 14px;
+      }
+      
+      background: none;
+      border: none;
+      outline: none;
+
+      max-width: 100%;
+      min-width: 100%;
+
+      min-height: 75px;
+
+      // font-family: "Neue Haas Grotesk Display Std";
+      font-size: 1rem;
+      line-height: 20px;
+      font-weight: 600;
+      color: $black17;
+
+      &::placeholder {
+        color: #9e9e9e;
+        // font-family: "Neue Haas Grotesk Display Std";
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      &.hasLargeValue {
+        min-height: 200px;
+      }
+    }
+  }
+
+  .error {
+    z-index: 1;
+    position: relative;
+    color: red;
+    // border: 1px solid red;
+    // height: 80px;
+  }
+}

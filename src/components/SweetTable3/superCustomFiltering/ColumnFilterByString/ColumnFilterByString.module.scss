@@ -1,0 +1,20 @@
+.ground {
+  opacity: initial;
+
+  // outline: 1px solid red;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+
+  .inputWrap {
+    display: flex;
+    column-gap: 4px;
+    row-gap: 4px;
+    align-items: center;
+
+    input {
+      max-width: 80px;
+      outline: 2px solid #5fb4ff;
+    }
+  }
+}

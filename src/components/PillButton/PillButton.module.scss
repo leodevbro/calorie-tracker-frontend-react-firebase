@@ -1,0 +1,38 @@
+@import "src/styling-constants/colors.scss";
+
+.myA {
+  align-self: flex-start;
+  background-color: black;
+  color: white;
+  border-radius: 60px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  // text-decoration: none;
+
+  padding: 6px 12px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #4d4d4d;
+    color: white;
+    // text-decoration: none;
+  }
+
+  &:visited,
+  &:active {
+    color: white;
+    // text-decoration: none;
+  }
+}
+
+a.myA {
+  text-decoration: none;
+
+  &:hover,
+  &:visited,
+  &:active {
+    text-decoration: none;
+  }
+}

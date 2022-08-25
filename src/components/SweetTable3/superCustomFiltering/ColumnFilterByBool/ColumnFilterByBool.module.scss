@@ -1,0 +1,39 @@
+.ground {
+  opacity: initial;
+  display: flex;
+  column-gap: 12px;
+  row-gap: 4px;
+  flex-grow: 0;
+  align-items: center;
+
+  // outline: 1px solid red;
+  max-width: 100%;
+
+  .theLabel {
+    display: flex;
+    align-items: center;
+  }
+
+  .theInputs {
+    display: flex;
+    align-items: center;
+    column-gap: 3px;
+    row-gap: 3px;
+    flex-grow: 0;
+
+    .inputWrap {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      column-gap: 2px;
+      row-gap: 2px;
+      outline: 2px solid #5fb4ff;
+      background-color: white;
+      padding: 2px;
+      input {
+        max-width: 44px;
+        
+      }
+    }
+  }
+}

@@ -1,0 +1,170 @@
+@import "src/styling-constants/colors.scss";
+@import "src/styling-constants/coolEffects.scss";
+
+.ground {
+  color: black;
+  //
+  // border: 2px solid red;
+
+  display: none;
+
+  padding-top: 55px;
+  padding-bottom: 55px;
+
+  padding-left: 12px;
+  padding-right: 12px;
+
+  overflow: auto;
+  z-index: 500;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+
+  background: rgba(124, 124, 124, 0.726);
+
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    cursor: auto;
+  }
+
+  &.show {
+    display: flex;
+  }
+
+  @media (max-height: 500px) {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .centerBox {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    // margin: auto;
+    overflow-wrap: anywhere;
+
+    min-width: min(543px, 100%);
+    // max-width: 543px;
+
+    border-radius: 12px;
+
+    // @media (max-width: 600px) {
+    //   margin-bottom: 0px;
+    //   // min-width: 100px;
+    //   border-bottom-left-radius: 0px;
+    //   border-bottom-right-radius: 0px;
+    // }
+
+    max-width: min(100%, 850px);
+
+    background-color: white;
+
+    padding-bottom: 24px;
+
+    // padding-left: clamp(8px, calc(10% - 44px), 64px);
+    // padding-right: clamp(8px, calc(10% - 44px), 64px);
+
+    max-height: 100%;
+
+    @media (max-height: 500px) {
+      padding-bottom: 12px;
+    }
+
+    .topMain {
+      min-height: 35px;
+      display: flex;
+      align-items: center;
+      padding-left: 76px;
+      padding-right: 76px;
+
+      @media (max-width: 800px) {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      @media (max-width: 500px) {
+        min-height: 34px;
+      }
+
+      @media (max-height: 500px) {
+        min-height: 30px;
+      }
+
+      &.withoutCloseButton {
+        min-height: 30px;
+      }
+
+      .superTitle {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $black17;
+        transform: translateY(16px);
+      }
+
+      .closeB {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        z-index: 1;
+
+        @media (max-width: 500px) {
+          top: 16px;
+          right: 16px;
+        }
+
+        @media (max-height: 500px) {
+          top: 8px;
+          right: 8px;
+        }
+      }
+    }
+
+    .bodyOfPopupWrap {
+      display: flex;
+      flex-shrink: 1;
+      overflow: auto;
+
+      max-width: 100%;
+      min-width: 100%;
+      width: 100%;
+
+      @media (min-width: 800px) {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+
+      .bodyOfPopup {
+        flex-grow: 1;
+
+        padding: 16px;
+        padding-top: 4px;
+        display: flex;
+
+        max-width: 100%;
+        min-width: 100%;
+        width: 100%;
+
+        & > div:first-child {
+          flex-grow: 1;
+          // flex-shrink: 1;
+        }
+
+        // margin-left: clamp(0px, calc(10% - 44px), 64px);
+        // margin-right: clamp(0px, calc(10% - 44px), 64px);
+
+        // marg
+
+        // .bodyOfPopup2 {
+        //   // max-height: 100%;
+        //   // // display: flex;
+        //   // overflow: hidden;
+        // }
+      }
+    }
+  }
+}

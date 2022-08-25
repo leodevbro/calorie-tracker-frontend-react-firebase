@@ -1,0 +1,174 @@
+@import "src/styling-constants/colors.scss";
+@import "src/styling-constants/coolEffects.scss";
+
+.ground {
+  // box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+
+  .toggleButton {
+    position: absolute;
+    z-index: 4;
+    top: 4px;
+    left: 4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 100px;
+    border: 1px solid rgba(0, 119, 255, 0.705);
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgb(225, 246, 255);
+    color: rgba(0, 68, 255, 0.719);
+
+    // prevent selecting text
+    user-select: none; /* standard syntax */
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+
+    transition: transform 0.4s;
+
+    .symb {
+      transform: translateY(-1px);
+    }
+
+    &.expanded {
+      transform: rotate(-90deg) scale(1.2);
+    }
+
+    &:hover {
+      cursor: pointer;
+      box-shadow: 0 0 6px rgba(35, 174, 255, 0.733);
+    }
+  }
+}
+
+.oneUser {
+  overflow-wrap: anywhere;
+  margin-bottom: 20px;
+  // padding-top: 28px;
+
+  //   border: 2px solid rgb(207, 207, 207);
+  border-radius: 6px;
+
+  .topBox {
+    font-weight: 500;
+    color: rgb(28, 29, 29);
+    // margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+
+    column-gap: 30px;
+    row-gap: 10px;
+
+    .item {
+      // border: 1px solid rgb(219, 219, 219);
+      border-radius: 6px;
+      padding: 3px 6px;
+      box-shadow: 0px 0px 9px 0px rgba(0, 97, 187, 0.171);
+    }
+
+    .indexOne {
+      width: 40px;
+      flex-shrink: 0;
+      flex-grow: 0;
+      box-shadow: initial;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .fullName {
+      width: 100px;
+      flex-shrink: 0;
+      flex-grow: 1;
+    }
+
+    .email {
+      width: 100px;
+      flex-shrink: 0;
+      flex-grow: 1;
+    }
+
+    .roles {
+      width: 100px;
+      flex-shrink: 0;
+      flex-grow: 1;
+    }
+
+    .edit, .delete {
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: 0 0 6px rgba(35, 174, 255, 0.733);
+      }
+    }
+  }
+
+  .top2Box {
+    margin-top: 10px;
+    margin-left: 30px;
+
+    font-size: 14px;
+
+    @media (max-width: 600px) {
+      margin-left: 0px;
+    }
+
+    .oneBike {
+      background: #f2fbff; /* fallback for old browsers */
+      background: -webkit-linear-gradient(
+        to top,
+        #ffffff,
+        #f2fbff
+      ); /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(
+        to top,
+        #ffffff,
+        #f2fbff
+      ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+      margin-bottom: 4px;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      // justify-content: space-around;
+      column-gap: 20px;
+      border: 1px solid rgba(83, 172, 255, 0.356);
+
+      padding: 3px;
+      border-radius: 4px;
+
+      .biId {
+        width: 45px;
+        flex-grow: 1;
+        flex-shrink: 0;
+      }
+
+      .biModel {
+        width: 42px;
+        flex-grow: 1;
+        flex-shrink: 0;
+      }
+
+      .biColor {
+        width: 40px;
+        flex-grow: 1;
+        flex-shrink: 0;
+      }
+
+      .biRentDates {
+        width: 88px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+    }
+  }
+}

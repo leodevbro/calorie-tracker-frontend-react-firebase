@@ -1,0 +1,105 @@
+@import "src/styling-constants/colors.scss";
+@import "src/styling-constants/coolEffects.scss";
+
+.main {
+  z-index: 4;
+  box-shadow: $generalShadow;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: black;
+
+  overflow: hidden;
+  max-height: 120px;
+
+  transition: max-height 0.4s ease-in-out;
+
+  &.hideForWide {
+    max-height: 0px;
+  }
+
+  &.onWideMenu {
+    position: absolute;
+    top: calc(100% + 10px);
+    // right: 20px;
+    left: 0px;
+    right: 0px;
+    min-width: max-content;
+    background-color: white;
+
+    @media (max-width: 1004px) {
+      display: none;
+    }
+  }
+
+  &.onNarrowMenu {
+    color: $gray400;
+    box-shadow: initial;
+    font-size: 1.25rem;
+
+    path {
+      stroke: $gray400;
+    }
+  }
+
+  display: inline-block;
+
+  // padding-right: 20px;
+
+  .settings {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding-right: 20px;
+
+    &:hover {
+      color: $blue500;
+      cursor: pointer;
+
+      .settingsSvg {
+        path {
+          stroke: $blue500;
+        }
+      }
+    }
+
+    .settingsSvg {
+      margin: 15px;
+    }
+
+    // .text {
+    //   //
+    // }
+
+    border-bottom: 1px solid #f3f3f3;
+
+    &.onNarrowMenu {
+      border-bottom: none;
+    }
+  }
+
+  .logout {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding-right: 20px;
+
+    &:hover {
+      color: $blue500;
+      cursor: pointer;
+
+      .logoutSvg {
+        path {
+          stroke: $blue500;
+        }
+      }
+    }
+
+    .logoutSvg {
+      margin: 15px;
+    }
+
+    // .text {
+    //   //
+    // }
+  }
+}

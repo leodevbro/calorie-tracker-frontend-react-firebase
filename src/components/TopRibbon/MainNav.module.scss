@@ -1,0 +1,121 @@
+@import "src/styling-constants/colors.scss";
+@import "src/styling-constants/coolEffects.scss";
+
+.mainNav {
+  // border: 1px solid green;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  height: 100%;
+  font-size: 0.875rem;
+  color: $blackyBlue;
+
+  &.onNarrowMenu {
+    display: block;
+    width: 100%;
+    height: initial;
+    flex-wrap: wrap;
+    text-align: left;
+    font-size: 1.25rem;
+    padding-top: 30px;
+    color: $gray400;
+  }
+
+  .navItem {
+    // border: 1px solid red;
+
+    padding-left: 16px;
+    padding-right: 16px;
+    // margin-right: 30px;
+    height: 100%;
+
+    transition: box-shadow 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      // box-shadow: $coolBlueShadow;
+    }
+
+    &.onNarrowMenu {
+      width: 100%;
+      height: initial;
+
+      &:hover {
+        cursor: initial;
+        box-shadow: initial;
+      }
+    }
+
+    .titleWrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center; text-align: -webkit-center;
+      width: 100%;
+      // border: 1px solid blue;
+      height: calc(100% - 4px);
+      
+
+      &.onNarrowMenu {
+        text-align: left;
+        justify-content: flex-start;
+        margin-bottom: 38px;
+      }
+
+      .title {
+        border-radius: 6px;
+        
+
+        &.onNarrowMenu {
+          // border: 1px solid blue;
+          padding: 3px 5px;
+          min-height: 32px;
+
+          &:hover {
+            cursor: pointer;
+            // box-shadow: $coolBlueShadow;
+            // color: red;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
+    .currIndicator {
+      display: flex;
+      justify-content: center;
+      height: 4px;
+      width: 100%;
+      background-color: none;
+
+      &.onNarrowMenu {
+        display: none;
+      }
+
+      & > div {
+        background-color: $blue500;
+        height: 100%;
+        width: 0%;
+
+        transition: width 0.2s 0s ease-in-out;
+      }
+    }
+
+    &.isCurr {
+      .currIndicator {
+        // background-color: $blue500;
+
+        & > div {
+          width: 100%;
+          transition: width 0.4s 0.2s ease-in-out;
+        }
+      }
+
+      &.onNarrowMenu {
+        color: $blue500;
+        font-weight: 600;
+      }
+    }
+  }
+}

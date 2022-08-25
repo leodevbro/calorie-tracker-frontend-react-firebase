@@ -1,0 +1,709 @@
+@import "src/styling-constants/colors.scss";
+@import "src/styling-constants/coolEffects.scss";
+
+@keyframes topBoxBottomBordersRadiusKeyframes {
+  0% {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  100% {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+  }
+}
+
+@keyframes topBoxBottomBordersRadiusKeyframes2 {
+  0% {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+  }
+
+  100% {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+}
+
+@keyframes scaleDownYKeyframes {
+  0% {
+    transform: scaleY(1);
+  }
+
+  100% {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes scaleUpYKeyframes {
+  0% {
+    transform: scaleY(0);
+  }
+
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes headerSqYKeyframes {
+  0% {
+    height: 58px;
+    transform: scaleY(1);
+  }
+  100% {
+    transform-origin: top left;
+    transform: scaleY(0);
+
+    height: 0px;
+  }
+}
+
+// ------------
+
+@mixin generalAniOptions {
+  // animation-name: myDivKeyframes;
+  // animation-duration: 1.2s;
+  // animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in-out;
+  animation-direction: normal;
+  animation-fill-mode: backwards;
+  animation-play-state: running;
+}
+
+@mixin squeezeX {
+  // transform-origin: top left;
+  transform: scaleX(0);
+
+  width: 0px;
+
+  padding-left: 0px;
+  padding-right: 0px;
+
+  border-left: 0px;
+  border-right: 0px;
+
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+@mixin squeezeY {
+  // transform-origin: top left;
+  // transform: scaleY(0);
+  overflow: hidden;
+
+  // height: 0px;
+  min-height: 0px;
+  max-height: 0px;
+  // transition: max-height 0.8s ease-in-out, min-height 0.8s ease-in-out, transform 0.8s ease-in-out;
+
+  padding-top: 0px;
+  padding-bottom: 0px;
+
+  border-top: 0px;
+  border-bottom: 0px;
+
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+@mixin squeezeXY {
+  // transform-origin: top left;
+  transform: scale(0);
+
+  height: 0px;
+  width: 0px;
+
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+
+  border-top: 0px;
+  border-bottom: 0px;
+  border-left: 0px;
+  border-right: 0px;
+
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+@mixin hideButNotForScreenReader {
+  // transform-origin: top left;
+  transform: scale(0); // In order to to be discoverable for screan reader software
+
+  // @include generalAniOptions;
+  // animation-name: scaleDownYKeyframes;
+  // animation-duration: 0.8s;
+}
+
+// @mixin hideNonAbsolutesInCell {
+//   height: 0px;
+
+//   padding-top: 0px;
+//   padding-bottom: 0px;
+
+//   border-top: 0px;
+//   border-bottom: 0px;
+
+//   margin-top: 0px;
+//   margin-bottom: 0px;
+
+//   // .label and .value are non-absolutes, they have position relative
+//   .label,
+//   .value {
+//     @include hideButNotForScreenReader();
+//   }
+// }
+
+.uni {
+  opacity: 1;
+}
+
+.tableWrap {
+  position: relative;
+  width: 100%;
+  background-color: $coolBack;
+
+  .beforeTable {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 50px;
+    column-gap: 16px;
+
+    margin-bottom: 20px;
+
+    // .paging {}
+
+    .searchBox {
+      // border: 1px solid green;
+      display: flex;
+      flex-wrap: nowrap;
+      // align-items: stretch;
+      background-color: $lightGray;
+      max-width: 390px;
+      padding-right: 26px;
+      // margin-bottom: 10px;
+
+      border-radius: 100px;
+      overflow: hidden;
+      .searchIconWrap {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        width: 44px;
+        // border: 1px solid red;
+        // .searchIcon {
+
+        // }
+      }
+
+      .searchInput {
+        display: block;
+        flex-grow: 1;
+        // border: 1px solid blue;
+        background: none;
+        font-size: 1rem;
+        width: 320px;
+        max-width: 100%;
+
+        // font-family: "Neue Haas Grotesk Display Std";
+
+        &::placeholder {
+          color: $gray400;
+        }
+      }
+    }
+
+    .columnFilters {
+      // padding: 10px;
+      // display: flex;
+      // flex-wrap: wrap;
+      // column-gap: 24px;
+      // row-gap: 16px;
+
+      // border-radius: 12px;
+
+      // background-color: #d7ecff;
+    }
+
+    .otherFilters {
+      display: flex;
+      justify-content: flex-end;
+      flex-grow: 1;
+      column-gap: 16px;
+
+      .coolDateDrop {
+        min-width: 130px;
+        max-width: 160px;
+
+        .coolDateChoice {
+          max-width: 100%;
+          min-width: 100%;
+        }
+      }
+    }
+  }
+
+  .myTable {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    // overflow: hidden; ::-:
+    // border-radius: 12px 12px 0px 0px;
+    text-align: center;
+    text-align: -webkit-center;
+
+    overflow-wrap: anywhere;
+    position: relative;
+    width: 100%;
+    // background-color: #ffffff;
+    color: $grayForTableText;
+
+    font-weight: 600;
+
+    // border: 1px solid green;
+    border-spacing: 0;
+
+    &.narrowTable {
+      display: block;
+    }
+
+    // &.initializing {
+    //   .pureCellFlow {
+    //     // @include squeezeY();
+    //   }
+    // }
+
+    .tHead {
+      border-radius: 12px 12px 0px 0px;
+
+      position: relative;
+      font-size: 0.75rem;
+      background-color: $grayForTableHead;
+      color: $grayForTableHeadText;
+      // max-height:10000px;
+      transform-origin: top left;
+      transition: max-height 0.8s ease-in-out, min-height 0.8s ease-in-out,
+        transform 0.8s ease-in-out;
+
+      &.narrowTable {
+        display: flex;
+
+        // border-radius: 12px;
+
+        // @include squeezeY();
+
+        // @include generalAniOptions;
+        // animation-name: headerSqYKeyframes;
+        // animation-duration: 1s;
+      }
+
+      .tHeadRow {
+        position: relative;
+        display: flex;
+        align-items: center;
+        // justify-content: space-between;
+        width: 100%;
+
+        &.narrowTable {
+          display: flex;
+          flex-grow: 1;
+          justify-content: space-around;
+          align-items: center;
+        }
+
+        .tH {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &.narrowTable {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          min-height: 58px;
+        }
+      }
+    }
+
+    .tBody {
+      font-size: 0.875rem;
+      position: relative;
+      color: $grayForTableText;
+
+      &.narrowTable {
+        display: block;
+      }
+
+      // .tRow is down below at ground level area
+    }
+  }
+
+  .afterTable {
+    margin-top: 16px;
+
+    // .paging {}
+  }
+}
+
+.tRow {
+  position: relative;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  // outline: 2px solid red;
+  // outline-offset: -1px;
+  // min-height: 60px;
+
+  &.narrowTable {
+    display: block;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    margin-bottom: 20px;
+    border-radius: 16px;
+    // overflow: hidden;
+  }
+
+  .rowTopBox {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 20px;
+    color: black;
+
+    min-height: 78px;
+    background-color: white;
+    // border-radius: 16px 16px 0px 0px;
+
+    // &.narrowTable {
+    //   display: block;
+    // }
+
+    // .leftSide {
+    //   display: flex;
+    //   flex-wrap: nowrap;
+    //   align-items: center;
+    // }
+    // .rightSide {
+    //   display: flex;
+    //   flex-wrap: nowrap;
+    //   align-items: center;
+    //   justify-content: flex-end;
+    // }
+
+    /*
+    .arrowDownButton {
+      width: 24px;
+      height: 24px;
+      border-radius: 50px;
+      overflow: hidden;
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: $coolBlueShadow;
+      }
+      .arrowDownIconWrap {
+        width: 100%;
+        height: 100%;
+
+        // border: 1px solid red;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        transition: transform 0.8s ease-in-out;
+
+        .arrowDownIcon {
+          width: 14px;
+          top: 1px;
+        }
+      }
+    }
+    */
+  }
+
+  .rowBody {
+    display: block;
+    width: 100%;
+    // max-height: 550px;
+    max-height: max-content;
+    // overflow: hidden;
+
+    transform-origin: top left;
+    transition: max-height 0.8s ease-in-out, min-height 0.8s ease-in-out, transform 0.8s ease-in-out;
+
+    .pureCellFlow {
+      display: flex;
+      align-items: center;
+      // justify-content: space-between;
+      width: 100%;
+      // max-height:10000px;
+      transform-origin: top left;
+      transition: max-height 0.8s ease-in-out, min-height 0.8s ease-in-out,
+        transform 0.8s ease-in-out;
+
+      &.narrowTable {
+        display: block;
+      }
+
+      &.wideTable:hover {
+        background-color: rgba(243, 243, 243, 0.425);
+      }
+
+      .tD {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        // flex-grow: 70;
+        // flex-basis: 70px;
+        // width: 100px;
+        // height: 60px;
+        min-height: 56px;
+        padding: 5px;
+        // max-height:10000px;
+        transform-origin: top left;
+        transition: max-height 0.8s ease-in-out, min-height 0.8s ease-in-out,
+          transform 0.8s ease-in-out;
+
+        &.narrowTable {
+          display: flex;
+          flex-wrap: nowrap;
+          // justify-content: flex-start;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          // min-height: 54px;
+          border-bottom: 1px solid $gray100;
+
+          padding-left: 0px;
+          padding-right: 0px;
+
+          .value {
+            flex-grow: 1;
+            max-width: 75%;
+            justify-content: flex-end;
+          }
+
+          .label {
+            flex-grow: 0;
+            flex-shrink: 1;
+          }
+
+          .value > div {
+            max-width: 100%;
+          }
+
+          &:last-of-type {
+            border-bottom: 0;
+          }
+
+          &.visible {
+            // border: 4px solid blue !important;
+            &.lastVis {
+              border-bottom: none;
+            }
+          }
+        }
+
+        .label {
+          position: relative;
+          font-size: 0.75rem;
+          display: none;
+          margin-right: 10px;
+          // white-space: nowrap;
+          flex-shrink: 0;
+          width: 24%;
+          text-align: left;
+
+          &.narrowTable {
+            display: flex;
+            // width: 30%;
+            color: #7c7c7c;
+          }
+        }
+
+        .value {
+          max-width: 100%;
+          position: relative;
+          // white-space: nowrap;
+          &.narrowTable {
+            display: flex;
+            color: black;
+          }
+        }
+      }
+    }
+
+    .rowBottomBox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 76px;
+
+      background-color: white;
+      // border-radius: 0px 0px 16px 16px;
+
+      // max-height:10000px;
+      transform-origin: top left;
+      transition: max-height 0.8s ease-in-out, min-height 0.8s ease-in-out,
+        transform 0.8s ease-in-out;
+
+      // &.narrowTable {
+      //   display: block;
+      //   // border: 1px solid blue;
+      // }
+    }
+  }
+}
+
+.tD.tD.tD.tD.tD {
+  &.hid {
+    // @include squeezeY();
+    display: none;
+  }
+}
+
+.collapsedRow.collapsedRow.collapsedRow.collapsedRow.collapsedRow {
+  border-radius: 16px;
+  // .rowTopBox {
+  //   // border-bottom-left-radius: 16px;
+  //   // border-bottom-right-radius: 16px;
+  // }
+
+  // .rowBody {
+  //   // @include squeezeY();
+  // }
+
+  // .pureCellFlow {
+  //   // @include squeezeY();
+
+  //   .tD {
+  //     &.visible {
+  //     }
+
+  //     &.hid {
+  //     }
+  //   }
+  // }
+
+  // .rowBottomBox {
+  //   // @include squeezeY();
+
+  //   // @include generalAniOptions;
+  //   // animation-name: rowHeightKeyframes3;
+  //   // animation-delay: 0.3s;
+  //   // animation-duration: 0.8s;
+  // }
+}
+
+// .expandedRow.expandedRow.expandedRow.expandedRow {
+// .tD {
+//   &.visible {
+//     // @include generalAniOptions;
+//     // animation-name: rowHeightKeyframes2;
+//     // animation-delay: 0.3s;
+//     // animation-duration: 0.8s;
+
+//     .label,
+//     .value {
+//       // @include generalAniOptions;
+//       // animation-name: scaleUpYKeyframes;
+//       // animation-delay: 0.3s;
+//       // animation-duration: 0.8s;
+//     }
+//   }
+// }
+
+/*
+  .arrowDownIconWrap {
+    transform: scaleY(-1);
+
+    // .arrowDownIcon {
+
+    //   transform: scaleY(-1);
+    //   top: 0px;
+    // }
+  }
+  */
+// }
+
+.paging {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 0.875rem;
+  color: black;
+  font-weight: 700;
+
+  .pre,
+  .next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 0.5px solid #dddddd;
+
+    border-radius: 3px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    user-select: none; /* standard syntax */
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+  }
+
+  .pre {
+    margin-right: 10px;
+    // &.canPre {
+    //   // border: 1px solid blue;
+    // }
+    &.cannotPre {
+      // border: 1px solid red;
+      opacity: 0.3;
+    }
+
+    svg {
+      transform: scaleX(-1);
+    }
+  }
+
+  .numbering {
+    width: 100%;
+    min-width: 90px;
+    text-align: center;
+    text-align: -webkit-center;
+    margin-right: 10px;
+  }
+
+  .next {
+    // &.canNext {
+    //   // border: 1px solid blue;
+    // }
+
+    &.cannotNext {
+      // border: 1px solid red;
+      opacity: 0.3;
+    }
+  }
+}

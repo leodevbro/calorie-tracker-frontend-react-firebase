@@ -1,0 +1,41 @@
+@import "src/styling-constants/colors.scss";
+@import "src/styling-constants/coolEffects.scss";
+
+.ground {
+  width: 24px;
+  height: 24px;
+  min-height: 24px;
+  min-width: 24px;
+  border-radius: 50px;
+  overflow: hidden;
+
+  &:hover {
+    cursor: pointer;
+    // box-shadow: $coolBlueShadow;
+  }
+  .arrowDownIconWrap {
+    position: static;
+    width: 100%;
+    height: 100%;
+
+    // border: 1px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 0.2s ease-in-out;
+
+    // &.toDown {
+    //   // default
+    // }
+
+    &.toUp {
+      transform: scaleY(-1);
+    }
+
+    .arrowDownIcon {
+      width: 14px;
+      top: 1px;
+    }
+  }
+}

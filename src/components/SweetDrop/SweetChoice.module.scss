@@ -1,0 +1,65 @@
+@import "src/styling-constants/colors.scss";
+@import "src/styling-constants/coolEffects.scss";
+
+.ground {
+  // transform-origin: top left;
+  // transition: 0.5s max-height ease-in-out;
+
+  // overflow: hidden;
+
+  // &.visible {
+  //   // max-height: 70px;
+  // }
+
+  // &.hid {
+  //   // max-height: 0px;
+  //   // padding: 0px !important;
+  //   // border: 1px solid blue !important;
+  //   // transform: scaleY(0);
+  // }
+
+  // margin: 4px;
+  // width: 100%;
+  // height: 100%;
+
+  box-shadow: $generalShadow;
+  border-radius: 12px;
+
+  .choice {
+    min-width: 124px;
+    background-color: white;
+
+    border-radius: 12px;
+
+    .item {
+      font-size: 1rem;
+      min-height: 52px;
+      color: $blackyBlue;
+
+      display: flex;
+      align-items: center;
+      padding-left: 14px;
+      padding-right: 14px;
+
+      border-bottom: 1px solid #f3f3f3;
+
+      &.currToHide {
+        display: none;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        cursor: pointer;
+        color: #0967d2b7;
+      }
+
+      &.selected {
+        color: $blue500;
+        font-weight: 600;
+      }
+    }
+  }
+}

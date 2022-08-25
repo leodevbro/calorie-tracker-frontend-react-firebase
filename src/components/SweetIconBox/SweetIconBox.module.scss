@@ -1,0 +1,34 @@
+@import "src/styling-constants/colors.scss";
+
+.ground {
+  background-color: rgb(247, 247, 247);
+
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(235, 235, 235);
+  }
+
+  &:active {
+    background-color: rgb(231, 240, 251);
+
+    .mySvg {
+      * {
+        stroke: rgb(9, 103, 210);
+      }
+    }
+  }
+
+  .mySvg {
+    * {
+      stroke: rgb(98, 98, 98);
+    }
+  }
+}

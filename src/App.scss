@@ -1,0 +1,375 @@
+:root {
+  --portal-top: 0px;
+  --portal-bottom: 0px;
+  --portal-left: 0px;
+  --portal-right: 0px;
+  --portal-width: 100%;
+  --portal-height: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  position: relative;
+}
+
+body {
+  margin: 0;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  // background-color: rgb(223, 223, 223);
+  background-color: white;
+}
+
+:root,
+body,
+#root,
+.App {
+  height: 100%;
+}
+
+// ================
+// ================
+// ================
+// ================
+// ================
+
+.AppWrap {
+  font-family: "IBM Plex Sans";
+
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  // justify-content: space-between;
+
+  min-height: 100%;
+  max-height: 100%;
+
+  .devControlArrow {
+    background-color: #d5e5ff41;
+    position: fixed;
+    z-index: 5000000;
+    left: 2px;
+    top: 3px;
+
+    border: 2px solid rgba(65, 71, 80, 0.596);
+
+    transform-origin: top left;
+    transform: scale(0.7);
+    opacity: 0.4;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .devControl {
+    z-index: 2000000;
+    display: none;
+    // border: 1px solid red;
+    background-color: rgb(65, 71, 80);
+
+    min-height: 32px;
+
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    padding-left: 42px;
+
+    column-gap: 20px;
+    row-gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 4px;
+    padding-bottom: 4px;
+
+    &.showDevControl {
+      display: flex;
+    }
+
+    .roleChanger {
+      background-color: rgba(255, 255, 255, 0.418);
+      border: 0;
+      border-radius: 4px;
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: 0 0 6px rgba(35, 174, 255, 0.527);
+      }
+    }
+  }
+
+  // .App {}
+}
+
+.App {
+  flex-grow: 1;
+  flex-shrink: 1;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  // justify-content: space-between;
+
+  min-height: 100%;
+  max-height: 100%;
+  // overflow: hidden;
+
+  .appPopupPortalWrap {
+    position: absolute;
+
+    left: 0px;
+    right: 0px;
+
+    top: 0px;
+    bottom: 0px;
+  }
+
+  .appPopupPortal {
+    position: absolute;
+
+    left: 0px;
+    right: 0px;
+
+    top: 0px;
+    bottom: 0px;
+
+    // z-index: 1000;
+
+    // .chchch {
+    //   background-color: aqua;
+    //   width: 200px;
+    //   height: 200px;
+
+    //   z-index: 2000;
+    // }
+  }
+
+  .appTop {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  .appBodyWrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    // column-gap: 16px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: auto;
+
+    // DEPRICATED !!!
+    .sidebarContainer {
+      --max-width-for-sb-deskt: 300px;
+      // display: none;
+      // white-space: nowrap;
+      // max-width: 150px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 0;
+      flex-shrink: 0;
+      // padding: 8px;
+      // border: 1px solid blue;
+
+      overflow: auto;
+
+      max-width: var(--max-width-for-sb-deskt);
+      min-width: 0px;
+
+      transition: max-width 0.5s ease-in-out, min-width 0.5s ease-in-out;
+
+      overflow-x: hidden;
+
+      &.hideSb {
+        max-width: 0px;
+        min-width: 0px;
+        // padding-left: 0px;
+        // padding-right: 0px;
+        // border: none;
+      }
+
+      & > div {
+        flex-grow: 1;
+        flex-shrink: 0;
+        // min-height: 100%;
+        // max-height: 100%;
+      }
+
+      @media (max-width: 1004px) {
+        // max-width: var(--max-width-for-sb-deskt);
+        max-width: 100%;
+        min-width: 100%;
+        z-index: 100;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+
+        // &.hideSb {
+        //   // right: -100px;
+        //   // transform: translateX(100px);
+        //   // max-width: var(--max-width-for-sb-deskt);
+        // }
+      }
+    }
+
+    .appBody {
+      overflow: auto;
+      overflow-y: scroll;
+      flex-grow: 1;
+      flex-shrink: 1;
+
+      // max-height: 100%;
+
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      // border: 5px solid red;
+      // margin-top: 3px;
+
+      // width: 100%;
+      // height: calc(100vh - 88px - 1px);
+
+      // @media (max-width: 604px) {
+      //   // height: calc(100vh - 67px - 1px);
+      // }
+
+      .mainBody {
+        min-height: 500px;
+        // border: 1px solid rgb(81, 243, 221);
+
+        flex-grow: 1;
+        flex-shrink: 0;
+
+        & > div:first-child {
+          min-height: 100%;
+          padding-bottom: 100px;
+        }
+      }
+
+      .appFoot {
+        // border: 1px solid blue;
+        flex-grow: 0;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+input,
+textarea:focus,
+input:focus {
+  outline: none;
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: none;
+}
+
+input[type="checkbox" i] {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s;
+  -webkit-text-fill-color: rgba(9, 103, 217, 0.726);
+
+  // -webkit-box-shadow: 0 0 0 1000px #28db55bd inset !important; // maybe not needed
+  // box-shadow: 0 0 0 1000px #28db55bd inset !important; // maybe not needed
+}
+
+// For Safari
+::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  position: absolute;
+  right: 0;
+}
+
+// for Edge
+::-ms-reveal {
+  display: none;
+}
+
+// Works on Firefox
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #7098ddbe #d5e5ff;
+}
+
+// Works on Chrome
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: #e4e4e4;
+  border-radius: 100px;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  // border: 5px solid transparent;
+  // background-clip: content-box;
+  // background-color: rgb(49, 152, 221);
+  background-color: rgba(105, 145, 214, 0.699);
+
+  &:hover {
+    background-color: rgba(88, 141, 240, 0.842);
+  }
+}
+
+// .App {
+//   text-align: center;
+// }
+
+// .App-logo {
+//   height: 40vmin;
+//   pointer-events: none;
+// }
+
+// @media (prefers-reduced-motion: no-preference) {
+//   .App-logo {
+//     animation: App-logo-float infinite 3s ease-in-out;
+//   }
+// }
+
+// .App-header {
+//   min-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   font-size: calc(10px + 2vmin);
+// }
+
+// .App-link {
+//   color: rgb(112, 76, 182);
+// }
+
+// @keyframes App-logo-float {
+//   0% {
+//     transform: translateY(0);
+//   }
+//   50% {
+//     transform: translateY(10px);
+//   }
+//   100% {
+//     transform: translateY(0px);
+//   }
+// }

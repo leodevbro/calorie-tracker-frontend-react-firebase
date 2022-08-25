@@ -1,0 +1,136 @@
+@import "src/styling-constants/colors.scss";
+
+.ground {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  row-gap: 24px;
+  column-gap: 24px;
+
+  @media (max-width: 600px) {
+    justify-content: flex-end;
+  }
+
+  .toSetNumRowsPerPage {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    column-gap: 16px;
+
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: rgb(158, 158, 158);
+
+    .headOfNumDrop.headOfNumDrop.headOfNumDrop {
+      min-height: 28px;
+      min-width: 90px;
+
+      & * {
+        color: rgb(55, 63, 65);
+      }
+
+      svg * {
+        stroke: rgb(55, 63, 65);
+      }
+    }
+  }
+
+  .pagingData {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+
+.pagination {
+  list-style: none;
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 6px;
+  row-gap: 6px;
+  padding: 0px;
+  margin: 0px;
+
+  margin-bottom: 24px;
+}
+.pageItem {
+  // border: 1px solid red;
+  // padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: rgb(158, 158, 158);
+  border-radius: 3px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.active {
+    color: rgb(9, 103, 210);
+    background-color: rgb(226, 235, 246);
+  }
+
+  &.pre,
+  &.next {
+    user-select: none; /* standard syntax */
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+  }
+
+  .pageLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4px;
+
+    border-radius: 3px;
+
+    min-width: 28px;
+    min-height: 28px;
+
+    &.pre {
+      transform: scaleX(-1);
+
+      & * {
+        stroke: rgb(158, 158, 158);
+      }
+
+      &.isAble {
+        * {
+          stroke: black;
+        }
+      }
+    }
+
+    &.next {
+      & * {
+        stroke: rgb(158, 158, 158);
+      }
+
+      &.isAble {
+        * {
+          stroke: black;
+        }
+      }
+    }
+  }
+
+  // a.pageLink {
+  //   width: 100%;
+  //   height: 100%;
+  // }
+}
+
+.pagingInfo {
+  color: rgb(158, 158, 158);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}

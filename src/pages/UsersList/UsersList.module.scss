@@ -1,0 +1,35 @@
+@import "src/styling-constants/colors.scss";
+@import "src/styling-constants/coolEffects.scss";
+
+.ground {
+  display: flex;
+  justify-content: center;
+  opacity: initial;
+  padding: 10px;
+  padding-top: 20px;
+
+  .ground2 {
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .toggleExpandAll {
+    outline: none;
+    border: 1px solid rgb(223, 223, 223);
+    border-radius: 6px;
+    padding: 3px 6px;
+
+    
+
+    margin-bottom: 10px;
+
+    &:hover {
+      cursor: pointer;
+      box-shadow: $coolBlueShadow0;
+    }
+  }
+
+  // .allUsers {
+    
+  // }
+}
