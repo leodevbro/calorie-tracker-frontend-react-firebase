@@ -13,6 +13,7 @@ import style from "./CreateUpdateFoodEntry.module.scss";
 // import { createUser } from "src/app/db-api";
 import { CheckboxInp } from "src/components/SweetInput/CheckboxInp";
 import { IFoodTableRow } from "../FoodListPage";
+import DateTimePicker from "react-datetime-picker";
 
 // import { db } from "src/connection-to-backend/db/firebase/config";
 // import { useAppSelector } from "src/app/hooks";
@@ -24,6 +25,10 @@ export const CreateUpdateFoodEntry: React.FC<{
 }> = ({ preId = "", successFn: closerFn, currFoodEntry }) => {
   const [bigError, setBigError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const [valueOfDateTime, setValueOfDateTime] = useState<Date | [Date, Date] | undefined>(
+    new Date(),
+  );
 
   const naming = useMemo(() => {
     const obj = {
@@ -86,7 +91,10 @@ export const CreateUpdateFoodEntry: React.FC<{
         .min(0, "Must be at least 0")
         .max(10000, "Must be less than 10000")
         .required("Required"),
-      [naming.intakeDateTime]: Yup.string().required("Required"),
+      [naming.intakeDateTime]: Yup.number()
+        .min(0, "Please enter intake date time")
+        .nullable()
+        .required("Required"),
     }),
 
     onSubmit: async (values) => {
@@ -206,6 +214,15 @@ export const CreateUpdateFoodEntry: React.FC<{
             error={formik.touched[naming.calories] && formik.errors[naming.calories]}
           />
 
+          <DateTimePicker
+            calendarClassName={style.datePickFrame}
+            onChange={(newDate) => {
+              formik.setFieldValue(naming.intakeDateTime, newDate ? newDate.getTime() : null, true);
+              setValueOfDateTime((prev) => newDate);
+            }}
+            value={valueOfDateTime}
+          />
+
           <SweetInput
             id={naming.intakeDateTime}
             name={naming.intakeDateTime}
@@ -222,6 +239,7 @@ export const CreateUpdateFoodEntry: React.FC<{
             //
             // required={true}
             error={formik.touched[naming.intakeDateTime] && formik.errors[naming.intakeDateTime]}
+            hideActualInput={true}
           />
 
           <WideButton

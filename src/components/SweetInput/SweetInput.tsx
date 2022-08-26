@@ -24,6 +24,7 @@ export const SweetInput: React.FC<{
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   required?: boolean;
   error?: string | false;
+  hideActualInput?: boolean;
 }> = ({
   id,
   name,
@@ -40,6 +41,7 @@ export const SweetInput: React.FC<{
   onBlur,
   required,
   error,
+  hideActualInput,
 }) => {
   const initialInpType = useMemo(() => {
     let iType: InputTypesT = "text";
@@ -62,34 +64,36 @@ export const SweetInput: React.FC<{
 
   return (
     <div className={cla(className, style.inputBox)}>
-      <div className={style.inputWrap}>
-        <label className={cla(style.label, { [style.hide]: !value })} htmlFor={id}>
-          {label}
-        </label>
+      {!hideActualInput && (
+        <div className={style.inputWrap}>
+          <label className={cla(style.label, { [style.hide]: !value })} htmlFor={id}>
+            {label}
+          </label>
 
-        <input
-          id={id}
-          name={name}
-          autoComplete={autoComplete}
-          className={cla(style.myInput, { [style.empty]: !value })}
-          type={inpType}
-          placeholder={placeHolder}
-          required={required}
-          value={value}
-          onChange={onChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
-
-        {kind === "kPassword" && (
-          <img
-            className={style.passEye}
-            src={inpType === "password" ? eyeIconSvgPath : eyeOffIconSvgPath}
-            alt={"eye icon"}
-            onClick={() => setInpType((x) => (x === "password" ? "text" : "password"))}
+          <input
+            id={id}
+            name={name}
+            autoComplete={autoComplete}
+            className={cla(style.myInput, { [style.empty]: !value })}
+            type={inpType}
+            placeholder={placeHolder}
+            required={required}
+            value={value}
+            onChange={onChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
-        )}
-      </div>
+
+          {kind === "kPassword" && (
+            <img
+              className={style.passEye}
+              src={inpType === "password" ? eyeIconSvgPath : eyeOffIconSvgPath}
+              alt={"eye icon"}
+              onClick={() => setInpType((x) => (x === "password" ? "text" : "password"))}
+            />
+          )}
+        </div>
+      )}
 
       {error && <div className={style.error}>{error}</div>}
     </div>
