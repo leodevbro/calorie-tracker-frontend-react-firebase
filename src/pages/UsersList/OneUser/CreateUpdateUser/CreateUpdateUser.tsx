@@ -51,7 +51,7 @@ export const CreateUpdateUser: React.FC<{
       firstName: `${preId}_firstName`,
       lastName: `${preId}_lastName`,
       hasRoleUser: `${preId}_hasRoleUser`,
-      hasRoleManager: `${preId}_hasRoleManager`,
+      hasRoleAdmin: `${preId}_hasRoleAdmin`,
       currPassword: `${preId}_currPassword`,
       newPassword: `${preId}_newPassword`,
     };
@@ -69,7 +69,7 @@ export const CreateUpdateUser: React.FC<{
       [naming.lastName]: Yup.string().max(30, "Must be 30 characters or less").required("Required"),
 
       [naming.hasRoleUser]: Yup.boolean(),
-      [naming.hasRoleManager]: Yup.boolean(),
+      [naming.hasRoleAdmin]: Yup.boolean(),
 
       [naming.currPassword]: Yup.string()
         .min(8, "Password must be 8 characters at minimum")
@@ -102,7 +102,7 @@ export const CreateUpdateUser: React.FC<{
       [naming.lastName]: userToUpdate ? userToUpdate.lastName : "",
 
       [naming.hasRoleUser]: userToUpdate ? userToUpdate.roles.user : true,
-      [naming.hasRoleManager]: userToUpdate ? userToUpdate.roles.admin : false,
+      [naming.hasRoleAdmin]: userToUpdate ? userToUpdate.roles.admin : false,
 
       [naming.currPassword]: "",
       [naming.newPassword]: "",
@@ -149,14 +149,14 @@ export const CreateUpdateUser: React.FC<{
           const candidateLN = values[naming.lastName] as string;
           const newLN = candidateFN === userToUpdate.lastName ? undefined : candidateLN;
 
-          const candidateBoolOfManager = values[naming.hasRoleManager] as boolean;
+          const candidateBoolOfAdmin = values[naming.hasRoleAdmin] as boolean;
           const candidateBoolOfUser = values[naming.hasRoleUser] as boolean;
           const rolesAreSame =
-            candidateBoolOfManager === userToUpdate.roles.admin &&
+            candidateBoolOfAdmin === userToUpdate.roles.admin &&
             candidateBoolOfUser === userToUpdate.roles.user;
           const newRoles: IUserRoles | undefined = rolesAreSame
             ? undefined
-            : { user: candidateBoolOfUser, admin: candidateBoolOfManager };
+            : { user: candidateBoolOfUser, admin: candidateBoolOfAdmin };
 
           const theOb = {
             userId: userToUpdate.id,
@@ -176,7 +176,7 @@ export const CreateUpdateUser: React.FC<{
           const theData = res.data;
 
           if (theData && theData.actorId === theData.idOfUserToUpdate) {
-            console.log("jaaaaaaa???????????", theData);
+            // console.log("jaaaaaaa???????????", theData);
             await waitMs(500);
 
             dbApi.login(
@@ -196,7 +196,7 @@ export const CreateUpdateUser: React.FC<{
             info: {
               roles: {
                 user: true,
-                manager: values[naming.hasRoleManager] as boolean,
+                admin: values[naming.hasRoleAdmin] as boolean,
               },
               created: newDateNumber,
               email: values[naming.email] as string,
@@ -323,20 +323,20 @@ export const CreateUpdateUser: React.FC<{
 
             <CheckboxInp
               className={style.myCheck}
-              isChecked={formik.values[naming.hasRoleManager] as boolean}
-              id={naming.hasRoleManager}
-              label={"Manager"}
-              name={naming.hasRoleManager}
+              isChecked={formik.values[naming.hasRoleAdmin] as boolean}
+              id={naming.hasRoleAdmin}
+              label={"Admin"}
+              name={naming.hasRoleAdmin}
               onBlur={() => 4}
-              textualValue={naming.hasRoleManager}
+              textualValue={naming.hasRoleAdmin}
               // onChange={formik.handleChange}
               tryToChange={(change) => {
                 if (change.isChecked !== undefined) {
-                  formik.setFieldValue(naming.hasRoleManager, change.isChecked);
+                  formik.setFieldValue(naming.hasRoleAdmin, change.isChecked);
                 }
               }}
               // isLastIndex={isLast}
-              error={formik.touched[naming.hasRoleManager] && formik.errors[naming.hasRoleManager]}
+              error={formik.touched[naming.hasRoleAdmin] && formik.errors[naming.hasRoleAdmin]}
             />
           </span>
 

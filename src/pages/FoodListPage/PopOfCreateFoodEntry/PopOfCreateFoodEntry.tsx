@@ -13,7 +13,8 @@ import { CreateUpdateFoodEntry } from "../CreateUpdateFoodEntry/CreateUpdateFood
 
 export const PopOfCreateFoodEntry: React.FC<{
   successFn: () => any;
-}> = ({ successFn }) => {
+  mode?: "forOtherUser";
+}> = ({ successFn, mode }) => {
   const [showCreatePop, setShowCreatePop] = useState(false);
 
   // const navigate = useNavigate();
@@ -25,7 +26,7 @@ export const PopOfCreateFoodEntry: React.FC<{
           setShowCreatePop((prev) => true);
         }}
       >
-        Add Food
+        {mode === "forOtherUser" ? "Add food for other user" : "Add food for me"}
       </button>
       <SweetPopup
         show={showCreatePop}
@@ -39,6 +40,7 @@ export const PopOfCreateFoodEntry: React.FC<{
               setShowCreatePop((prev) => false);
               successFn();
             }}
+            mode={mode}
           />
         }
         backButtonShouldClose={false}

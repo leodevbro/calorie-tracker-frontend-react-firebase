@@ -31,7 +31,7 @@ export const TheFilters: React.FC<{
           const theProps = {
             columnId: y.accessor,
             setFilter: setFilter,
-            label: capitalizeFirstLetter(y.accessor),
+            label: capitalizeFirstLetter((y.Header as string).toLowerCase()),
             tableData: tableData,
           };
 

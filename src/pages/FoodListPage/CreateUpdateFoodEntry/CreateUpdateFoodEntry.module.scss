@@ -92,3 +92,59 @@
   max-width: calc(100% - 12px) !important;
   border-radius: 4px;
 }
+
+.mailInputWrapOfOtherUser {
+  width: 100%;
+
+  &.mail0 {
+    input {
+      color: rgb(68, 68, 68) !important;
+
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        -webkit-text-fill-color: rgb(68, 68, 68) !important;
+
+        // -webkit-box-shadow: 0 0 0 1000px #28db55bd inset !important; // maybe not needed
+        // box-shadow: 0 0 0 1000px #28db55bd inset !important; // maybe not needed
+      }
+    }
+  }
+
+  &.mail1 {
+    input {
+      color: red !important;
+
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        -webkit-text-fill-color: red !important;
+
+        // -webkit-box-shadow: 0 0 0 1000px #28db55bd inset !important; // maybe not needed
+        // box-shadow: 0 0 0 1000px #28db55bd inset !important; // maybe not needed
+      }
+    }
+  }
+
+  &.mail2 {
+    input {
+      color: rgb(55, 197, 12) !important;
+
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        -webkit-text-fill-color: rgb(55, 197, 12) !important;
+
+        // -webkit-box-shadow: 0 0 0 1000px #28db55bd inset !important; // maybe not needed
+        // box-shadow: 0 0 0 1000px #28db55bd inset !important; // maybe not needed
+      }
+    }
+  }
+
+  // input {
+  //   color: red !important;
+  // }
+}

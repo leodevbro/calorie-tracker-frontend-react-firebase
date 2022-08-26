@@ -33,7 +33,7 @@ export const myCustomFilterFnOfDateRange: FilterFnOfTableT = (
     return rows.filter((row) => {
       const thisDate = row.original[columnId];
 
-      console.log(thisDate, filterValue.to);
+      // console.log(thisDate, filterValue.to);
 
       if (thisDate <= filterValue.to!) {
         return true;
@@ -77,7 +77,7 @@ export const ColumnFilterByDateRange: React.FC<{
     Date | [Date, Date] | undefined | null
   >(null);
 
-  console.log(valueOfDateTime_from && (valueOfDateTime_from as Date).getTime());
+  // console.log(valueOfDateTime_from && (valueOfDateTime_from as Date).getTime());
 
   const [valueOfDateTime_to, setValueOfDateTime_to] = useState<
     Date | [Date, Date] | undefined | null

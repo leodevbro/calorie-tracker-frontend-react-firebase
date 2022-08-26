@@ -42,7 +42,7 @@ export const DeleteUser: React.FC<{
       <div className={style.mainBox}>
         <div>Really want to delete this user?</div>
         <div>{`${currUser.email}`}</div>
-        <div>{`${currUser.roles.admin ? "(Manager)" : ""}`}</div>
+        <div>{`${currUser.roles.admin ? "(Admin)" : ""}`}</div>
 
         <div className={style.chooseButtons}>
           <WideButton
