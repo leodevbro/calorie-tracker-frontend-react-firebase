@@ -14,6 +14,10 @@ import style from "./CreateUpdateFoodEntry.module.scss";
 import { CheckboxInp } from "src/components/SweetInput/CheckboxInp";
 import { IFoodTableRow } from "../FoodListPage";
 import DateTimePicker from "react-datetime-picker";
+import { db } from "src/connection-to-backend/db/firebase/config";
+import { dbApi } from "src/connection-to-backend/db/bridge";
+import { equalFnForCurrUserDocChange } from "src/App";
+import { useAppSelector } from "src/app/hooks";
 
 // import { db } from "src/connection-to-backend/db/firebase/config";
 // import { useAppSelector } from "src/app/hooks";
@@ -23,6 +27,7 @@ export const CreateUpdateFoodEntry: React.FC<{
   currFoodEntry?: IFoodTableRow;
   successFn: () => any;
 }> = ({ preId = "", successFn: closerFn, currFoodEntry }) => {
+  const veryCurrUser = useAppSelector((store) => store.sweet.currUser, equalFnForCurrUserDocChange);
   const [bigError, setBigError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -99,7 +104,7 @@ export const CreateUpdateFoodEntry: React.FC<{
 
     onSubmit: async (values) => {
       // alert(JSON.stringify(values, null, 2));
-      if (isLoading) {
+      if (isLoading || !veryCurrUser) {
         return;
       }
 
@@ -128,6 +133,17 @@ export const CreateUpdateFoodEntry: React.FC<{
           //     rates: [],
           //   },
           // } as Omit<IBike, "id">);
+
+          const newFoodId = await dbApi.createOneFood({
+            authorId: veryCurrUser.id,
+            calories: values[naming.calories] as number,
+            dietCheat: values[naming.dietCheat] as boolean,
+            intakeDateTime: values[naming.intakeDateTime] as number,
+            name: values[naming.name] as string,
+            created: new Date().getTime(),
+          });
+
+          console.log(newFoodId);
         }
         // console.log("vqlouzdebi");
         setTimeout(() => {
