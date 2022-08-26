@@ -28,14 +28,14 @@ export const DevControl: React.FC<{
   );
   const dispatch = useAppDispatch();
 
-  const makethisUserManager = useCallback(
+  const makethisUserAdmin = useCallback(
     async (make: boolean) => {
       if (!veryCurrUser) {
         return;
       }
 
       try {
-        await dbApi.makeUserManager(veryCurrUser.id, make);
+        await dbApi.makeUserAdmin(veryCurrUser.id, make);
         const siteUser = await dbApi.getOneUserFromDb(veryCurrUser.id);
 
         dispatch(setCurrUser(siteUser));
@@ -50,12 +50,12 @@ export const DevControl: React.FC<{
     <div className={cla("devControl", { showDevControl: currDevControlStatus })}>
       {!!veryCurrUser &&
         (!veryCurrUser.roles.admin ? (
-          <button className={"roleChanger"} onClick={() => makethisUserManager(true)}>
-            Make me a manager
+          <button className={"roleChanger"} onClick={() => makethisUserAdmin(true)}>
+            Make me an admin
           </button>
         ) : (
-          <button className={"roleChanger"} onClick={() => makethisUserManager(false)}>
-            Unmake me a manager
+          <button className={"roleChanger"} onClick={() => makethisUserAdmin(false)}>
+            Unmake me an admin
           </button>
         ))}
     </div>

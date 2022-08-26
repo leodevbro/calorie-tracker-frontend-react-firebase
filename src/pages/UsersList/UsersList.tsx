@@ -25,7 +25,8 @@ export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
   // const [newAgeString, setNewAgeString] = useState("");
 
   const getBikes = useCallback(async (isMounted?: { v: boolean }) => {
-    const dataArr = await dbApi.getAllBikes();
+    // const dataArr = await dbApi.getAllBikes();
+    const dataArr = [];
     // console.log("daaa:", data);
 
     if (isMounted === undefined || isMounted.v === true) {
