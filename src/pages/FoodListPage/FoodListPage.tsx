@@ -129,14 +129,6 @@ export const FoodListPage: React.FC<{}> = () => {
     return rows;
   }, [foodArr]);
 
-  const deleteFoodEntry = useCallback(
-    async (id: string) => {
-      // await deleteDoc(currBike);
-      getFoodArr();
-    },
-    [getFoodArr],
-  );
-
   const tableColumns = React.useMemo(() => {
     const columns: MyColumnsT = [
       {
@@ -361,7 +353,7 @@ export const FoodListPage: React.FC<{}> = () => {
               <PopOfDeleteFoodEntry
                 userListIndex={cell.row.index}
                 currFoodEntry={tableData[cell.row.index]}
-                deleteFood={deleteFoodEntry}
+                // deleteFood={deleteFoodEntry}
                 getFoodArr={getFoodArr}
               />
             );
@@ -373,7 +365,7 @@ export const FoodListPage: React.FC<{}> = () => {
     }
 
     return columns;
-  }, [deleteFoodEntry, getFoodArr, tableData, veryCurrUser]);
+  }, [getFoodArr, tableData, veryCurrUser]);
 
   const narrowRowTopBoxContentMaker: React.FC<ICustomTopBottom> = useCallback(
     ({ columns, row }) => {

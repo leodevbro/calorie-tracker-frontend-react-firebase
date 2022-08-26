@@ -1,9 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 // import { Link } from "react-router-dom";
 
 import style from "./PopOfDeleteFoodEntry.module.scss";
 // import { useNavigate } from "react-router-dom";
-
 
 import { SweetPopup } from "src/components/SweetPopup/SweetPopup";
 
@@ -11,14 +10,15 @@ import { SweetPopup } from "src/components/SweetPopup/SweetPopup";
 // import { cla } from "src/App";
 import { WideButton } from "src/components/buttons/WideButton";
 import { IFoodTableRow } from "../FoodListPage";
+import { dbApi } from "src/connection-to-backend/db/bridge";
 // import { useAppSelector } from "src/app/hooks";
 
 export const PopOfDeleteFoodEntry: React.FC<{
   userListIndex: number;
   currFoodEntry: IFoodTableRow;
-  deleteFood: (id: string) => Promise<void>;
+  // deleteFood: (id: string) => Promise<void>;
   getFoodArr: (isMounted?: { v: boolean }) => Promise<void>;
-}> = ({ userListIndex, deleteFood, currFoodEntry, getFoodArr }) => {
+}> = ({ userListIndex, currFoodEntry, getFoodArr }) => {
   const [showDelPop, setShowDelPop] = useState(false);
 
   // const navigate = useNavigate();
@@ -62,10 +62,13 @@ export const PopOfDeleteFoodEntry: React.FC<{
 
                 setIsLoading((prev) => true);
 
-                await deleteFood(currFoodEntry.id);
-                setShowDelPop((prev) => false);
-
-                getFoodArr();
+                try {
+                  await dbApi.deleteOneFood(currFoodEntry.id);
+                  setShowDelPop((prev) => false);
+                  getFoodArr();
+                } catch (err) {
+                  console.log(err);
+                }
 
                 setTimeout(() => {
                   setIsLoading((prev) => false);
