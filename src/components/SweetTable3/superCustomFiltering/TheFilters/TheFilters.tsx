@@ -8,6 +8,7 @@ import { ColumnFilterByString } from "src/components/SweetTable3/superCustomFilt
 import { IFoodTableRow } from "src/pages/FoodListPage/FoodListPage";
 
 import { MyColumnsT, tyFilterType } from "../../SweetTable3";
+import { ColumnFilterByDateRange } from "../ColumnFilterByDateRange/ColumnFilterByDateRange";
 // import { Link } from "react-router-dom";
 // import { useAppSelector } from "../app/hooks";
 import style from "./TheFilters.module.scss";
@@ -42,6 +43,8 @@ export const TheFilters: React.FC<{
             theCompo = <ColumnFilterByMinMax {...theProps} />;
           } else if (ft === "string") {
             theCompo = <ColumnFilterByString {...theProps} />;
+          } else if (ft === "dateRange") {
+            theCompo = <ColumnFilterByDateRange {...theProps} />;
           }
 
           return <div key={y.accessor}>{theCompo}</div>;
