@@ -42,7 +42,7 @@ import { ColumnFilterByMinMax } from "./superCustomFiltering/ColumnFilterByMinMa
 import { ColumnFilterByBool } from "./superCustomFiltering/ColumnFilterByBool/ColumnFilterByBool";
 import { TheFilters } from "src/components/SweetTable3/superCustomFiltering/TheFilters/TheFilters";
 
-export type tyFilterType = "string" | "boo" | "minmax";
+export type tyFilterType = "string" | "boo" | "minmax" | "dateRange";
 
 export interface IMyCell {
   value: any;
