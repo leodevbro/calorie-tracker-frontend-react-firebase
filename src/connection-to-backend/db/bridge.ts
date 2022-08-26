@@ -1,8 +1,6 @@
 import { collection, orderBy, query, where } from "firebase/firestore";
 import {
-  IBike,
-  IBikeRating,
-  IRentalDay,
+
   ISiteUser,
   IUserRoles,
 } from "src/app/redux-slices/sweetSlice";
@@ -32,6 +30,7 @@ enum cEnum {
 }
 
 export const dbApi = {
+  /*
   addDoc: firebaseDb_addDoc,
 
   getBooksOfPatrick: async () => {
@@ -64,6 +63,8 @@ export const dbApi = {
     });
     return idOfupdated;
   },
+
+  */
 
   // -------------------
   // -------------------
@@ -148,14 +149,14 @@ export const dbApi = {
     return finalArr;
   },
 
-  makeUserManager: async (userId: string, make: boolean) => {
+  makeUserAdmin: async (userId: string, make: boolean) => {
     const userDoc = (await firebaseDb_getDoc_byPath([cEnum.users, userId])) as ISiteUser | null;
 
     if (!userDoc) {
       return null;
     }
 
-    const newFields = { roles: { ...userDoc.roles, manager: make } };
+    const newFields = { roles: { ...userDoc.roles, admin: make } };
 
     return await firebaseDb_updateDoc_byPath([cEnum.users, userId], newFields);
   },
@@ -170,40 +171,40 @@ export const dbApi = {
 
   generateUnsubscribeOnAuthChange: generateUnsubscribeOnAuthChange,
 
-  rateOneBike: async ({ bikeId, inputRating }: { bikeId: string; inputRating: IBikeRating }) => {
-    const newFields = {
-      rating: { ...inputRating },
-    } as tySimpleDoc_withoutId;
+  // rateOneBike: async ({ bikeId, inputRating }: { bikeId: string; inputRating: IBikeRating }) => {
+  //   const newFields = {
+  //     rating: { ...inputRating },
+  //   } as tySimpleDoc_withoutId;
 
-    return await firebaseDb_updateDoc_byPath([cEnum.bikes, bikeId], newFields);
-  },
+  //   return await firebaseDb_updateDoc_byPath([cEnum.bikes, bikeId], newFields);
+  // },
 
-  getAllBikes: async () => {
-    const myItems = await firebaseDb_getCollection_byQuery(
-      query(
-        collection(db, "/", cEnum.bikes),
-        // where("author", "==", "Patrick Rothfuss"),
-        // orderBy("tist", "asc"),
-      ),
-    );
+  // getAllBikes: async () => {
+  //   const myItems = await firebaseDb_getCollection_byQuery(
+  //     query(
+  //       collection(db, "/", cEnum.bikes),
+  //       // where("author", "==", "Patrick Rothfuss"),
+  //       // orderBy("tist", "asc"),
+  //     ),
+  //   );
 
-    const truthyArr = myItems.filter((x) => !!x) as ISimpleDoc_withId[];
-    const finalArr = truthyArr as any as IBike[];
+  //   const truthyArr = myItems.filter((x) => !!x) as ISimpleDoc_withId[];
+  //   const finalArr = truthyArr as any as IBike[];
 
-    return finalArr;
-  },
+  //   return finalArr;
+  // },
 
-  updateRentalsOfOneBike: async ({
-    bikeId,
-    inputRentalDays,
-  }: {
-    bikeId: string;
-    inputRentalDays: IRentalDay[];
-  }) => {
-    const newFields = {
-      rentalDays: inputRentalDays.map((x) => ({ ...x })),
-    } as tySimpleDoc_withoutId;
+  // updateRentalsOfOneBike: async ({
+  //   bikeId,
+  //   inputRentalDays,
+  // }: {
+  //   bikeId: string;
+  //   inputRentalDays: IRentalDay[];
+  // }) => {
+  //   const newFields = {
+  //     rentalDays: inputRentalDays.map((x) => ({ ...x })),
+  //   } as tySimpleDoc_withoutId;
 
-    return await firebaseDb_updateDoc_byPath([cEnum.bikes, bikeId], newFields);
-  },
+  //   return await firebaseDb_updateDoc_byPath([cEnum.bikes, bikeId], newFields);
+  // },
 };
