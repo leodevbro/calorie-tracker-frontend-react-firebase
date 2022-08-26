@@ -165,8 +165,6 @@ const App: React.FC = () => {
           <div className={"appBody"} ref={appBodyRef}>
             <div className={"mainBody"}>
               <Routes>
-                <Route path={"/"} element={<InitialPage />} />
-
                 <Route path={"/register"} element={<RegisterPage />} />
 
                 <Route path={"/login"} element={<Login />} />
@@ -174,6 +172,7 @@ const App: React.FC = () => {
                 <Route path={"/end-password-reset"} element={<EndPasswordReset />} />
 
                 <Route element={<ProtectedRoutesWrapper />}>
+                  <Route path={"/"} element={<FoodListPage />} />
                   {/* <Route path={"/first"} element={<FirstComp />} /> */}
                   <Route path={"/profile"} element={<ProfilePage />} />
                   <Route path={"/foodlist"} element={<FoodListPage />} />

@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { equalFnForCurrUserDocChange } from "src/App";
+import { InitialPage } from "src/pages/InitialPage/InitialPage";
 // import { auth } from "src/firebase-config";
 import { useAppSelector } from "../hooks";
 // import { AuthFlowEnum } from "../redux-slices/sweetSlice";
@@ -48,6 +49,10 @@ export const ProtectedRoutesWrapper: React.FC<{}> = () => {
 
   if (thisUser?.roles.admin || (thisUser?.roles.user && location.pathname !== "/allusers")) {
     return <Outlet />;
+  }
+
+  if (location.pathname === "/") {
+    return <InitialPage />;
   }
 
   // if (

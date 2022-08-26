@@ -22,6 +22,8 @@ export const InitialPage: React.FC<{}> = () => {
   if (!veryCurrUser) {
     return (
       <div className={style.ground}>
+        <h1>Welcome to calorie tracking app</h1>
+
         <div className={style.myLinkDiv}>
           <Link className={style.myLink} to={"/register"}>
             Register

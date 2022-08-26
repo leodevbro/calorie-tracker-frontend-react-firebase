@@ -237,10 +237,10 @@ const q1 = query(collection(db, "/", "books"));
 //   console.log("queried books:", x);
 // });
 
-firebaseDb_getDoc_byPath(["bookss", "custId---1659591717164"]).then((x) => {
-  console.log("iniital one doc:");
-  console.log(x);
-});
+// firebaseDb_getDoc_byPath(["bookss", "custId---1659591717164"]).then((x) => {
+//   console.log("iniital one doc:");
+//   console.log(x);
+// });
 
 //
 
@@ -291,8 +291,8 @@ export const generateUnsubscribeOnOneDocChange = (
     doc(db, "/", ...pathSegments),
     (snapshot) => {
       const simpleDoc = firebaseDocIntoSimpleDoc(snapshot);
-      console.log("aaaabaa");
-      console.log(simpleDoc);
+      // console.log("aaaabaa");
+      // console.log(simpleDoc);
       fnForDocChange(simpleDoc);
     },
     (error) => {
