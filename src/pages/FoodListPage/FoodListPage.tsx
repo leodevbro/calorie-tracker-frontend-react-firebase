@@ -29,19 +29,18 @@ import { useAppSelector } from "src/app/hooks";
 
 // import { cla } from "src/App";
 
-
-
 import { equalFnForCurrUserDocChange } from "src/App";
 import { CoolLoader } from "src/components/CoolLoader/CoolLoader";
 // import { db } from "src/connection-to-backend/db/firebase/config";
 // import { ColumnFilter } from "src/components/SweetTable3/ColumnFilter/ColumnFilter";
 
-import { myCustomFilterFnOfRate } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByMinMax/ColumnFilterByMinMax";
 import { myCustomFilterFnOfBool } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByBool/ColumnFilterByBool";
 import { IFoodEntry } from "src/app/redux-slices/sweetSlice";
 import { PopOfUpdateFoodEntry } from "./PopOfUpdateFoodEntry/PopOfUpdateFoodEntry";
 import { PopOfDeleteFoodEntry } from "./PopOfDeleteFoodEntry/PopOfDeleteFoodEntry";
 import { PopOfCreateFoodEntry } from "./PopOfCreateFoodEntry/PopOfCreateFoodEntry";
+import { dbApi, IFoodWithAuthor } from "src/connection-to-backend/db/bridge";
+import { myCustomFilterFnOfDateRange } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByDateRange/ColumnFilterByDateRange";
 
 const genFoodImagePath = "https://i.ibb.co/YZRXt5z/2022-08-26-10-56-05.png";
 
@@ -72,34 +71,51 @@ export const FoodListPage: React.FC<{}> = () => {
   // console.log("veryCurrUser:", veryCurrUser);
 
   // const navigate = useNavigate();
-  const [foodArr, setFoodArr] = useState<null | IFoodEntry[]>(null);
+  const [foodArr, setFoodArr] = useState<null | IFoodWithAuthor[]>(null);
+  // console.log(foodArr);
 
-  const getFoodArr = useCallback(async (isMounted?: { v: boolean }) => {
-    // const data = await getDocs(bikesCollectionRef);
-    const data: IFoodEntry[] = [];
-    // console.log("daaa:", data);
+  const getFoodArr = useCallback(
+    async (isMounted?: { v: boolean }) => {
+      if (!veryCurrUser) {
+        setFoodArr((prev) => []);
+        return;
+      }
+      // const data = await getDocs(bikesCollectionRef);
+      let data: IFoodWithAuthor[] = [];
 
-    if (isMounted === undefined || isMounted.v === true) {
-      setFoodArr((prev) => {
-        const myArr = data;
-        // console.log(myArr);
+      try {
+        if (veryCurrUser.roles.admin) {
+          data = await dbApi.getEntireFoodListOfAllUsers();
+        } else {
+          data = (await dbApi.getEntireFoodListOfOneAuthor(veryCurrUser.id)) || [];
+        }
+      } catch (err) {
+        console.log(err);
+      }
 
-        const myArrSortedByCreatedDate = [...myArr].sort((a, b) => {
-          if (!a.created) {
-            return 1;
-          } else if (!b.created) {
-            return -1;
-          } else if (new Date(a.created) < new Date(b.created)) {
-            return 1;
-          } else {
-            return -1;
-          }
+      if (isMounted === undefined || isMounted.v === true) {
+        setFoodArr((prev) => {
+          const myArr = data;
+          // console.log(myArr);
+
+          const myArrSortedByCreatedDate = [...myArr].sort((a, b) => {
+            if (!a.created) {
+              return 1;
+            } else if (!b.created) {
+              return -1;
+            } else if (a.created < b.created) {
+              return 1;
+            } else {
+              return -1;
+            }
+          });
+
+          return myArrSortedByCreatedDate;
         });
-
-        return myArrSortedByCreatedDate;
-      });
-    }
-  }, []);
+      }
+    },
+    [veryCurrUser],
+  );
 
   const tableData: IFoodTableRow[] = React.useMemo(() => {
     if (!foodArr) {
@@ -107,7 +123,7 @@ export const FoodListPage: React.FC<{}> = () => {
     }
 
     const rows = foodArr.map((x) => {
-      return { ...x, imgSrc: genFoodImagePath, edit: x.id, delete: x.id };
+      return { ...x, imgSrc: genFoodImagePath, edit: x.id, delete: x.id, author: x.author.email };
     });
 
     return rows;
@@ -144,8 +160,8 @@ export const FoodListPage: React.FC<{}> = () => {
         Filter: () => null,
       },
       {
-        Header: "available".toUpperCase() || undefined,
-        accessor: "available",
+        Header: "Diet Cheat",
+        accessor: "dietCheat",
         filterType: "boo",
 
         prioritizedStyles: {
@@ -154,7 +170,7 @@ export const FoodListPage: React.FC<{}> = () => {
         },
 
         Cell: (cell) => {
-          const id = `availableCheckbox${cell.row}`;
+          const id = `dietCheatCheckbox${cell.row}`;
           // console.log(cell.value);
           return (
             <CheckboxInp
@@ -185,12 +201,12 @@ export const FoodListPage: React.FC<{}> = () => {
 
       {
         // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
-        Header: "model".toUpperCase() || undefined,
-        accessor: "model",
+        Header: "name".toUpperCase() || undefined,
+        accessor: "name",
         filterType: "string",
         prioritizedStyles: {
           minWidth: 100,
-          flexGrow: 0,
+          flexGrow: 1,
         },
 
         // Cell: (cell) => {
@@ -215,8 +231,8 @@ export const FoodListPage: React.FC<{}> = () => {
 
       {
         // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
-        Header: "color".toUpperCase() || undefined,
-        accessor: "color",
+        Header: "calories".toUpperCase() || undefined,
+        accessor: "calories",
         filterType: "string",
         prioritizedStyles: {
           minWidth: 100,
@@ -237,6 +253,64 @@ export const FoodListPage: React.FC<{}> = () => {
 
         // Filter: ColumnFilter,
         Filter: () => null,
+        // disableFilters: true,
+        // disableGlobalFilter: true,
+      },
+
+      {
+        // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
+        Header: "Intake DateTime".toUpperCase() || undefined,
+        accessor: "intakeDateTime",
+        filterType: "dateRange",
+        prioritizedStyles: {
+          minWidth: 100,
+          flexGrow: 1,
+        },
+
+        Cell: (cell) => {
+          const dateNum = cell.value as number;
+          const viewVal = new Date(dateNum).toString();
+
+          const indexOfGMT = viewVal.indexOf("GMT");
+          // console.log("gmt______", indexOfGMT);
+          const shorter = viewVal.slice(0, indexOfGMT - 4);
+
+          return <div>{shorter}</div>;
+        },
+
+        filter: myCustomFilterFnOfDateRange,
+        // Filter: ColumnFilter,
+        Filter: () => null,
+
+        // disableFilters: true,
+        // disableGlobalFilter: true,
+      },
+      {
+        // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
+        Header: "author".toUpperCase() || undefined,
+        accessor: "author",
+        filterType: "string",
+        prioritizedStyles: {
+          minWidth: 100,
+          flexGrow: 1,
+        },
+
+        // Cell: (cell) => {
+        //   return (
+        //     <div className={style.downloadIconWrap}>
+        //       <img
+        //         className={style.downloadIcon}
+        //         src={cell.value as string}
+        //         alt={"download icon"}
+        //       />
+        //     </div>
+        //   );
+        // },
+
+        // filter: myCustomFilter2,
+        // Filter: ColumnFilter,
+        Filter: () => null,
+
         // disableFilters: true,
         // disableGlobalFilter: true,
       },
@@ -303,13 +377,17 @@ export const FoodListPage: React.FC<{}> = () => {
 
   const narrowRowTopBoxContentMaker: React.FC<ICustomTopBottom> = useCallback(
     ({ columns, row }) => {
-      const model = row.cells.find((x) => x.column.id === "model")?.value;
-      const color = row.cells.find((x) => x.column.id === "color")?.value;
+      const name = row.cells.find((x) => x.column.id === "name")?.value;
+      const calories = row.cells.find((x) => x.column.id === "calories")?.value;
+      const author = row.cells.find((x) => x.column.id === "author")?.value;
+
       return (
         <div className={style.narrowRowTopBoxContent}>
-          <span className={style.orderNumber}>{model}</span>
+          <span className={style.orderNumber}>{name}</span>
           {", "}
-          <span className={style.orderNumber}>{color}</span>
+          <span className={style.orderNumber}>{calories}</span>
+          {", "}
+          <span className={style.orderNumber}>{author}</span>
         </div>
       );
     },
@@ -356,20 +434,32 @@ export const FoodListPage: React.FC<{}> = () => {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [veryCurrUser]);
 
   return (
     <div className={style.ground}>
       {foodArr === null && <CoolLoader />}
 
       <div className={style.pageTitle}>{"Food list"}</div>
-      {veryCurrUser && veryCurrUser.roles.admin && (
-        <PopOfCreateFoodEntry
-          successFn={() => {
-            getFoodArr();
-          }}
-        />
-      )}
+
+      <div className={style.addButtons}>
+        {veryCurrUser && (
+          <PopOfCreateFoodEntry
+            successFn={() => {
+              getFoodArr();
+            }}
+          />
+        )}
+
+        {veryCurrUser && veryCurrUser.roles.admin && (
+          <PopOfCreateFoodEntry
+            successFn={() => {
+              getFoodArr();
+            }}
+            mode={"forOtherUser"}
+          />
+        )}
+      </div>
 
       <SweetTable3
         key={tKey}
