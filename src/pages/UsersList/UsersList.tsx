@@ -24,7 +24,7 @@ export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
   // const [newName, setNewName] = useState("");
   // const [newAgeString, setNewAgeString] = useState("");
 
-  const getBikes = useCallback(async (isMounted?: { v: boolean }) => {
+  const getFoodArr = useCallback(async (isMounted?: { v: boolean }) => {
     // const dataArr = await dbApi.getAllBikes();
     const dataArr = [];
     // console.log("daaa:", data);
@@ -67,9 +67,9 @@ export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
         });
       }
 
-      getBikes(isMounted);
+      getFoodArr(isMounted);
     },
-    [getBikes],
+    [getFoodArr],
   );
 
   // const createUser = useCallback(async () => {

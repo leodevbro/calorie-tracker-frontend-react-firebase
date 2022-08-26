@@ -10,9 +10,6 @@ import * as Yup from "yup";
 import style from "./CreateUpdateFoodEntry.module.scss";
 // import { useNavigate } from "react-router-dom";
 
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
-
-// import { IBike } from "src/app/redux-slices/sweetSlice";
 // import { createUser } from "src/app/db-api";
 import { CheckboxInp } from "src/components/SweetInput/CheckboxInp";
 import { IFoodTableRow } from "../FoodListPage";
@@ -43,7 +40,7 @@ export const CreateUpdateFoodEntry: React.FC<{
 
   // const navigate = useNavigate();
 
-  const updateBike = useCallback(
+  const updateFood = useCallback(
     async ({
       id,
     }: // available,

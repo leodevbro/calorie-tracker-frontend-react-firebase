@@ -15,10 +15,10 @@ import { CreateUpdateFoodEntry } from "../CreateUpdateFoodEntry/CreateUpdateFood
 
 export const PopOfUpdateFoodEntry: React.FC<{
   userListIndex: number;
-  currBike?: IFoodTableRow;
+  currFood?: IFoodTableRow;
   successFn: () => any;
-}> = ({userListIndex, successFn, currBike }) => {
-  const [showEditBikePop, setShowEditBikePop] = useState(false);
+}> = ({userListIndex, successFn, currFood }) => {
+  const [showEditPop, setShowEditPop] = useState(false);
 
   const listId = useMemo(() => {
     return String(userListIndex);
@@ -30,22 +30,22 @@ export const PopOfUpdateFoodEntry: React.FC<{
     <div className={cla(style.download, style.ground)}>
       <span
         onClick={() => {
-          setShowEditBikePop((prev) => true);
+          setShowEditPop((prev) => true);
         }}
       >{`Edit`}</span>
       <SweetPopup
-        show={showEditBikePop}
+        show={showEditPop}
         // title={t("inviteNewUser")}
         closerFn={() => {
-          setShowEditBikePop((prev) => false);
+          setShowEditPop((prev) => false);
         }}
         content={
           <CreateUpdateFoodEntry
             successFn={() => {
-              setShowEditBikePop((prev) => false);
+              setShowEditPop((prev) => false);
               successFn();
             }}
-            currFoodEntry={currBike}
+            currFoodEntry={currFood}
             preId={`editUser${listId}`}
           />
         }

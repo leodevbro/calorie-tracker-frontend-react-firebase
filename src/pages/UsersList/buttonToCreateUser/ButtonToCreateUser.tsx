@@ -5,10 +5,10 @@ import style from "./ButtonToCreateUser.module.scss";
 // import { useNavigate } from "react-router-dom";
 
 import { SweetPopup } from "src/components/SweetPopup/SweetPopup";
-// import { CreateUpdateBike } from "../CreateUpdateBike/CreateUpdateBike";
+
 // import { useNavigate } from "react-router-dom";
 import { cla } from "src/App";
-// import { CreateUpdateBike } from "src/pages/BikesPage/CreateUpdateBike/CreateUpdateBike";
+
 import { CreateUpdateUser } from "../OneUser/CreateUpdateUser/CreateUpdateUser";
 // import { useAppSelector } from "src/app/hooks";
 
@@ -20,7 +20,7 @@ export const ButtonToCreateUser: React.FC<{
   // const navigate = useNavigate();
 
   return (
-    <div className={cla(style.addBikeButtonWrap, style.ground)}>
+    <div className={cla(style.addFoodButtonWrap, style.ground)}>
       <button
         onClick={() => {
           setShowCreateUserPop((prev) => true);
@@ -42,7 +42,6 @@ export const ButtonToCreateUser: React.FC<{
             }}
             // currUser={null}
             preId={`createUser`}
-
           />
         }
         backButtonShouldClose={false}

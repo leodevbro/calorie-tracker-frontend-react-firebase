@@ -26,7 +26,7 @@ import { db } from "./firebase/config";
 
 enum cEnum {
   users = "users",
-  bikes = "bikes",
+  foodlist = "foodlist",
 }
 
 export const dbApi = {

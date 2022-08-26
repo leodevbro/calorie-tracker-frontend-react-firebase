@@ -113,7 +113,7 @@ export const FoodListPage: React.FC<{}> = () => {
     return rows;
   }, [foodArr]);
 
-  const deleteBike = useCallback(
+  const deleteFoodEntry = useCallback(
     async (id: string) => {
       // await deleteDoc(currBike);
       getFoodArr();
@@ -259,7 +259,7 @@ export const FoodListPage: React.FC<{}> = () => {
             return (
               <PopOfUpdateFoodEntry
                 userListIndex={cell.row.index}
-                currBike={tableData[cell.row.index]}
+                currFood={tableData[cell.row.index]}
                 successFn={() => {
                   getFoodArr();
                 }}
@@ -287,8 +287,8 @@ export const FoodListPage: React.FC<{}> = () => {
               <PopOfDeleteFoodEntry
                 userListIndex={cell.row.index}
                 currFoodEntry={tableData[cell.row.index]}
-                deleteBike={deleteBike}
-                getBikes={getFoodArr}
+                deleteFood={deleteFoodEntry}
+                getFoodArr={getFoodArr}
               />
             );
           },
@@ -299,7 +299,7 @@ export const FoodListPage: React.FC<{}> = () => {
     }
 
     return columns;
-  }, [deleteBike, getFoodArr, tableData, veryCurrUser]);
+  }, [deleteFoodEntry, getFoodArr, tableData, veryCurrUser]);
 
   const narrowRowTopBoxContentMaker: React.FC<ICustomTopBottom> = useCallback(
     ({ columns, row }) => {
@@ -362,7 +362,7 @@ export const FoodListPage: React.FC<{}> = () => {
     <div className={style.ground}>
       {foodArr === null && <CoolLoader />}
 
-      <div className={style.pageTitle}>{"Bikes"}</div>
+      <div className={style.pageTitle}>{"Food list"}</div>
       {veryCurrUser && veryCurrUser.roles.admin && (
         <PopOfCreateFoodEntry
           successFn={() => {

@@ -81,7 +81,7 @@ export const TopRibbon: React.FC<{ className?: string }> = ({ className }) => {
       <img
         onClick={() => navigate("/")}
         className={style.mainLogo}
-        alt="bike logo"
+        alt="food logo"
         src={bLogoSvgPath}
       />
 

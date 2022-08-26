@@ -65,7 +65,7 @@ export const RegisterPage: React.FC<{}> = () => {
         //   }, 1000);
         // });
 
-        navigate("/bikes");
+        navigate("/foodlist");
       } catch (err: any) {
         // console.log({...err as any}, typeof err);
         console.log(err, typeof err);

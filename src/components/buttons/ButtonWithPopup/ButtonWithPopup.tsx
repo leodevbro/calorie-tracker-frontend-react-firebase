@@ -4,7 +4,6 @@ import React, { ReactNode, useState } from "react";
 import style from "./ButtonWithPopup.module.scss";
 // import { useNavigate } from "react-router-dom";
 
-// import { IBikeTableRow } from "../BikesPage";
 import { SweetPopup } from "src/components/SweetPopup/SweetPopup";
 
 // import { useNavigate } from "react-router-dom";
@@ -22,7 +21,7 @@ export const ButtonWithPopup: React.FC<{
   };
 }> = ({ buttontext, popTitle, content, componentLink }) => {
   const [showPop, setShowPop] = useState(false);
-  // console.log(showDelBikePop);
+
   // const navigate = useNavigate();
 
   return (

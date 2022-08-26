@@ -45,7 +45,7 @@ export const InitialPage: React.FC<{}> = () => {
 
   return (
     <div className={style.ground}>
-      <p>Welcome to bikes rental service!</p>
+      <p>Welcome to calorie tracking app!</p>
     </div>
   );
 };

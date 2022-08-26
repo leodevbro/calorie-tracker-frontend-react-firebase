@@ -39,7 +39,7 @@ export const Login: React.FC<{}> = () => {
       try {
         dispatch(setCurrUser(""));
         await dbApi.login(values.currLoginEmail, values.currLoginPassword);
-        navigate("/bikes");
+        navigate("/foodlist");
       } catch (err: any) {
         // console.log({...err as any}, typeof err);
         console.log("errrrrrr:", err.message);

@@ -5,7 +5,8 @@ import { capitalizeFirstLetter } from "src/app/helper-functions";
 import { ColumnFilterByBool } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByBool/ColumnFilterByBool";
 import { ColumnFilterByMinMax } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByMinMax/ColumnFilterByMinMax";
 import { ColumnFilterByString } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByString/ColumnFilterByString";
-import { IFoodTableRow } from "../../../../pages/BikesPage/BikesPage";
+import { IFoodTableRow } from "src/pages/FoodListPage/FoodListPage";
+
 import { MyColumnsT, tyFilterType } from "../../SweetTable3";
 // import { Link } from "react-router-dom";
 // import { useAppSelector } from "../app/hooks";

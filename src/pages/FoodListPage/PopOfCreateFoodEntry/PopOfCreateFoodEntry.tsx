@@ -14,29 +14,29 @@ import { CreateUpdateFoodEntry } from "../CreateUpdateFoodEntry/CreateUpdateFood
 export const PopOfCreateFoodEntry: React.FC<{
   successFn: () => any;
 }> = ({ successFn }) => {
-  const [showCreateBikePop, setShowCreateBikePop] = useState(false);
+  const [showCreatePop, setShowCreatePop] = useState(false);
 
   // const navigate = useNavigate();
 
   return (
-    <div className={cla(style.addBikeButtonWrap, style.ground)}>
+    <div className={cla(style.addFoodButtonWrap, style.ground)}>
       <button
         onClick={() => {
-          setShowCreateBikePop((prev) => true);
+          setShowCreatePop((prev) => true);
         }}
       >
-        Add Bike
+        Add Food
       </button>
       <SweetPopup
-        show={showCreateBikePop}
+        show={showCreatePop}
         // title={t("inviteNewUser")}
         closerFn={() => {
-          setShowCreateBikePop((prev) => false);
+          setShowCreatePop((prev) => false);
         }}
         content={
           <CreateUpdateFoodEntry
             successFn={() => {
-              setShowCreateBikePop((prev) => false);
+              setShowCreatePop((prev) => false);
               successFn();
             }}
           />

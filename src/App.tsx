@@ -37,8 +37,6 @@ import { InitialPage } from "./pages/InitialPage/InitialPage";
 
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 
-import { FoodPage } from "./pages/BikesPage/BikesPage";
-
 import { lodashObj } from "./app/helper-functions";
 import { UsersList } from "./pages/UsersList/UsersList";
 import { DevControl } from "./components/DevControl/DevControl";
@@ -46,6 +44,7 @@ import { PopPortal } from "./components/PopPortal/PopPortal";
 
 import { dbApi } from "./connection-to-backend/db/bridge";
 import { Unsubscribe } from "firebase/firestore";
+import { FoodListPage } from "./pages/FoodListPage/FoodListPage";
 
 export const cla = classnames;
 
@@ -177,7 +176,7 @@ const App: React.FC = () => {
                 <Route element={<ProtectedRoutesWrapper />}>
                   {/* <Route path={"/first"} element={<FirstComp />} /> */}
                   <Route path={"/profile"} element={<ProfilePage />} />
-                  <Route path={"/bikes"} element={<FoodPage />} />
+                  <Route path={"/foodlist"} element={<FoodListPage />} />
                   <Route path={"/allusers"} element={<UsersList />} />
                   {/* 
                   <Route path={"/orders"} element={<OrderHistory />} />

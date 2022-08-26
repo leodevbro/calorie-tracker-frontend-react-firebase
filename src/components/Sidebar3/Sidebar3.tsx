@@ -31,7 +31,7 @@ import { dbApi } from "src/connection-to-backend/db/bridge";
 enum NavEnum {
   none = "none",
   profile = "profile",
-  bikes = "bikes",
+  foodlist = "foodlist",
   all_users = "all_users",
 }
 
@@ -76,9 +76,9 @@ export const Sidebar3: React.FC<{ className?: string }> = ({ className }) => {
       },
 
       {
-        id: NavEnum.bikes,
-        link: "/bikes",
-        title: "Bikes",
+        id: NavEnum.foodlist,
+        link: "/foodlist",
+        title: "Food list",
         ic: <WheelSvg />,
 
         clickFn: () => 8,

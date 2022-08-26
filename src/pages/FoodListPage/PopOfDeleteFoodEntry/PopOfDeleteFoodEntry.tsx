@@ -16,11 +16,11 @@ import { IFoodTableRow } from "../FoodListPage";
 export const PopOfDeleteFoodEntry: React.FC<{
   userListIndex: number;
   currFoodEntry: IFoodTableRow;
-  deleteBike: (id: string) => Promise<void>;
-  getBikes: (isMounted?: { v: boolean }) => Promise<void>;
-}> = ({ userListIndex, deleteBike, currFoodEntry, getBikes }) => {
-  const [showDelBikePop, setShowDelBikePop] = useState(false);
-  // console.log(showDelBikePop);
+  deleteFood: (id: string) => Promise<void>;
+  getFoodArr: (isMounted?: { v: boolean }) => Promise<void>;
+}> = ({ userListIndex, deleteFood, currFoodEntry, getFoodArr }) => {
+  const [showDelPop, setShowDelPop] = useState(false);
+
   // const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -34,17 +34,17 @@ export const PopOfDeleteFoodEntry: React.FC<{
       <span
         onClick={() => {
           // deleteBike(cell.value as string);
-          setShowDelBikePop((prev) => true);
+          setShowDelPop((prev) => true);
         }}
       >
         Del
       </span>
       <SweetPopup
-        show={showDelBikePop}
+        show={showDelPop}
         // title={t("inviteNewUser")}
         closerFn={() => {
           // console.log("cllllllllllll");
-          setShowDelBikePop((prev) => false);
+          setShowDelPop((prev) => false);
         }}
         content={
           <div className={style.delConfirm}>
@@ -62,10 +62,10 @@ export const PopOfDeleteFoodEntry: React.FC<{
 
                 setIsLoading((prev) => true);
 
-                await deleteBike(currFoodEntry.id);
-                setShowDelBikePop((prev) => false);
+                await deleteFood(currFoodEntry.id);
+                setShowDelPop((prev) => false);
 
-                getBikes();
+                getFoodArr();
 
                 setTimeout(() => {
                   setIsLoading((prev) => false);
@@ -79,7 +79,7 @@ export const PopOfDeleteFoodEntry: React.FC<{
               className={style.cancelDel}
               onClick={() => {
                 // console.log("haaa");
-                setShowDelBikePop((prev) => false);
+                setShowDelPop((prev) => false);
               }}
               kind="bGray"
               text="No"
