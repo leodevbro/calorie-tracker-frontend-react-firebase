@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { cla } from "src/App";
 // import { Link } from "react-router-dom";
@@ -7,26 +7,35 @@ import style from "./ColumnFilterByDateRange.module.scss";
 
 import { useAsyncDebounce } from "react-table";
 import { FilterFnOfTableT } from "../../SweetTable3";
+import DateTimePicker from "react-datetime-picker";
+// import { SweetDateTimePicker } from "src/components/SweetDateTimePicker/SweetDateTimePicker";
 
-export interface IMinMax {
-  min: number | null;
-  max: number | null;
+export interface IDateTimePeriod {
+  from: number | null;
+  to: number | null;
 }
 
-export const myCustomFilterFnOfDateRange: FilterFnOfTableT = (rows, columnIds, filterValue: IMinMax) => {
+export const myCustomFilterFnOfDateRange: FilterFnOfTableT = (
+  rows,
+  columnIds,
+  filterValue: IDateTimePeriod,
+) => {
   const columnId = columnIds[0];
   // console.log("fiii:", filterValue.min, filterValue.max);
 
-  if (!filterValue.min && !filterValue.max) {
+  if (!filterValue.from && !filterValue.to) {
     return rows;
   }
 
-  if (!filterValue.min) {
-    return rows.filter((row) => {
-      const thisData = row.original[columnId];
-      const average = thisData.average;
+  // console.log("haaaaaaaaaaaaaaaaaa", columnId, rows);
 
-      if (typeof average === "number" && average <= filterValue.max!) {
+  if (!filterValue.from) {
+    return rows.filter((row) => {
+      const thisDate = row.original[columnId];
+
+      console.log(thisDate, filterValue.to);
+
+      if (thisDate <= filterValue.to!) {
         return true;
       }
 
@@ -34,12 +43,11 @@ export const myCustomFilterFnOfDateRange: FilterFnOfTableT = (rows, columnIds, f
     });
   }
 
-  if (!filterValue.max) {
+  if (!filterValue.to) {
     return rows.filter((row) => {
-      const thisData = row.original[columnId];
-      const average = thisData.average;
+      const thisDate = row.original[columnId];
 
-      if (typeof average === "number" && average >= filterValue.min!) {
+      if (thisDate >= filterValue.from!) {
         return true;
       }
 
@@ -48,10 +56,9 @@ export const myCustomFilterFnOfDateRange: FilterFnOfTableT = (rows, columnIds, f
   }
 
   return rows.filter((row) => {
-    const thisData = row.original[columnId];
-    const average = thisData.average;
+    const thisDate = row.original[columnId];
 
-    if (typeof average === "number" && average >= filterValue.min! && average <= filterValue.max!) {
+    if (thisDate >= filterValue.from! && thisDate <= filterValue.to!) {
       return true;
     }
 
@@ -66,90 +73,74 @@ export const ColumnFilterByDateRange: React.FC<{
   setFilter: (columnId: string, filterValue: any) => any;
   tableData?: any;
 }> = ({ className, label, columnId, setFilter, tableData }) => {
-  const [val, setVal] = useState<IMinMax>({ min: null, max: null });
+  const [valueOfDateTime_from, setValueOfDateTime_from] = useState<
+    Date | [Date, Date] | undefined | null
+  >(null);
 
-  const latestValRef = useRef(val);
-  latestValRef.current = val;
+  console.log(valueOfDateTime_from && (valueOfDateTime_from as Date).getTime());
 
-  // console.log("latestValRef.current:", latestValRef.current.min);
+  const [valueOfDateTime_to, setValueOfDateTime_to] = useState<
+    Date | [Date, Date] | undefined | null
+  >(null);
+
+  const currDateRange: IDateTimePeriod = useMemo(() => {
+    return {
+      from: valueOfDateTime_from ? (valueOfDateTime_from as Date).getTime() : null,
+      to: valueOfDateTime_to ? (valueOfDateTime_to as Date).getTime() : null,
+    };
+  }, [valueOfDateTime_from, valueOfDateTime_to]);
+
+  const latestValRef = useRef(currDateRange);
+
+  latestValRef.current = currDateRange;
+
+  // console.log(
+  //   "valueOfDateTime_from:",
+  //   valueOfDateTime_from && (valueOfDateTime_from as Date).getTime(),
+  // );
+
+  // console.log("latestValRef.current:", latestValRef.current);
 
   const onChange = useAsyncDebounce(() => {
     setFilter(columnId, {
-      min: latestValRef.current.min,
-      max: latestValRef.current.max,
-    } as IMinMax);
+      from: latestValRef.current.from,
+      to: latestValRef.current.to,
+    } as IDateTimePeriod);
   }, 1000);
 
-  const superId = useId();
+  // const superId = useId();
 
   useEffect(() => {
-    setFilter(columnId, {
-      min: latestValRef.current.min,
-      max: latestValRef.current.max,
-    } as IMinMax);
-  }, [columnId, setFilter, tableData]);
+    setFilter(columnId, currDateRange);
+  }, [columnId, currDateRange, setFilter, tableData]);
 
   return (
     <div className={cla(className, style.ground)}>
       <div className={style.theLabel}>{label}</div>
 
       <div className={style.theInputs}>
-        <div className={style.inputWrap}>
-          <label className={cla(style.label)} htmlFor={`${superId}_min`}>
-            {"Min"}
-          </label>
+        {/* <SweetDateTimePicker /> */}
 
-          <input
-            id={`${superId}_min`}
-            type={"number"}
-            // max={5}
-            // min={1}
-            // placeholder={"min"}
-            value={val.min || ""}
-            onChange={(e) => {
-              const newVMin = e.target.value;
-              // console.log(newVMin);
+        <DateTimePicker
+          className={style.myDateTimePicker}
+          calendarClassName={style.datePickFrame}
+          onChange={(newDate) => {
+            setValueOfDateTime_from((prev) => newDate);
+            onChange();
+          }}
+          value={valueOfDateTime_from as Date | undefined}
+          // format={`YYYY/MM/DD/HH:mm`}
+        />
 
-              if (newVMin !== "" && (Number(newVMin) < 1 || Number(newVMin) > 5)) {
-                return;
-              }
-
-              setVal((prev) => ({
-                ...prev,
-                min: newVMin === "" ? null : Number(newVMin),
-              }));
-              onChange();
-            }}
-          />
-        </div>
-
-        <div className={style.inputWrap}>
-          <label className={cla(style.label)} htmlFor={`${superId}_max`}>
-            {"Max"}
-          </label>
-
-          <input
-            id={`${superId}_max`}
-            type={"number"}
-            // max={5}
-            // min={1}
-            // placeholder={"max"}
-            value={val.max || ""}
-            onChange={(e) => {
-              const newVMax = e.target.value;
-              // console.log(newVMax);
-              if (newVMax !== "" && (Number(newVMax) > 5 || Number(newVMax) < 1)) {
-                return;
-              }
-
-              setVal((prev) => ({
-                ...prev,
-                max: newVMax === "" ? null : Number(newVMax),
-              }));
-              onChange();
-            }}
-          />
-        </div>
+        <DateTimePicker
+          className={style.myDateTimePicker}
+          calendarClassName={style.datePickFrame}
+          onChange={(newDate) => {
+            setValueOfDateTime_to((prev) => newDate);
+            onChange();
+          }}
+          value={valueOfDateTime_to as Date | undefined}
+        />
       </div>
     </div>
   );

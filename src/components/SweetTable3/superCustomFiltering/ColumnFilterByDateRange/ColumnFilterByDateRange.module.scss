@@ -15,22 +15,26 @@
   }
 
   .theInputs {
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
     column-gap: 3px;
     row-gap: 3px;
     flex-grow: 0;
 
-    .inputWrap {
+    .myDateTimePicker {
       display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      column-gap: 2px;
-      row-gap: 2px;
-      input {
-        max-width: 44px;
-        outline: 2px solid #5fb4ff;
-      }
     }
+
+    // .inputWrap {
+    //   display: flex;
+    //   flex-direction: column;
+    //   flex-wrap: nowrap;
+    //   column-gap: 2px;
+    //   row-gap: 2px;
+    //   input {
+    //     max-width: 44px;
+    //     outline: 2px solid #5fb4ff;
+    //   }
+    // }
   }
 }
