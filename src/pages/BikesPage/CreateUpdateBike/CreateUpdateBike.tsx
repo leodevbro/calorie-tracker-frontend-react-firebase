@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 // import { Link } from "react-router-dom";
 
 import { SweetInput } from "src/components/SweetInput/SweetInput";
@@ -12,70 +12,83 @@ import style from "./CreateUpdateBike.module.scss";
 
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 
-import { IBike } from "src/app/redux-slices/sweetSlice";
+// import { IBike } from "src/app/redux-slices/sweetSlice";
 // import { createUser } from "src/app/db-api";
 import { CheckboxInp } from "src/components/SweetInput/CheckboxInp";
-import { IBikeTableRow } from "../BikesPage";
+import { IFoodTableRow } from "../BikesPage";
 import { db } from "src/connection-to-backend/db/firebase/config";
 // import { useAppSelector } from "src/app/hooks";
 
-export const CreateUpdateBike: React.FC<{ currBike?: IBikeTableRow; successFn: () => any }> = ({
-  successFn: closerFn,
-  currBike,
-}) => {
+export const CreateUpdateFoodEntry: React.FC<{
+  preId?: string;
+  currFoodEntry?: IFoodTableRow;
+  successFn: () => any;
+}> = ({ preId = "", successFn: closerFn, currFoodEntry }) => {
   const [bigError, setBigError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const bikesCollectionRef = collection(db, "bikes");
+  const naming = useMemo(() => {
+    const obj = {
+      intakeDateTime: `${preId}_intakeDateTime`,
+      name: `${preId}_name`,
+      calories: `${preId}_calories`,
+      dietCheat: `${preId}_dietCheat`,
+    };
+
+    return obj;
+  }, [preId]);
+
+  // const bikesCollectionRef = collection(db, "bikes");
 
   // const navigate = useNavigate();
 
   const updateBike = useCallback(
     async ({
       id,
-      available,
-      model,
-      color,
-      location,
-    }: {
+    }: // available,
+    // model,
+    // color,
+    // location,
+    {
       id: string;
-      available: boolean;
-      model: string;
-      color: string;
-      location: string;
+      // available: boolean;
+      // model: string;
+      // color: string;
+      // location: string;
     }) => {
-      const currBike = doc(db, "bikes", id);
-      // console.log(model);
-
-      const newFields = {
-        available,
-        model,
-        color,
-        location,
-      };
-
-      try {
-        await updateDoc(currBike, newFields);
-      } catch (err) {
-        console.log(err);
-      }
+      // // const currBike = doc(db, "bikes", id);
+      // // console.log(model);
+      // const newFields = {
+      //   available,
+      //   model,
+      //   color,
+      //   location,
+      // };
+      // try {
+      //   await updateDoc(currBike, newFields);
+      // } catch (err) {
+      //   console.log(err);
+      // }
     },
     [],
   );
 
   const formik = useFormik({
     initialValues: {
-      currBikeAvailable: currBike?.available ? true : false,
-      currBikeModel: currBike?.model || "",
-      currBikeColor: currBike?.color || "",
-      currBikeLocation: currBike?.location || "",
+      [naming.dietCheat]: currFoodEntry?.dietCheat ? true : false,
+      [naming.name]: currFoodEntry?.name || "",
+      [naming.calories]: currFoodEntry?.calories || "",
+      [naming.intakeDateTime]: currFoodEntry?.intakeDateTime || null,
     },
 
     validationSchema: Yup.object({
-      currBikeAvailable: Yup.boolean(),
-      currBikeModel: Yup.string().max(15, "Must be 15 characters or less").required("Required"),
-      currBikeColor: Yup.string().max(20, "Must be 20 characters or less").required("Required"),
-      currBikeLocation: Yup.string().max(40, "Must be 20 characters or less").required("Required"),
+      [naming.dietCheat]: Yup.boolean(),
+      [naming.name]: Yup.string().max(70, "Must be 70 characters or less").required("Required"),
+      [naming.calories]: Yup.number()
+        .min(0, "Must be at least 0")
+        .max(10000, "Must be less than 10000")
+        .required("Required"),
+      [naming.intakeDateTime]: Yup.string().required("Required"),
     }),
 
     onSubmit: async (values) => {
@@ -87,28 +100,28 @@ export const CreateUpdateBike: React.FC<{ currBike?: IBikeTableRow; successFn: (
       setIsLoading((prev) => true);
 
       try {
-        if (currBike) {
-          await updateBike({
-            id: currBike.edit,
-            available: values.currBikeAvailable,
-            color: values.currBikeColor,
-            model: values.currBikeModel,
-            location: values.currBikeLocation,
-          });
+        if (currFoodEntry) {
+          // await updateBike({
+          //   id: currFoodEntry.edit,
+          //   available: values.currBikeAvailable7,
+          //   color: values.currBikeColor,
+          //   model: values.currBikeModel,
+          //   location: values.currBikeLocation,
+          // });
         } else {
-          await addDoc(bikesCollectionRef, {
-            created: new Date().toISOString(),
-            available: values.currBikeAvailable,
-            color: values.currBikeColor,
-            location: values.currBikeLocation,
-            model: values.currBikeModel,
-            rentalDays: [],
-            rating: {
-              average: null,
-              count: 0,
-              rates: [],
-            },
-          } as Omit<IBike, "id">);
+          // await addDoc(bikesCollectionRef, {
+          //   created: new Date().toISOString(),
+          //   available: values.currBikeAvailable7,
+          //   color: values.currBikeColor,
+          //   location: values.currBikeLocation,
+          //   model: values.currBikeModel,
+          //   rentalDays: [],
+          //   rating: {
+          //     average: null,
+          //     count: 0,
+          //     rates: [],
+          //   },
+          // } as Omit<IBike, "id">);
         }
         // console.log("vqlouzdebi");
         setTimeout(() => {
@@ -122,6 +135,7 @@ export const CreateUpdateBike: React.FC<{ currBike?: IBikeTableRow; successFn: (
         // console.log({...err as any}, typeof err);
         console.log(err, typeof err);
         setBigError(err.code);
+        setIsLoading((prev) => false);
       }
     },
   });
@@ -134,80 +148,82 @@ export const CreateUpdateBike: React.FC<{ currBike?: IBikeTableRow; successFn: (
           onSubmit={formik.handleSubmit}
           onReset={formik.handleReset}
         >
-          <div className={style.bigTitle}>{`${currBike ? "Update" : "Create"} Bike`}</div>
+          <div className={style.bigTitle}>{`${
+            currFoodEntry ? "Update" : "Create"
+          } Food Entry`}</div>
 
           <div className={style.bigError}>{bigError}</div>
 
           <CheckboxInp
             className={style.myCheck}
-            isChecked={formik.values.currBikeAvailable}
-            id={"currBikeAvailable"}
-            label={"Available"}
-            name={"currBikeAvailable"}
+            isChecked={formik.values[naming.dietCheat] as boolean}
+            id={naming.dietCheat}
+            label={"Diet Cheat"}
+            name={naming.dietCheat}
             onBlur={() => 4}
-            textualValue={"currBikeAvailable"}
+            textualValue={naming.dietCheat}
             // onChange={formik.handleChange}
             tryToChange={(change) => {
               if (change.isChecked !== undefined) {
-                formik.setFieldValue("currBikeAvailable", change.isChecked);
+                formik.setFieldValue(naming.dietCheat, change.isChecked);
               }
             }}
             // isLastIndex={isLast}
-            error={formik.touched.currBikeAvailable && formik.errors.currBikeAvailable}
+            error={formik.touched[naming.dietCheat] && formik.errors[naming.dietCheat]}
           />
 
           <SweetInput
-            id={"currBikeModel"}
-            name={"currBikeModel"}
+            id={naming.name}
+            name={naming.name}
             // autoComplete={"given-name"}
-            kind={"kFirstName"}
-            label={"Model"}
-            placeHolder={"Model"}
+            kind={"general"}
+            label={"Name"}
+            placeHolder={"Name"}
             //
             className={style.inp}
-            value={formik.values.currBikeModel}
+            value={formik.values[naming.name] as string}
             onChange={formik.handleChange}
             onFocus={undefined}
             onBlur={formik.handleBlur}
             //
             // required={true}
-            error={formik.touched.currBikeModel && formik.errors.currBikeModel}
+            error={formik.touched[naming.name] && formik.errors[naming.name]}
           />
 
           <SweetInput
-            id={"currBikeColor"}
-            name={"currBikeColor"}
+            id={naming.calories}
+            name={naming.calories}
             // autoComplete={"family-name"}
-            kind={"kLastName"}
-            label={"Color"}
-            placeHolder={"Color"}
+            kind={"general"}
+            label={"Calories"}
+            placeHolder={"Calories"}
             //
             className={style.inp}
-            value={formik.values.currBikeColor}
+            value={String(formik.values[naming.calories])}
             onChange={formik.handleChange}
             onFocus={undefined}
             onBlur={formik.handleBlur}
             //
             // required={true}
-            error={formik.touched.currBikeColor && formik.errors.currBikeColor}
+            error={formik.touched[naming.calories] && formik.errors[naming.calories]}
           />
 
           <SweetInput
-            id={"currBikeLocation"}
-            name={"currBikeLocation"}
+            id={naming.intakeDateTime}
+            name={naming.intakeDateTime}
             // autoComplete={"family-name"}
-            kind={"kLastName"}
-            label={"Location"}
-            placeHolder={"Location"}
+            kind={"general"}
+            label={"Intake Date/Time"}
+            placeHolder={"Intake Date/Time"}
             //
             className={style.inp}
-            value={formik.values.currBikeLocation}
+            value={String(formik.values[naming.intakeDateTime])}
             onChange={formik.handleChange}
             onFocus={undefined}
             onBlur={formik.handleBlur}
             //
             // required={true}
-            error={formik.touched.currBikeLocation && formik.errors.currBikeLocation}
+            error={formik.touched[naming.intakeDateTime] && formik.errors[naming.intakeDateTime]}
           />
 
           <WideButton
@@ -215,7 +231,7 @@ export const CreateUpdateBike: React.FC<{ currBike?: IBikeTableRow; successFn: (
             disabled={formik.isSubmitting}
             type={"submit"}
             kind={"bGray"}
-            text={currBike ? "Update" : "Create"}
+            text={currFoodEntry ? "Update" : "Create"}
             isLoading={isLoading}
           />
         </form>

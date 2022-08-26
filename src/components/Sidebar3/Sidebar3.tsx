@@ -85,7 +85,7 @@ export const Sidebar3: React.FC<{ className?: string }> = ({ className }) => {
       },
     ];
 
-    if (veryCurrUser && veryCurrUser?.roles.manager) {
+    if (veryCurrUser && veryCurrUser?.roles.admin) {
       arr.push({
         id: NavEnum.all_users,
         link: "/allusers",
@@ -151,7 +151,7 @@ export const Sidebar3: React.FC<{ className?: string }> = ({ className }) => {
     } else if (veryCurrUser === null) {
       myNode = <Link to={"/login"}>Please Login</Link>;
     } else if (veryCurrUser) {
-      myNode = `${veryCurrUser.firstName} (${veryCurrUser.roles.manager ? "Manager" : "User"})`;
+      myNode = `${veryCurrUser.firstName} (${veryCurrUser.roles.admin ? "Admin" : "User"})`;
     }
 
     return myNode;

@@ -7,7 +7,7 @@ import { cla } from "src/App";
 // import { Link } from "react-router-dom";
 // import { useAppSelector } from "../app/hooks";
 import style from "./UsersList.module.scss";
-import { changeToggleExpandAllUsers, IBike, ISiteUser } from "src/app/redux-slices/sweetSlice";
+import { changeToggleExpandAllUsers, ISiteUser } from "src/app/redux-slices/sweetSlice";
 import { CoolLoader } from "src/components/CoolLoader/CoolLoader";
 import { OneUser } from "./OneUser/OneUser";
 import { useAppDispatch } from "src/app/hooks";
@@ -17,7 +17,7 @@ import { ButtonToCreateUser } from "./buttonToCreateUser/ButtonToCreateUser";
 export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<ISiteUser[]>([]);
-  const [bikes, setBikes] = useState<IBike[]>([]);
+  const [bikes, setBikes] = useState<{}[]>([]);
 
   const dispatch = useAppDispatch();
 
@@ -29,24 +29,24 @@ export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
     // console.log("daaa:", data);
 
     if (isMounted === undefined || isMounted.v === true) {
-      setBikes((prev) => {
-        const myArr = dataArr;
-        // console.log(myArr);
+      // setBikes((prev) => {
+      //   const myArr = dataArr;
+      //   // console.log(myArr);
 
-        const myArrSortedByCreatedDate = [...myArr].sort((a, b) => {
-          if (!a.created) {
-            return 1;
-          } else if (!b.created) {
-            return -1;
-          } else if (new Date(a.created) < new Date(b.created)) {
-            return 1;
-          } else {
-            return -1;
-          }
-        });
+      //   const myArrSortedByCreatedDate = [...myArr].sort((a, b) => {
+      //     if (!a.created) {
+      //       return 1;
+      //     } else if (!b.created) {
+      //       return -1;
+      //     } else if (new Date(a.created) < new Date(b.created)) {
+      //       return 1;
+      //     } else {
+      //       return -1;
+      //     }
+      //   });
 
-        return myArrSortedByCreatedDate;
-      });
+      //   return myArrSortedByCreatedDate;
+      // });
 
       setLoading((prev) => false);
     }
@@ -160,9 +160,7 @@ export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
 
         <div className={style.allUsers}>
           {users.map((user, index) => {
-            const bikesRentedByThisUser = bikes.filter((bike) =>
-              bike.rentalDays.some((d) => d.userId === user.id),
-            );
+            
 
             return (
               // <div key={x.id} className={style.oneUser}>
@@ -183,7 +181,7 @@ export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
               // </div>
 
               <OneUser
-                bikesRentedByThisUser={bikesRentedByThisUser}
+               
                 userListIndex={index}
                 user={user}
                 key={user.id}

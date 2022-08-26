@@ -51,7 +51,7 @@ export const TopRibbon: React.FC<{ className?: string }> = ({ className }) => {
     } else if (veryCurrUser === null) {
       myNode = <Link to={"/login"}>Please Login</Link>;
     } else if (veryCurrUser) {
-      myNode = `${veryCurrUser.firstName} (${veryCurrUser.roles.manager ? "Manager" : "User"})`;
+      myNode = `${veryCurrUser.firstName} (${veryCurrUser.roles.admin ? "Admin" : "User"})`;
     }
 
     return myNode;

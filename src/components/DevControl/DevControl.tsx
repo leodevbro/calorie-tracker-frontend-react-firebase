@@ -49,7 +49,7 @@ export const DevControl: React.FC<{
   return (
     <div className={cla("devControl", { showDevControl: currDevControlStatus })}>
       {!!veryCurrUser &&
-        (!veryCurrUser.roles.manager ? (
+        (!veryCurrUser.roles.admin ? (
           <button className={"roleChanger"} onClick={() => makethisUserManager(true)}>
             Make me a manager
           </button>

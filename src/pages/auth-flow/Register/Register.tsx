@@ -55,7 +55,7 @@ export const RegisterPage: React.FC<{}> = () => {
           created: createdDateNumber,
           roles: {
             user: true,
-            manager: false,
+            admin: false,
           },
         });
 

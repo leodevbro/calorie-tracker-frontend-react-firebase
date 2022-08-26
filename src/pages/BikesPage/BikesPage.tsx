@@ -14,15 +14,13 @@ import style from "./BikesPage.module.scss";
 // import checkIconSvgPath from "src/styling-constants/svg-items/check.svg";
 // import eyeSvgPath from "src/styling-constants/svg-items/eye.svg";
 // import downloadSvgPath from "src/styling-constants/svg-items/download.svg";
-import genBikeSvgPath from "src/styling-constants/svg-items/gen-bike.svg";
+
 // import { Row } from "react-table";
 // import { cla } from "src/App";
 // import { useNavigate } from "react-router-dom";
 
 import { SweetTable3 } from "src/components/SweetTable3/SweetTable3";
 
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
-import { IBike, IBikeRating } from "src/app/redux-slices/sweetSlice";
 // import { db } from "src/firebase-config";
 import { CheckboxInp } from "src/components/SweetInput/CheckboxInp";
 // import { BasicButton } from "src/components/buttons/BasicButton";
@@ -30,23 +28,26 @@ import { CheckboxInp } from "src/components/SweetInput/CheckboxInp";
 import { useAppSelector } from "src/app/hooks";
 
 // import { cla } from "src/App";
-import { RentalPeriods } from "./RentalPeriods/RentalPeriods";
+
 import { ButtonToUpdateBike } from "./PopOfUpdateBike/PopOfUpdateBike";
 import { PopOfCreateBike } from "./PopOfCreateBike/PopOfCreateBike";
 import { PopOfDeleteBike } from "./PopOfDeleteBike/PopOfDeleteBike";
-import { PopOfRateBike } from "./PopOfRateBike/PopOfRateBike";
+
 import { equalFnForCurrUserDocChange } from "src/App";
 import { CoolLoader } from "src/components/CoolLoader/CoolLoader";
-import { db } from "src/connection-to-backend/db/firebase/config";
+// import { db } from "src/connection-to-backend/db/firebase/config";
 // import { ColumnFilter } from "src/components/SweetTable3/ColumnFilter/ColumnFilter";
 
 import { myCustomFilterFnOfRate } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByMinMax/ColumnFilterByMinMax";
 import { myCustomFilterFnOfBool } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByBool/ColumnFilterByBool";
+import { IFoodEntry } from "src/app/redux-slices/sweetSlice";
 
-export interface IBikeTableRow extends IBike {
+const genFoodImagePath = "https://i.ibb.co/YZRXt5z/2022-08-26-10-56-05.png";
+
+export interface IFoodTableRow extends IFoodEntry {
   imgSrc: string;
-  edit: string; // id
-  delete: string; // id
+  // edit: string; // id
+  // delete: string; // id
 }
 
 // const myCustomFilter2: FilterFnOfTableT = (rows, columnIds, filterValue: string) => {
@@ -65,79 +66,58 @@ export interface IBikeTableRow extends IBike {
 //   });
 // };
 
-export const BikesPage: React.FC<{}> = () => {
+export const FoodPage: React.FC<{}> = () => {
   const veryCurrUser = useAppSelector((store) => store.sweet.currUser, equalFnForCurrUserDocChange);
   // console.log("veryCurrUser:", veryCurrUser);
 
   // const navigate = useNavigate();
-  const [bikes, setBikes] = useState<null | IBike[]>(null);
+  const [foodArr, setFoodArr] = useState<null | IFoodEntry[]>(null);
 
-  const bikesCollectionRef = collection(db, "bikes");
+  const getFoodArr = useCallback(async (isMounted?: { v: boolean }) => {
+    // const data = await getDocs(bikesCollectionRef);
+    const data: IFoodEntry[] = [];
+    // console.log("daaa:", data);
 
-  const getBikes = useCallback(
-    async (isMounted?: { v: boolean }) => {
-      const data = await getDocs(bikesCollectionRef);
-      // console.log("daaa:", data);
+    if (isMounted === undefined || isMounted.v === true) {
+      setFoodArr((prev) => {
+        const myArr = data;
+        // console.log(myArr);
 
-      if (isMounted === undefined || isMounted.v === true) {
-        setBikes((prev) => {
-          const myArr = data.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IBike));
-          // console.log(myArr);
-
-          const myArrSortedByCreatedDate = [...myArr].sort((a, b) => {
-            if (!a.created) {
-              return 1;
-            } else if (!b.created) {
-              return -1;
-            } else if (new Date(a.created) < new Date(b.created)) {
-              return 1;
-            } else {
-              return -1;
-            }
-          });
-
-          return myArrSortedByCreatedDate;
+        const myArrSortedByCreatedDate = [...myArr].sort((a, b) => {
+          if (!a.created) {
+            return 1;
+          } else if (!b.created) {
+            return -1;
+          } else if (new Date(a.created) < new Date(b.created)) {
+            return 1;
+          } else {
+            return -1;
+          }
         });
-      }
-    },
-    [bikesCollectionRef],
-  );
 
-  const tableData: IBikeTableRow[] = React.useMemo(() => {
-    if (!bikes) {
+        return myArrSortedByCreatedDate;
+      });
+    }
+  }, []);
+
+  const tableData: IFoodTableRow[] = React.useMemo(() => {
+    if (!foodArr) {
       return [];
     }
 
-    const rows = bikes.map((x) => {
-      return { ...x, imgSrc: genBikeSvgPath, edit: x.id, delete: x.id };
+    const rows = foodArr.map((x) => {
+      return { ...x, imgSrc: genFoodImagePath, edit: x.id, delete: x.id };
     });
 
     return rows;
-  }, [bikes]);
+  }, [foodArr]);
 
   const deleteBike = useCallback(
     async (id: string) => {
-      const currBike = doc(db, "bikes", id);
-      await deleteDoc(currBike);
-      getBikes();
+      // await deleteDoc(currBike);
+      getFoodArr();
     },
-    [getBikes],
-  );
-
-  const generateRentalView = useCallback(
-    (index: number) => {
-      return (
-        <div className={style.rentalRow}>
-          <RentalPeriods
-            successFn={() => {
-              getBikes();
-            }}
-            currBike={tableData[index]}
-          />
-        </div>
-      );
-    },
-    [getBikes, tableData],
+    [getFoodArr],
   );
 
   const tableColumns = React.useMemo(() => {
@@ -154,7 +134,7 @@ export const BikesPage: React.FC<{}> = () => {
         Cell: (cell) => {
           return (
             <div className={style.downloadIconWrap}>
-              <img className={style.downloadIcon} src={cell.value as string} alt={"bike icon"} />
+              <img className={style.downloadIcon} src={cell.value as string} alt={"food icon"} />
             </div>
           );
         },
@@ -199,64 +179,6 @@ export const BikesPage: React.FC<{}> = () => {
         filter: myCustomFilterFnOfBool,
         // includeInNarrowRowTopBox: "leftSide",
         // Filter: ColumnFilter,
-        Filter: () => null,
-      },
-      {
-        // Header: "rating".toUpperCase() || undefined,
-        Header: () => (
-          <div>
-            <span>RATING</span>{" "}
-            <Tippy
-              hideOnClick={false}
-              // showOnCreate={true}
-              // visible={true}
-              theme="light"
-              interactive={true}
-              arrow={true}
-              content={<span className={style.popInfo}>{"Average (Count) --- My Rate"}</span>}
-              // content="Hel11dlo"
-              maxWidth={350}
-              // popperOptions={{modifiers: {
-
-              // }}}
-              // inertia={true}
-              interactiveBorder={3}
-              interactiveDebounce={200}
-            >
-              <span className={style.infoSign}>
-                <span className={style.inner}>?</span>
-              </span>
-            </Tippy>
-          </div>
-        ),
-        accessor: "rating",
-        filterType: "minmax",
-
-        prioritizedStyles: {
-          minWidth: 140,
-          flexGrow: 0,
-        },
-
-        Cell: (cell) => {
-          const val = cell.value as IBikeRating;
-
-          const rateOfThisUser = !veryCurrUser
-            ? undefined
-            : val?.rates?.find((x) => x.userId === veryCurrUser?.id);
-          // console.log(cell.value);
-
-          return (
-            <PopOfRateBike
-              getBikes={getBikes}
-              currBike={tableData[cell.row.index]}
-              rateOfThisUser={rateOfThisUser}
-            />
-          );
-        },
-
-        filter: myCustomFilterFnOfRate,
-        // includeInNarrowRowTopBox: "rightSide",
-        // Filter: ColumnFilterOfRate,
         Filter: () => null,
       },
 
@@ -314,53 +236,12 @@ export const BikesPage: React.FC<{}> = () => {
 
         // Filter: ColumnFilter,
         Filter: () => null,
-      },
-
-      {
-        // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
-        Header: "location".toUpperCase() || undefined,
-        accessor: "location",
-        filterType: "string",
-        prioritizedStyles: {
-          minWidth: 100,
-          flexGrow: 0,
-        },
-
-        // Cell: (cell) => {
-        //   return (
-        //     <div className={style.downloadIconWrap}>
-        //       <img
-        //         className={style.downloadIcon}
-        //         src={cell.value as string}
-        //         alt={"download icon"}
-        //       />
-        //     </div>
-        //   );
-        // },
-        // Filter: ColumnFilter,
-        Filter: () => null,
-      },
-
-      {
-        // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
-        Header: "Rental Periods".toUpperCase() || undefined,
-        accessor: "rentalDays",
-        filterType: undefined,
-        prioritizedStyles: {
-          minWidth: 100,
-          flexGrow: 100,
-        },
-
-        Cell: (cell) => {
-          return generateRentalView(cell.row.index);
-        },
-        Filter: () => null,
-        disableFilters: true,
-        disableGlobalFilter: true,
+        // disableFilters: true,
+        // disableGlobalFilter: true,
       },
     ];
 
-    if (veryCurrUser && veryCurrUser?.roles.manager) {
+    if (veryCurrUser && veryCurrUser?.roles.admin) {
       columns.push(
         {
           // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
@@ -376,9 +257,10 @@ export const BikesPage: React.FC<{}> = () => {
             // console.log("aqaaa");
             return (
               <ButtonToUpdateBike
+                userListIndex={cell.row.index}
                 currBike={tableData[cell.row.index]}
                 successFn={() => {
-                  getBikes();
+                  getFoodArr();
                 }}
               />
             );
@@ -402,9 +284,10 @@ export const BikesPage: React.FC<{}> = () => {
 
             return (
               <PopOfDeleteBike
-                currBike={tableData[cell.row.index]}
+                userListIndex={cell.row.index}
+                currFoodEntry={tableData[cell.row.index]}
                 deleteBike={deleteBike}
-                getBikes={getBikes}
+                getBikes={getFoodArr}
               />
             );
           },
@@ -415,7 +298,7 @@ export const BikesPage: React.FC<{}> = () => {
     }
 
     return columns;
-  }, [deleteBike, generateRentalView, getBikes, tableData, veryCurrUser]);
+  }, [deleteBike, getFoodArr, tableData, veryCurrUser]);
 
   const narrowRowTopBoxContentMaker: React.FC<ICustomTopBottom> = useCallback(
     ({ columns, row }) => {
@@ -462,7 +345,7 @@ export const BikesPage: React.FC<{}> = () => {
 
     const myTimeout = setTimeout(() => {
       if (isMounted.v) {
-        getBikes(isMounted);
+        getFoodArr(isMounted);
       }
     }, 200);
 
@@ -476,13 +359,13 @@ export const BikesPage: React.FC<{}> = () => {
 
   return (
     <div className={style.ground}>
-      {bikes === null && <CoolLoader />}
+      {foodArr === null && <CoolLoader />}
 
       <div className={style.pageTitle}>{"Bikes"}</div>
-      {veryCurrUser && veryCurrUser.roles.manager && (
+      {veryCurrUser && veryCurrUser.roles.admin && (
         <PopOfCreateBike
           successFn={() => {
-            getBikes();
+            getFoodArr();
           }}
         />
       )}

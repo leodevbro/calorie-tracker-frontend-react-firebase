@@ -46,7 +46,7 @@ export const ProtectedRoutesWrapper: React.FC<{}> = () => {
     return null;
   }
 
-  if (thisUser?.roles.manager || (thisUser?.roles.user && location.pathname !== "/allusers")) {
+  if (thisUser?.roles.admin || (thisUser?.roles.user && location.pathname !== "/allusers")) {
     return <Outlet />;
   }
 

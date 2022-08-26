@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 // import { Link } from "react-router-dom";
 
 import style from "./PopOfDeleteBike.module.scss";
 // import { useNavigate } from "react-router-dom";
 
-import { IBikeTableRow } from "../BikesPage";
+import { IFoodTableRow } from "../BikesPage";
 import { SweetPopup } from "src/components/SweetPopup/SweetPopup";
 
 // import { useNavigate } from "react-router-dom";
@@ -13,15 +13,20 @@ import { WideButton } from "src/components/buttons/WideButton";
 // import { useAppSelector } from "src/app/hooks";
 
 export const PopOfDeleteBike: React.FC<{
-  currBike: IBikeTableRow;
+  userListIndex: number;
+  currFoodEntry: IFoodTableRow;
   deleteBike: (id: string) => Promise<void>;
   getBikes: (isMounted?: { v: boolean }) => Promise<void>;
-}> = ({ deleteBike, currBike, getBikes }) => {
+}> = ({ userListIndex, deleteBike, currFoodEntry, getBikes }) => {
   const [showDelBikePop, setShowDelBikePop] = useState(false);
   // console.log(showDelBikePop);
   // const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  // const listId = useMemo(() => {
+  //   return String(userListIndex);
+  // }, [userListIndex]);
 
   return (
     <div className={style.download}>
@@ -44,7 +49,7 @@ export const PopOfDeleteBike: React.FC<{
           <div className={style.delConfirm}>
             <h2
               className={style.h2}
-            >{`Really want to delete ${currBike?.color} ${currBike?.model}?`}</h2>
+            >{`Really want to delete ${currFoodEntry?.name} ${currFoodEntry?.calories}?`}</h2>
 
             <WideButton
               className={style.goDel}
@@ -56,7 +61,7 @@ export const PopOfDeleteBike: React.FC<{
 
                 setIsLoading((prev) => true);
 
-                await deleteBike(currBike.id);
+                await deleteBike(currFoodEntry.id);
                 setShowDelBikePop((prev) => false);
 
                 getBikes();

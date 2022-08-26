@@ -102,7 +102,7 @@ export const CreateUpdateUser: React.FC<{
       [naming.lastName]: userToUpdate ? userToUpdate.lastName : "",
 
       [naming.hasRoleUser]: userToUpdate ? userToUpdate.roles.user : true,
-      [naming.hasRoleManager]: userToUpdate ? userToUpdate.roles.manager : false,
+      [naming.hasRoleManager]: userToUpdate ? userToUpdate.roles.admin : false,
 
       [naming.currPassword]: "",
       [naming.newPassword]: "",
@@ -152,11 +152,11 @@ export const CreateUpdateUser: React.FC<{
           const candidateBoolOfManager = values[naming.hasRoleManager] as boolean;
           const candidateBoolOfUser = values[naming.hasRoleUser] as boolean;
           const rolesAreSame =
-            candidateBoolOfManager === userToUpdate.roles.manager &&
+            candidateBoolOfManager === userToUpdate.roles.admin &&
             candidateBoolOfUser === userToUpdate.roles.user;
           const newRoles: IUserRoles | undefined = rolesAreSame
             ? undefined
-            : { user: candidateBoolOfUser, manager: candidateBoolOfManager };
+            : { user: candidateBoolOfUser, admin: candidateBoolOfManager };
 
           const theOb = {
             userId: userToUpdate.id,

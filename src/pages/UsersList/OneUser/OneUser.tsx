@@ -4,7 +4,7 @@ import AnimateHeight from "react-animate-height";
 
 import { cla } from "src/App";
 import { useAppSelector } from "src/app/hooks";
-import { IBike, ISiteUser } from "src/app/redux-slices/sweetSlice";
+import { ISiteUser } from "src/app/redux-slices/sweetSlice";
 // import { deleteOneUser } from "src/connection-to-backend/db/firebase/api";
 import { DeleteUserButton } from "./DeleteUserButton/DeleteUserButton";
 import { EditUserButton } from "./EditUserButton/EditUserButton";
@@ -17,9 +17,9 @@ export const OneUser: React.FC<{
   className?: string;
   userListIndex: number;
   user: ISiteUser;
-  bikesRentedByThisUser: IBike[];
+
   getUsers: (isMounted?: { v: boolean }) => Promise<void>;
-}> = ({ className, userListIndex, user, bikesRentedByThisUser, getUsers }) => {
+}> = ({ className, userListIndex, user, getUsers }) => {
   const [seeBikes, setSeeBikes] = useState(false);
 
   const listId = useMemo(() => {
@@ -94,24 +94,24 @@ export const OneUser: React.FC<{
       </div>
 
       <AnimateHeight height={seeBikes ? "auto" : 0} className={style.top2Box}>
-        {bikesRentedByThisUser.length === 0 ? (
+        {false ? (
           <div>No bikes</div>
         ) : (
-          bikesRentedByThisUser.map((bi) => {
-            const rentDatesByThisUserOnThisBike = bi.rentalDays
-              .filter((rd) => rd.userId === user.id)
-              .map((x) => x.date)
-              .sort((a, b) => (new Date(a) < new Date(b) ? -1 : 1));
+          [1, 2, 3, 4, 5].map((bi) => {
+            // const rentDatesByThisUserOnThisBike = bi.rentalDays
+            //   .filter((rd) => rd.userId === user.id)
+            //   .map((x) => x.date)
+            //   .sort((a, b) => (new Date(a) < new Date(b) ? -1 : 1));
 
             return (
-              <div key={bi.id} className={style.oneBike}>
-                <div className={style.biId}>{bi.id}</div>
-                <div className={style.biModel}>{bi.model}</div>
-                <div className={style.biColor}>{bi.color}</div>
+              <div key={bi} className={style.oneBike}>
+                <div className={style.biId}>{bi}</div>
+                <div className={style.biModel}>{bi}</div>
+                <div className={style.biColor}>{bi}</div>
                 <div className={style.biRentDates}>
-                  {rentDatesByThisUserOnThisBike.map((rentDate) => {
+                  {/* {rentDatesByThisUserOnThisBike.map((rentDate) => {
                     return <div key={rentDate}>{rentDate}</div>;
-                  })}
+                  })} */}
                 </div>
               </div>
             );

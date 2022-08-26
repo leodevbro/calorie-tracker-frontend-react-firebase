@@ -37,7 +37,7 @@ import { InitialPage } from "./pages/InitialPage/InitialPage";
 
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 
-import { BikesPage } from "./pages/BikesPage/BikesPage";
+import { FoodPage } from "./pages/BikesPage/BikesPage";
 
 import { lodashObj } from "./app/helper-functions";
 import { UsersList } from "./pages/UsersList/UsersList";
@@ -177,7 +177,7 @@ const App: React.FC = () => {
                 <Route element={<ProtectedRoutesWrapper />}>
                   {/* <Route path={"/first"} element={<FirstComp />} /> */}
                   <Route path={"/profile"} element={<ProfilePage />} />
-                  <Route path={"/bikes"} element={<BikesPage />} />
+                  <Route path={"/bikes"} element={<FoodPage />} />
                   <Route path={"/allusers"} element={<UsersList />} />
                   {/* 
                   <Route path={"/orders"} element={<OrderHistory />} />

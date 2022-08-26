@@ -1,21 +1,26 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 // import { Link } from "react-router-dom";
 
 import style from "./PopOfUpdateBike.module.scss";
 // import { useNavigate } from "react-router-dom";
 
-import { IBikeTableRow } from "../BikesPage";
+import { IFoodTableRow } from "../BikesPage";
 import { SweetPopup } from "src/components/SweetPopup/SweetPopup";
-import { CreateUpdateBike } from "../CreateUpdateBike/CreateUpdateBike";
+import { CreateUpdateFoodEntry } from "../CreateUpdateBike/CreateUpdateBike";
 // import { useNavigate } from "react-router-dom";
 import { cla } from "src/App";
 // import { useAppSelector } from "src/app/hooks";
 
 export const ButtonToUpdateBike: React.FC<{
-  currBike?: IBikeTableRow;
+  userListIndex: number;
+  currBike?: IFoodTableRow;
   successFn: () => any;
-}> = ({ successFn, currBike }) => {
+}> = ({userListIndex, successFn, currBike }) => {
   const [showEditBikePop, setShowEditBikePop] = useState(false);
+
+  const listId = useMemo(() => {
+    return String(userListIndex);
+  }, [userListIndex]);
 
   // const navigate = useNavigate();
 
@@ -33,12 +38,13 @@ export const ButtonToUpdateBike: React.FC<{
           setShowEditBikePop((prev) => false);
         }}
         content={
-          <CreateUpdateBike
+          <CreateUpdateFoodEntry
             successFn={() => {
               setShowEditBikePop((prev) => false);
               successFn();
             }}
-            currBike={currBike}
+            currFoodEntry={currBike}
+            preId={`editUser${listId}`}
           />
         }
         backButtonShouldClose={false}

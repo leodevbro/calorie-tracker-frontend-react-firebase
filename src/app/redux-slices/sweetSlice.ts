@@ -5,12 +5,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // IMPORTANT START
 
-export enum AuthFlowEnum {
-  notLoggedIn = "notLoggedIn",
-  pleaseCompleteYourAccount = "pleaseCompleteYourAccount",
-  accountConfirmationInProgress = "accountConfirmationInProgress",
-  loggedIn = "loggedIn",
-}
+// export enum AuthFlowEnum {
+//   notLoggedIn = "notLoggedIn",
+//   pleaseCompleteYourAccount = "pleaseCompleteYourAccount",
+//   accountConfirmationInProgress = "accountConfirmationInProgress",
+//   loggedIn = "loggedIn",
+// }
 
 // IMPORTANT END
 
@@ -19,19 +19,18 @@ export enum AuthFlowEnum {
 //
 //
 
-export interface IBikeRating {
-  average: number | null; // 1.00-5.00
-  count: number; // integer
-  rates: { userId: string; rate: number }[];
-}
-
-export interface IRentalDay {
-  userId: string;
-  date: string; // basicDateToString
+export interface IFoodEntry {
+  id: string;
+  authorId: string;
+  created: number; // milliseconds from the ERA
+  intakeDateTime: number; // milliseconds from the ERA
+  name: string;
+  calories: number;
+  dietCheat: boolean;
 }
 
 export interface IUserRoles {
-  manager: boolean;
+  admin: boolean;
   user: boolean;
 }
 
@@ -44,27 +43,12 @@ export interface ISiteUser {
   roles: IUserRoles;
 }
 
-export interface IBike {
-  id: string;
-  created: string; // 2022-02-16T04:50 (toISOString)
-
-  available: boolean;
-  model: string;
-  color: string;
-  location: string;
-
-  rating: IBikeRating;
-
-  rentalDays: IRentalDay[];
-}
-
 export type tyUserState = "" | null | ISiteUser; // // empty string means it is right now being determined the status of the user
 
 export interface ISweetState {
   currUser: tyUserState;
-  highlightedUserId: null | string;
+
   allUsers: ISiteUser[];
-  allBikes: IBike[];
 
   showDevControl: boolean;
 
@@ -94,9 +78,9 @@ const showSidebarForMobileLocalStorage = (window.localStorage.getItem(
 
 const initialState: ISweetState = {
   currUser: "",
-  highlightedUserId: null,
+
   allUsers: [],
-  allBikes: [],
+
   // userStatus: AuthFlowEnum.notLoggedIn,
 
   showDevControl: showDevControlLocalStorage === "true" ? true : false,
@@ -138,10 +122,10 @@ export const sweetSlice = createSlice({
       window.localStorage.setItem(LSEnum.t_showSidebarForMobile, cand ? "true" : "false");
     },
 
-    changeHighlightedUser: (state, payload: PayloadAction<null | string>) => {
-      const cand = payload.payload;
-      state.highlightedUserId = cand;
-    },
+    // changeHighlightedUser: (state, payload: PayloadAction<null | string>) => {
+    //   const cand = payload.payload;
+    //   state.highlightedUserId = cand;
+    // },
 
     changeToggleExpandAllUsers: (state, payload: PayloadAction<null | boolean | undefined>) => {
       const cand = payload.payload;
@@ -156,7 +140,7 @@ export const {
   changeShowDevControl,
   changeShowFullSidebarForDesktop,
   changeShowSidebarForMobile,
-  changeHighlightedUser,
+  // changeHighlightedUser,
   changeToggleExpandAllUsers,
 } = sweetSlice.actions;
 

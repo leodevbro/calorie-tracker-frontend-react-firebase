@@ -5,7 +5,7 @@ import style from "./PopOfCreateBike.module.scss";
 // import { useNavigate } from "react-router-dom";
 
 import { SweetPopup } from "src/components/SweetPopup/SweetPopup";
-import { CreateUpdateBike } from "../CreateUpdateBike/CreateUpdateBike";
+import { CreateUpdateFoodEntry } from "../CreateUpdateBike/CreateUpdateBike";
 // import { useNavigate } from "react-router-dom";
 import { cla } from "src/App";
 // import { useAppSelector } from "src/app/hooks";
@@ -33,7 +33,7 @@ export const PopOfCreateBike: React.FC<{
           setShowCreateBikePop((prev) => false);
         }}
         content={
-          <CreateUpdateBike
+          <CreateUpdateFoodEntry
             successFn={() => {
               setShowCreateBikePop((prev) => false);
               successFn();

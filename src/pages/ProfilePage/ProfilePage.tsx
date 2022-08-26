@@ -23,7 +23,7 @@ export const ProfilePage: React.FC<{}> = () => {
 
   return (
     <div className={style.ground}>
-      <div>{thisUser && `${thisUser?.email} (${thisUser.roles.manager ? "Manager" : "User"})`}</div>
+      <div>{thisUser && `${thisUser?.email} (${thisUser.roles.admin ? "Manager" : "User"})`}</div>
 
       <div>{thisUser && `${thisUser.firstName} ${thisUser.lastName}`}</div>
 
