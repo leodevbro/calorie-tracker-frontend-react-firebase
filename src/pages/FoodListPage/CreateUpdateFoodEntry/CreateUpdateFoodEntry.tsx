@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 // import { Link } from "react-router-dom";
 
 import { SweetInput } from "src/components/SweetInput/SweetInput";
@@ -14,10 +14,11 @@ import style from "./CreateUpdateFoodEntry.module.scss";
 import { CheckboxInp } from "src/components/SweetInput/CheckboxInp";
 import { IFoodTableRow } from "../FoodListPage";
 import DateTimePicker from "react-datetime-picker";
-import { db } from "src/connection-to-backend/db/firebase/config";
+// import { db } from "src/connection-to-backend/db/firebase/config";
 import { dbApi } from "src/connection-to-backend/db/bridge";
-import { equalFnForCurrUserDocChange } from "src/App";
+import { cla, equalFnForCurrUserDocChange } from "src/App";
 import { useAppSelector } from "src/app/hooks";
+import { IFoodEntry } from "src/app/redux-slices/sweetSlice";
 
 // import { db } from "src/connection-to-backend/db/firebase/config";
 // import { useAppSelector } from "src/app/hooks";
@@ -26,7 +27,8 @@ export const CreateUpdateFoodEntry: React.FC<{
   preId?: string;
   currFoodEntry?: IFoodTableRow;
   successFn: () => any;
-}> = ({ preId = "", successFn: closerFn, currFoodEntry }) => {
+  mode?: "forOtherUser";
+}> = ({ preId = "", successFn: closerFn, currFoodEntry, mode }) => {
   const veryCurrUser = useAppSelector((store) => store.sweet.currUser, equalFnForCurrUserDocChange);
   const [bigError, setBigError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -35,8 +37,26 @@ export const CreateUpdateFoodEntry: React.FC<{
     new Date(),
   );
 
+  const idOfOtherUserRef = useRef("");
+
+  const [mailOfOtherUserExists, setMailOfOtherUserExists] = useState<null | boolean>(null);
+
+  const cl_mail0_mail1_mail2 = useMemo(() => {
+    // mail0 -> is being determined
+    // mail1 -> mail not found
+    // mail2 -> mail found (exists)
+
+    if (mailOfOtherUserExists === null) {
+      return style.mail0;
+    } else if (mailOfOtherUserExists === false) {
+      return style.mail1;
+    }
+    return style.mail2;
+  }, [mailOfOtherUserExists]);
+
   const naming = useMemo(() => {
     const obj = {
+      userMail: `${preId}_userMail`,
       intakeDateTime: `${preId}_intakeDateTime`,
       name: `${preId}_name`,
       calories: `${preId}_calories`,
@@ -50,39 +70,9 @@ export const CreateUpdateFoodEntry: React.FC<{
 
   // const navigate = useNavigate();
 
-  const updateFood = useCallback(
-    async ({
-      id,
-    }: // available,
-    // model,
-    // color,
-    // location,
-    {
-      id: string;
-      // available: boolean;
-      // model: string;
-      // color: string;
-      // location: string;
-    }) => {
-      // // const currBike = doc(db, "bikes", id);
-      // // console.log(model);
-      // const newFields = {
-      //   available,
-      //   model,
-      //   color,
-      //   location,
-      // };
-      // try {
-      //   await updateDoc(currBike, newFields);
-      // } catch (err) {
-      //   console.log(err);
-      // }
-    },
-    [],
-  );
-
   const formik = useFormik({
     initialValues: {
+      [naming.userMail]: "",
       [naming.dietCheat]: currFoodEntry?.dietCheat ? true : false,
       [naming.name]: currFoodEntry?.name || "",
       [naming.calories]: currFoodEntry?.calories || "",
@@ -90,6 +80,10 @@ export const CreateUpdateFoodEntry: React.FC<{
     },
 
     validationSchema: Yup.object({
+      [naming.userMail]:
+        mode === "forOtherUser"
+          ? Yup.string().email("Invalid email address").required("Required")
+          : Yup.string().email("Invalid email address"),
       [naming.dietCheat]: Yup.boolean(),
       [naming.name]: Yup.string().max(70, "Must be 70 characters or less").required("Required"),
       [naming.calories]: Yup.number()
@@ -108,6 +102,12 @@ export const CreateUpdateFoodEntry: React.FC<{
         return;
       }
 
+      if (mode === "forOtherUser") {
+        if (mailOfOtherUserExists !== true || !idOfOtherUserRef.current) {
+          return;
+        }
+      }
+
       setIsLoading((prev) => true);
 
       try {
@@ -119,6 +119,17 @@ export const CreateUpdateFoodEntry: React.FC<{
           //   model: values.currBikeModel,
           //   location: values.currBikeLocation,
           // });
+
+          const theOb: Omit<IFoodEntry, "authorId" | "created"> = {
+            id: currFoodEntry.id,
+            calories: values[naming.calories] as number,
+            dietCheat: values[naming.dietCheat] as boolean,
+            intakeDateTime: values[naming.intakeDateTime] as number,
+            name: values[naming.name] as string,
+          };
+
+          const idOfUpdated = await dbApi.updateOneFood(theOb);
+          console.log("idOfUpdated:", idOfUpdated);
         } else {
           // await addDoc(bikesCollectionRef, {
           //   created: new Date().toISOString(),
@@ -134,8 +145,10 @@ export const CreateUpdateFoodEntry: React.FC<{
           //   },
           // } as Omit<IBike, "id">);
 
+          // const idOfOtherUser = await dbApi.getOneUserFromDb();
+
           const newFoodId = await dbApi.createOneFood({
-            authorId: veryCurrUser.id,
+            authorId: mode === "forOtherUser" ? idOfOtherUserRef.current : veryCurrUser.id,
             calories: values[naming.calories] as number,
             dietCheat: values[naming.dietCheat] as boolean,
             intakeDateTime: values[naming.intakeDateTime] as number,
@@ -143,9 +156,9 @@ export const CreateUpdateFoodEntry: React.FC<{
             created: new Date().getTime(),
           });
 
-          console.log(newFoodId);
+          console.log("newFoodId:", newFoodId);
         }
-        // console.log("vqlouzdebi");
+
         setTimeout(() => {
           setIsLoading((prev) => false);
         }, 1000);
@@ -154,13 +167,14 @@ export const CreateUpdateFoodEntry: React.FC<{
 
         // navigate("/first");
       } catch (err: any) {
-        // console.log({...err as any}, typeof err);
         console.log(err, typeof err);
         setBigError(err.code);
         setIsLoading((prev) => false);
       }
     },
   });
+
+  const debounceOfMailCheckRef = useRef<NodeJS.Timeout | null | undefined>();
 
   return (
     <div className={style.ground}>
@@ -175,6 +189,64 @@ export const CreateUpdateFoodEntry: React.FC<{
           } Food Entry`}</div>
 
           <div className={style.bigError}>{bigError}</div>
+
+          {mode === "forOtherUser" && (
+            <div className={cla(style.mailInputWrapOfOtherUser, cl_mail0_mail1_mail2)}>
+              <SweetInput
+                id={naming.userMail}
+                name={naming.userMail}
+                autoComplete={"email"}
+                kind={"kEmail"}
+                label={"Email of other user"}
+                placeHolder={"Email of other user"}
+                //
+                className={style.inp}
+                value={formik.values[naming.userMail] as string}
+                onChange={async (e) => {
+                  setMailOfOtherUserExists(null);
+                  const newVal = e.target.value;
+
+                  formik.setFieldValue(naming.userMail, newVal);
+
+                  if (debounceOfMailCheckRef.current) {
+                    clearTimeout(debounceOfMailCheckRef.current);
+                  }
+
+                  // await waitMs(400);
+
+                  // if (!formik.errors[naming.userMail]) {
+                  // console.log("shidaaa");
+
+                  // ---->>>>>
+                  debounceOfMailCheckRef.current = setTimeout(async () => {
+                    // console.log(1);
+                    try {
+                      const userByMail = await dbApi.getOneUserByMail(newVal);
+
+                      if (userByMail) {
+                        setMailOfOtherUserExists(true);
+                        idOfOtherUserRef.current = userByMail.id;
+                      } else {
+                        setMailOfOtherUserExists(false);
+                      }
+                    } catch (err) {
+                      console.log(err);
+                    }
+                  }, 500);
+
+                  // ----<<<<<<
+                  // } else {
+                  //   setMailOfOtherUserExists(false);
+                  // }
+                }}
+                onFocus={undefined}
+                onBlur={formik.handleBlur}
+                //
+                // required={true}
+                error={formik.touched[naming.userMail] && formik.errors[naming.userMail]}
+              />
+            </div>
+          )}
 
           <CheckboxInp
             className={style.myCheck}
@@ -229,6 +301,8 @@ export const CreateUpdateFoodEntry: React.FC<{
             // required={true}
             error={formik.touched[naming.calories] && formik.errors[naming.calories]}
           />
+
+          <h4 style={{ color: "gray" }}>Date/time of intake</h4>
 
           <DateTimePicker
             calendarClassName={style.datePickFrame}
