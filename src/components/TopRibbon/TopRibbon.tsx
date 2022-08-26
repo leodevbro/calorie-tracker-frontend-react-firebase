@@ -110,7 +110,8 @@ export const TopRibbon: React.FC<{ className?: string }> = ({ className }) => {
                 <FilterSvg />
               </div>
             </div> */}
-            <SearchBar />
+            {/* <SearchBar /> */}
+            <h2>Calorie tracking app</h2>
           </div>
 
           <div className={style.rightSide}>
