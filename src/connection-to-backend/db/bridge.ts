@@ -1,9 +1,5 @@
 import { collection, orderBy, query, where } from "firebase/firestore";
-import {
-
-  ISiteUser,
-  IUserRoles,
-} from "src/app/redux-slices/sweetSlice";
+import { IFoodEntry, ISiteUser, IUserRoles } from "src/app/redux-slices/sweetSlice";
 import {
   firebaseDb_addDoc,
   firebaseDb_getDoc_byPath,
@@ -21,12 +17,17 @@ import {
   createOneUser_byAdminSdk,
   updateOneUser_byAdminSdk,
   verifyPassword,
+  firebaseDb_deleteDoc_byPath,
 } from "./firebase/api";
 import { db } from "./firebase/config";
 
 enum cEnum {
   users = "users",
   foodlist = "foodlist",
+}
+
+export interface IFoodWithAuthor extends IFoodEntry {
+  author: ISiteUser;
 }
 
 export const dbApi = {
@@ -134,6 +135,23 @@ export const dbApi = {
     return userDoc;
   },
 
+  getOneUserByMail: async (mail: string) => {
+    const myItems: ISiteUser[] = (await firebaseDb_getCollection_byQuery(
+      query(
+        collection(db, "/", cEnum.users),
+        where("email", "==", mail),
+        // orderBy("tist", "asc"),
+      ),
+    )) as any;
+
+    if (!myItems || myItems.length === 0) {
+      return null;
+    }
+
+    const userDoc = myItems[0];
+    return userDoc;
+  },
+
   getAllUsersFromDb: async () => {
     const myItems = await firebaseDb_getCollection_byQuery(
       query(
@@ -170,6 +188,82 @@ export const dbApi = {
   },
 
   generateUnsubscribeOnAuthChange: generateUnsubscribeOnAuthChange,
+
+  createOneFood: async (data: Omit<IFoodEntry, "id">) => {
+    const newId = await firebaseDb_addDoc([cEnum.foodlist], data);
+    return newId;
+  },
+
+  updateOneFood: async (data: Omit<IFoodEntry, "authorId" | "created">) => {
+    const withUndefinedId = { ...data, id: undefined };
+    const cleaned = JSON.parse(JSON.stringify(withUndefinedId));
+
+    const newId = await firebaseDb_updateDoc_byPath([cEnum.foodlist, data.id], cleaned);
+    return newId;
+  },
+
+  deleteOneFood: async (id: string) => {
+    const oldId = await firebaseDb_deleteDoc_byPath([cEnum.foodlist, id]);
+    return oldId;
+  },
+
+  getEntireFoodListOfOneAuthor: async (authorId: string) => {
+    const theRawList: IFoodEntry[] = (await firebaseDb_getCollection_byQuery(
+      query(
+        collection(db, "/", cEnum.foodlist),
+        where("authorId", "==", authorId),
+        // orderBy("created", "desc"),
+      ),
+    )) as any;
+
+    const authorDoc = (await firebaseDb_getDoc_byPath([cEnum.users, authorId])) as ISiteUser | null;
+
+    if (!authorDoc) {
+      return null;
+    }
+
+    const finalArrayOfFood: IFoodWithAuthor[] = theRawList.map((food) => {
+      return {
+        ...food!,
+        author: authorDoc,
+      };
+    });
+
+    return finalArrayOfFood;
+  },
+
+  getEntireFoodListOfAllUsers: async () => {
+    const entireListOfFoodOfAllUsers_raw: IFoodEntry[] = (await firebaseDb_getCollection_byQuery(
+      query(collection(db, "/", cEnum.foodlist), orderBy("created", "desc")),
+    )) as any;
+
+    const entireListOfUsers: (ISiteUser | null)[] = (await firebaseDb_getCollection_byQuery(
+      query(collection(db, "/", cEnum.users), orderBy("created", "desc")),
+    )) as any;
+
+    // ------------
+
+    const hashMap_userId_userObj: { [id: string]: ISiteUser } = {};
+
+    for (const user of entireListOfUsers) {
+      if (user) {
+        hashMap_userId_userObj[user.id] = user;
+      }
+    }
+
+    // console.log("hashMap_userId_userObj:", hashMap_userId_userObj);
+
+    const finalArrayOfFood: IFoodWithAuthor[] = entireListOfFoodOfAllUsers_raw.map((food) => {
+      return {
+        ...food!,
+        author: hashMap_userId_userObj[food!.authorId],
+      };
+    });
+
+    // console.log("jaaaaa:", finalArrayOfFood);
+
+    return finalArrayOfFood;
+  },
 
   // rateOneBike: async ({ bikeId, inputRating }: { bikeId: string; inputRating: IBikeRating }) => {
   //   const newFields = {
