@@ -9,7 +9,7 @@ import {
 } from "src/components/SweetTable3/SweetTable3";
 // import { useAppSelector } from "../app/hooks";
 
-import style from "./BikesPage.module.scss";
+import style from "./FoodListPage.module.scss";
 
 // import checkIconSvgPath from "src/styling-constants/svg-items/check.svg";
 // import eyeSvgPath from "src/styling-constants/svg-items/eye.svg";
@@ -29,9 +29,7 @@ import { useAppSelector } from "src/app/hooks";
 
 // import { cla } from "src/App";
 
-import { ButtonToUpdateBike } from "./PopOfUpdateBike/PopOfUpdateBike";
-import { PopOfCreateBike } from "./PopOfCreateBike/PopOfCreateBike";
-import { PopOfDeleteBike } from "./PopOfDeleteBike/PopOfDeleteBike";
+
 
 import { equalFnForCurrUserDocChange } from "src/App";
 import { CoolLoader } from "src/components/CoolLoader/CoolLoader";
@@ -41,6 +39,9 @@ import { CoolLoader } from "src/components/CoolLoader/CoolLoader";
 import { myCustomFilterFnOfRate } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByMinMax/ColumnFilterByMinMax";
 import { myCustomFilterFnOfBool } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByBool/ColumnFilterByBool";
 import { IFoodEntry } from "src/app/redux-slices/sweetSlice";
+import { PopOfUpdateFoodEntry } from "./PopOfUpdateFoodEntry/PopOfUpdateFoodEntry";
+import { PopOfDeleteFoodEntry } from "./PopOfDeleteFoodEntry/PopOfDeleteFoodEntry";
+import { PopOfCreateFoodEntry } from "./PopOfCreateFoodEntry/PopOfCreateFoodEntry";
 
 const genFoodImagePath = "https://i.ibb.co/YZRXt5z/2022-08-26-10-56-05.png";
 
@@ -66,7 +67,7 @@ export interface IFoodTableRow extends IFoodEntry {
 //   });
 // };
 
-export const FoodPage: React.FC<{}> = () => {
+export const FoodListPage: React.FC<{}> = () => {
   const veryCurrUser = useAppSelector((store) => store.sweet.currUser, equalFnForCurrUserDocChange);
   // console.log("veryCurrUser:", veryCurrUser);
 
@@ -256,7 +257,7 @@ export const FoodPage: React.FC<{}> = () => {
           Cell: (cell) => {
             // console.log("aqaaa");
             return (
-              <ButtonToUpdateBike
+              <PopOfUpdateFoodEntry
                 userListIndex={cell.row.index}
                 currBike={tableData[cell.row.index]}
                 successFn={() => {
@@ -283,7 +284,7 @@ export const FoodPage: React.FC<{}> = () => {
             // const currRowObj = cell.row;
 
             return (
-              <PopOfDeleteBike
+              <PopOfDeleteFoodEntry
                 userListIndex={cell.row.index}
                 currFoodEntry={tableData[cell.row.index]}
                 deleteBike={deleteBike}
@@ -363,7 +364,7 @@ export const FoodPage: React.FC<{}> = () => {
 
       <div className={style.pageTitle}>{"Bikes"}</div>
       {veryCurrUser && veryCurrUser.roles.admin && (
-        <PopOfCreateBike
+        <PopOfCreateFoodEntry
           successFn={() => {
             getFoodArr();
           }}

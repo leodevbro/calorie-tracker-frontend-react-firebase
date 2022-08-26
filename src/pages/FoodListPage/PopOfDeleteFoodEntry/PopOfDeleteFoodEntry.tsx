@@ -1,18 +1,19 @@
 import React, { useMemo, useState } from "react";
 // import { Link } from "react-router-dom";
 
-import style from "./PopOfDeleteBike.module.scss";
+import style from "./PopOfDeleteFoodEntry.module.scss";
 // import { useNavigate } from "react-router-dom";
 
-import { IFoodTableRow } from "../BikesPage";
+
 import { SweetPopup } from "src/components/SweetPopup/SweetPopup";
 
 // import { useNavigate } from "react-router-dom";
 // import { cla } from "src/App";
 import { WideButton } from "src/components/buttons/WideButton";
+import { IFoodTableRow } from "../FoodListPage";
 // import { useAppSelector } from "src/app/hooks";
 
-export const PopOfDeleteBike: React.FC<{
+export const PopOfDeleteFoodEntry: React.FC<{
   userListIndex: number;
   currFoodEntry: IFoodTableRow;
   deleteBike: (id: string) => Promise<void>;

@@ -7,7 +7,7 @@ import { WideButton } from "src/components/buttons/WideButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import style from "./CreateUpdateBike.module.scss";
+import style from "./CreateUpdateFoodEntry.module.scss";
 // import { useNavigate } from "react-router-dom";
 
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
@@ -15,8 +15,9 @@ import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 // import { IBike } from "src/app/redux-slices/sweetSlice";
 // import { createUser } from "src/app/db-api";
 import { CheckboxInp } from "src/components/SweetInput/CheckboxInp";
-import { IFoodTableRow } from "../BikesPage";
-import { db } from "src/connection-to-backend/db/firebase/config";
+import { IFoodTableRow } from "../FoodListPage";
+
+// import { db } from "src/connection-to-backend/db/firebase/config";
 // import { useAppSelector } from "src/app/hooks";
 
 export const CreateUpdateFoodEntry: React.FC<{

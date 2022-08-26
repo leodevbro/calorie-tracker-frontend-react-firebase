@@ -1,17 +1,19 @@
 import React, { useMemo, useState } from "react";
 // import { Link } from "react-router-dom";
 
-import style from "./PopOfUpdateBike.module.scss";
+import style from "./PopOfUpdateFoodEntry.module.scss";
 // import { useNavigate } from "react-router-dom";
 
-import { IFoodTableRow } from "../BikesPage";
+
 import { SweetPopup } from "src/components/SweetPopup/SweetPopup";
-import { CreateUpdateFoodEntry } from "../CreateUpdateBike/CreateUpdateBike";
+
 // import { useNavigate } from "react-router-dom";
 import { cla } from "src/App";
+import { IFoodTableRow } from "../FoodListPage";
+import { CreateUpdateFoodEntry } from "../CreateUpdateFoodEntry/CreateUpdateFoodEntry";
 // import { useAppSelector } from "src/app/hooks";
 
-export const ButtonToUpdateBike: React.FC<{
+export const PopOfUpdateFoodEntry: React.FC<{
   userListIndex: number;
   currBike?: IFoodTableRow;
   successFn: () => any;
