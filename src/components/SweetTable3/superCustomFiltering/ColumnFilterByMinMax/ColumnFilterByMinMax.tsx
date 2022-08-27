@@ -13,20 +13,31 @@ export interface IMinMax {
   max: number | null;
 }
 
-export const myCustomFilterFnOfRate: FilterFnOfTableT = (rows, columnIds, filterValue: IMinMax) => {
+const MIN = 0;
+const MAX = 100000;
+
+export const myCustomFilterFnOfCalories: FilterFnOfTableT = (
+  rows,
+  columnIds,
+  filterValue: IMinMax,
+) => {
   const columnId = columnIds[0];
   // console.log("fiii:", filterValue.min, filterValue.max);
 
-  if (!filterValue.min && !filterValue.max) {
+  if (typeof filterValue.min !== "number" && typeof filterValue.max !== "number") {
     return rows;
   }
 
-  if (!filterValue.min) {
+  // if (!filterValue.min && !filterValue.max) {
+  //   return rows;
+  // }
+
+  if (typeof filterValue.min !== "number") {
     return rows.filter((row) => {
       const thisData = row.original[columnId];
-      const average = thisData.average;
+      // const average = thisData.average;
 
-      if (typeof average === "number" && average <= filterValue.max!) {
+      if (typeof thisData === "number" && thisData <= filterValue.max!) {
         return true;
       }
 
@@ -34,12 +45,12 @@ export const myCustomFilterFnOfRate: FilterFnOfTableT = (rows, columnIds, filter
     });
   }
 
-  if (!filterValue.max) {
+  if (typeof filterValue.max !== "number") {
     return rows.filter((row) => {
       const thisData = row.original[columnId];
-      const average = thisData.average;
+      // const average = thisData.average;
 
-      if (typeof average === "number" && average >= filterValue.min!) {
+      if (typeof thisData === "number" && thisData >= filterValue.min!) {
         return true;
       }
 
@@ -49,14 +60,20 @@ export const myCustomFilterFnOfRate: FilterFnOfTableT = (rows, columnIds, filter
 
   return rows.filter((row) => {
     const thisData = row.original[columnId];
-    const average = thisData.average;
+    // const average = thisData.average;
 
-    if (typeof average === "number" && average >= filterValue.min! && average <= filterValue.max!) {
+    if (
+      typeof thisData === "number" &&
+      thisData >= filterValue.min! &&
+      thisData <= filterValue.max!
+    ) {
       return true;
     }
 
     return false;
   });
+
+  // return null;
 };
 
 export const ColumnFilterByMinMax: React.FC<{
@@ -105,12 +122,12 @@ export const ColumnFilterByMinMax: React.FC<{
             // max={5}
             // min={1}
             // placeholder={"min"}
-            value={val.min || ""}
+            value={typeof val.min === "number" ? val.min : ""}
             onChange={(e) => {
               const newVMin = e.target.value;
               // console.log(newVMin);
 
-              if (newVMin !== "" && (Number(newVMin) < 1 || Number(newVMin) > 5)) {
+              if (newVMin !== "" && (Number(newVMin) < MIN || Number(newVMin) > MAX)) {
                 return;
               }
 
@@ -134,11 +151,11 @@ export const ColumnFilterByMinMax: React.FC<{
             // max={5}
             // min={1}
             // placeholder={"max"}
-            value={val.max || ""}
+            value={typeof val.max === "number" ? val.max : ""}
             onChange={(e) => {
               const newVMax = e.target.value;
               // console.log(newVMax);
-              if (newVMax !== "" && (Number(newVMax) > 5 || Number(newVMax) < 1)) {
+              if (newVMax !== "" && (Number(newVMax) > MAX || Number(newVMax) < MIN)) {
                 return;
               }
 
