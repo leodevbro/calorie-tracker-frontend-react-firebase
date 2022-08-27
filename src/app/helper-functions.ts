@@ -66,7 +66,7 @@ export function parseDateStringIntoUTCDate(input: string /* 2010-01-02 */) {
 //   // return utc1 - utc2;
 // }
 
-const dayInMilliseconds = 1000 * 60 * 60 * 24;
+export const dayInMilliseconds = 1000 * 60 * 60 * 24;
 
 const datingNameWithPeriodMilliseconds = {
   [DatingNamesEnum.all]: null, //
@@ -82,14 +82,14 @@ export const getPeriodMilliseconds = (name: DatingNamesEnum) => {
   return datingNameWithPeriodMilliseconds[name];
 };
 
-const oneDayInMs = 1000 * 60 * 60 * 24;
+export const msInOneDay = 1000 * 60 * 60 * 24;
 
 export const basicDateToString = (date: Date) => {
   return date.toISOString().slice(0, 10);
 };
 
 export const getDateAfterNDays = (baseDate: Date, shiftDays: number): Date => {
-  const inc = oneDayInMs * shiftDays;
+  const inc = msInOneDay * shiftDays;
   const baseDateInMs = baseDate.getTime();
   const newDate = new Date(baseDateInMs + inc);
   return newDate;

@@ -20,7 +20,7 @@ export const TheFilters: React.FC<{
   tableColumns: MyColumnsT;
   tState: any;
 }> = ({ className, setFilter, tableData, tableColumns, tState }) => {
-  console.log(tState);
+  // console.log(tState);
 
   const arrOfNonDating = useMemo(() => {
     const theArr: ReactNode[] = tableColumns
@@ -86,8 +86,8 @@ export const TheFilters: React.FC<{
     return theArr;
   }, [setFilter, tState, tableColumns, tableData]);
 
-  console.log("arrOfDating:");
-  console.log(arrOfDating);
+  // console.log("arrOfDating:");
+  // console.log(arrOfDating);
 
   return (
     <div className={cla(className, style.ground)}>
