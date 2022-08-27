@@ -1,6 +1,6 @@
 ## Video instruction:
 
-<a target="_blank" href="https://drive.google.com/file/d/19tNW7HoXETcsX-WTII3ZLE_uBDwM0gFz/view">https://drive.google.com/file/d/19tNW7HoXETcsX-WTII3ZLE_uBDwM0gFz/view</a>
+<a target="_blank" href="#">link will be here when ready</a>
 
 # Getting Started with Create React App
 
