@@ -41,6 +41,8 @@ import { PopOfDeleteFoodEntry } from "./PopOfDeleteFoodEntry/PopOfDeleteFoodEntr
 import { PopOfCreateFoodEntry } from "./PopOfCreateFoodEntry/PopOfCreateFoodEntry";
 import { dbApi, IFoodWithAuthor } from "src/connection-to-backend/db/bridge";
 import { myCustomFilterFnOfDateRange } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByDateRange/ColumnFilterByDateRange";
+import { myCustomFilterFnOfCalories } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByMinMax/ColumnFilterByMinMax";
+import { getDateAfterNDays, msInOneDay } from "src/app/helper-functions";
 
 const genFoodImagePath = "https://i.ibb.co/YZRXt5z/2022-08-26-10-56-05.png";
 
@@ -107,13 +109,87 @@ const calcDailyStats = (rawArrOfFood: IFoodWithAuthor[]): IFoodWithDailyStats[] 
   return newArr;
 };
 
+const generateDateStringsForLast_n_days = (
+  n: number,
+  initialDate?: Date,
+): { arr: string[]; hashMap: { [key: string]: true } } => {
+  const currDate = initialDate || new Date();
+  const dayLengthMs = msInOneDay;
+
+  const dateStringsArr = [currDate.toLocaleDateString()];
+
+  let veryCurrDateNum = currDate.getTime();
+
+  for (let step = 1; step < n; step += 1) {
+    veryCurrDateNum -= dayLengthMs;
+    dateStringsArr.push(new Date(veryCurrDateNum).toLocaleDateString());
+  }
+
+  const theHashMap: { [key: string]: true } = {};
+
+  for (const dateString of dateStringsArr) {
+    theHashMap[dateString] = true;
+  }
+
+  return {
+    arr: dateStringsArr,
+    hashMap: theHashMap,
+  };
+};
+
 const calcGlobalStats = (tableInfo: IFoodTableRow[]): IGlobalStats => {
   // const entriesPerUser_last_14_days =
+  // console.log("tableInfo:", tableInfo[0]);
+
+  const nowDate = new Date();
+  const nowDateString = nowDate.toLocaleDateString();
+
+  const dateStringsOfLast_7_days = generateDateStringsForLast_n_days(7, undefined);
+
+  const day_6_step_beforeToday = getDateAfterNDays(nowDate, -6);
+  const dateStringsOfLast_7_days_beforeLast_7 = generateDateStringsForLast_n_days(
+    7,
+    day_6_step_beforeToday,
+  );
+
+  let entriesToday = 0;
+  let entriesLast_7_days = 0;
+  let entriesFromPast_14_toPast_7 = 0;
+  let averageCaloriesPerUserLast_7_days = 0;
+
+  for (const row of tableInfo) {
+    // for entriesToday
+
+    const dateStringOfCurrIntake = new Date(row.intakeDateTime).toLocaleDateString();
+
+    // console.log(dateStringOfCurrIntake, nowDateString);
+
+    if (dateStringOfCurrIntake === nowDateString) {
+      entriesToday += row.calories;
+    }
+
+    // --------------------
+
+    // for entriesLast_7_days
+
+    if (dateStringsOfLast_7_days.hashMap[dateStringOfCurrIntake] === true) {
+      entriesLast_7_days += row.calories;
+    }
+
+    // --------------------
+
+    // for entriesFromPast_14_toPast_7
+    if (dateStringsOfLast_7_days_beforeLast_7.hashMap[dateStringOfCurrIntake] === true) {
+      entriesFromPast_14_toPast_7 += row.calories;
+    }
+  }
+
+  // console.log("entriesToday:", entriesToday);
 
   const obj: IGlobalStats = {
-    entriesToday: 0,
-    entriesLast_7_days: 0,
-    entriesFromPast_14_toPast_7: 0,
+    entriesToday,
+    entriesLast_7_days,
+    entriesFromPast_14_toPast_7,
     averageCaloriesPerUserLast_7_days: 0,
   };
 
@@ -345,7 +421,7 @@ export const FoodListPage: React.FC<{}> = () => {
                     outline: "1px solid gray",
                   }}
                 >
-                  <div>{"this entry / entire day"}</div>
+                  <div>{"this entry / entire day (minus cheat)"}</div>
                   <div style={{ color: "red" }}>{`Daily limit is ${dbApi.dailyCalorieLimit}`}</div>
                 </div>
                 // </span>
@@ -378,7 +454,7 @@ export const FoodListPage: React.FC<{}> = () => {
         ),
 
         accessor: "calories",
-        filterType: "string",
+        filterType: "minmax",
         trySortable: true,
         prioritizedStyles: {
           minWidth: 100,
@@ -413,6 +489,7 @@ export const FoodListPage: React.FC<{}> = () => {
           );
         },
 
+        filter: myCustomFilterFnOfCalories,
         // Filter: ColumnFilter,
         Filter: () => null,
         // disableFilters: true,
