@@ -115,12 +115,12 @@ export const ColumnFilterByMinMax: React.FC<{
 
   return (
     <div className={cla(className, style.ground)}>
-      <div className={style.theLabel}>{label}</div>
+      {/* <div className={style.theLabel}>{label}</div> */}
 
       <div className={style.theInputs}>
         <div className={style.inputWrap}>
           <label className={cla(style.label)} htmlFor={`${superId}_min`}>
-            {"Min"}
+            {"C. Min"}
           </label>
 
           <input
@@ -149,7 +149,7 @@ export const ColumnFilterByMinMax: React.FC<{
 
         <div className={style.inputWrap}>
           <label className={cla(style.label)} htmlFor={`${superId}_max`}>
-            {"Max"}
+            {"C. Max"}
           </label>
 
           <input

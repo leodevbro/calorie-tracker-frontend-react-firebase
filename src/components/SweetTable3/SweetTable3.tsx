@@ -523,18 +523,22 @@ export const SweetTable3: React.FC<{
     <div className={cla(className, style.tableWrap, cl_narrowTable_wideTable)}>
       <div>
         <div className={style.beforeTable}>
-          <div onClick={resetAllFilters}>Reset all filters</div>
-
-          <div className={style.searchBox}>
-            <div className={style.searchIconWrap}>
-              <img className={style.searchIcon} src={searchSvgPath} alt={"search icon"} />
+          <div className={style.globalSearchWrap}>
+            <div className={style.resetAllFilters} onClick={resetAllFilters}>
+              Reset all filters
             </div>
-            <input
-              className={style.searchInput}
-              placeholder={searchPlaceholder}
-              value={searchString}
-              onChange={searchStringChanger}
-            />
+
+            <div className={style.searchBox}>
+              <div className={style.searchIconWrap}>
+                <img className={style.searchIcon} src={searchSvgPath} alt={"search icon"} />
+              </div>
+              <input
+                className={style.searchInput}
+                placeholder={searchPlaceholder}
+                value={searchString}
+                onChange={searchStringChanger}
+              />
+            </div>
           </div>
 
           <div className={cla(style.columnFilters)}>

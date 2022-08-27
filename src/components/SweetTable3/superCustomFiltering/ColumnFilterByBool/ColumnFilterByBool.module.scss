@@ -33,8 +33,12 @@
       padding: 2px;
       input {
         max-width: 44px;
-        
+        margin: 0;
       }
     }
   }
+}
+
+.theLabel {
+  font-weight: 600;
 }
