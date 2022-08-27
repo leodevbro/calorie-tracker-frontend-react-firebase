@@ -72,7 +72,8 @@ export const ColumnFilterByDateRange: React.FC<{
   columnId: string;
   setFilter: (columnId: string, filterValue: any) => any;
   tableData?: any;
-}> = ({ className, label, columnId, setFilter, tableData }) => {
+  tState: any;
+}> = ({ className, label, columnId, setFilter, tableData, tState }) => {
   const [valueOfDateTime_from, setValueOfDateTime_from] = useState<
     Date | [Date, Date] | undefined | null
   >(null);
@@ -113,6 +114,13 @@ export const ColumnFilterByDateRange: React.FC<{
   useEffect(() => {
     setFilter(columnId, currDateRange);
   }, [columnId, currDateRange, setFilter, tableData]);
+
+  useEffect(() => {
+    if (tState.filters.length === 0) {
+      setValueOfDateTime_from(null);
+      setValueOfDateTime_to(null);
+    }
+  }, [tState.filters]);
 
   return (
     <div className={cla(className, style.ground)}>

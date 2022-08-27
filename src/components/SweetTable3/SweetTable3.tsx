@@ -264,7 +264,14 @@ export const SweetTable3: React.FC<{
 
     // @ts-ignore
     setFilter,
+    // @ts-ignore
+    setAllFilters,
   } = tableInstance;
+
+  const resetAllFilters = useCallback(() => {
+    setAllFilters([]);
+    setGlobalFilter("");
+  }, [setAllFilters, setGlobalFilter]);
 
   /*
   useEffect(() => {
@@ -505,10 +512,19 @@ export const SweetTable3: React.FC<{
     }
   }, [filters, setFilter]);
 
+  useEffect(() => {
+    if ((state as any).globalFilter === "") {
+      setSearchString("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [(state as any).globalFilter]);
+
   return (
     <div className={cla(className, style.tableWrap, cl_narrowTable_wideTable)}>
       <div>
         <div className={style.beforeTable}>
+          <div onClick={resetAllFilters}>Reset all filters</div>
+
           <div className={style.searchBox}>
             <div className={style.searchIconWrap}>
               <img className={style.searchIcon} src={searchSvgPath} alt={"search icon"} />
@@ -566,6 +582,7 @@ export const SweetTable3: React.FC<{
               setFilter={setFilter}
               tableData={tableData as any}
               tableColumns={tableColumns}
+              tState={state}
             />
           </div>
         </div>

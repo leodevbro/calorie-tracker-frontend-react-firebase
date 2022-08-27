@@ -40,7 +40,8 @@ export const ColumnFilterByBool: React.FC<{
   columnId: string;
   setFilter: (columnId: string, filterValue: any) => any;
   tableData?: any;
-}> = ({ className, label, columnId, setFilter, tableData }) => {
+  tState?: any;
+}> = ({ className, label, columnId, setFilter, tableData, tState }) => {
   const vals = useMemo(() => {
     return [null, true, false];
   }, []);
@@ -60,6 +61,12 @@ export const ColumnFilterByBool: React.FC<{
     const newValue = vals[latestValRef.current];
     setFilter(columnId, newValue);
   }, [columnId, setFilter, tableData, vals]);
+
+  useEffect(() => {
+    if (tState.filters.length === 0) {
+      setValIndex(0);
+    }
+  }, [tState.filters]);
 
   return (
     <div className={cla(className, style.ground)}>

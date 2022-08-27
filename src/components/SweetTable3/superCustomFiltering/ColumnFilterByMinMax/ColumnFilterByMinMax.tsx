@@ -82,7 +82,8 @@ export const ColumnFilterByMinMax: React.FC<{
   columnId: string;
   setFilter: (columnId: string, filterValue: any) => any;
   tableData?: any;
-}> = ({ className, label, columnId, setFilter, tableData }) => {
+  tState: any;
+}> = ({ className, label, columnId, setFilter, tableData, tState }) => {
   const [val, setVal] = useState<IMinMax>({ min: null, max: null });
 
   const latestValRef = useRef(val);
@@ -105,6 +106,12 @@ export const ColumnFilterByMinMax: React.FC<{
       max: latestValRef.current.max,
     } as IMinMax);
   }, [columnId, setFilter, tableData]);
+
+  useEffect(() => {
+    if (tState.filters.length === 0) {
+      setVal({ min: null, max: null });
+    }
+  }, [tState.filters]);
 
   return (
     <div className={cla(className, style.ground)}>

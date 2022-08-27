@@ -13,7 +13,8 @@ export const ColumnFilterByString: React.FC<{
   columnId: string;
   setFilter: (columnId: string, filterValue: any) => any;
   tableData?: any;
-}> = ({ className, columnId, setFilter, label, tableData }) => {
+  tState: any;
+}> = ({ className, columnId, setFilter, label, tableData, tState }) => {
   const [val, setVal] = useState("");
 
   const valRef = useRef(val);
@@ -29,6 +30,12 @@ export const ColumnFilterByString: React.FC<{
     setFilter(columnId, valRef.current);
   }, [columnId, setFilter, tableData]);
 
+  useEffect(() => {
+    if (tState.filters.length === 0) {
+      setVal("");
+    }
+  }, [tState.filters]);
+
   return (
     <div className={cla(className, style.ground)}>
       <div className={style.inputWrap}>
@@ -40,6 +47,7 @@ export const ColumnFilterByString: React.FC<{
           id={superId}
           name={label}
           value={val || ""}
+          // value={tState.filters.find((x: any) => x.id === columnId)?.value || ""}
           onChange={(e) => {
             const newV = e.target.value;
             setVal((prev) => newV);

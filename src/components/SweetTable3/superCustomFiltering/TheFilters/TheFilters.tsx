@@ -18,8 +18,9 @@ export const TheFilters: React.FC<{
   setFilter: (columnId: string, filterValue: any) => any;
   tableData: IFoodTableRow[];
   tableColumns: MyColumnsT;
-}> = ({ className, setFilter, tableData, tableColumns }) => {
-  // console.log(tableColumns);
+  tState: any;
+}> = ({ className, setFilter, tableData, tableColumns, tState }) => {
+  console.log(tState);
 
   return (
     <div className={cla(className, style.ground)}>
@@ -33,6 +34,7 @@ export const TheFilters: React.FC<{
             setFilter: setFilter,
             label: capitalizeFirstLetter((y.headTitle as string).toLowerCase()),
             tableData: tableData,
+            tState,
           };
 
           let theCompo: ReactNode = null;
