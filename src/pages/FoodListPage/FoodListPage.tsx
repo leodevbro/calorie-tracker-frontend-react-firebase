@@ -312,7 +312,14 @@ export const FoodListPage: React.FC<{}> = () => {
               arrow={true}
               content={
                 // <span className={style.popInfo}>
-                <div style={{ minWidth: "100px", padding: "4px", outline: "1px solid gray" }}>
+                <div
+                  style={{
+                    backgroundColor: "white",
+                    minWidth: "100px",
+                    padding: "4px",
+                    outline: "1px solid gray",
+                  }}
+                >
                   <div>{"this entry / entire day"}</div>
                   <div style={{ color: "red" }}>{`Daily limit is ${dbApi.dailyCalorieLimit}`}</div>
                 </div>
@@ -328,6 +335,7 @@ export const FoodListPage: React.FC<{}> = () => {
               interactiveDebounce={200}
             >
               <span
+                className={style.questionMarkOfTippy}
                 style={{
                   display: "flex",
                   width: "18px",
