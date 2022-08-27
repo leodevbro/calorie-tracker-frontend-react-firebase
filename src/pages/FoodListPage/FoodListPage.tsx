@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Tippy from "@tippyjs/react";
 import {
   ICustomTopBottom,
@@ -43,6 +43,64 @@ import { dbApi, IFoodWithAuthor } from "src/connection-to-backend/db/bridge";
 import { myCustomFilterFnOfDateRange } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByDateRange/ColumnFilterByDateRange";
 
 const genFoodImagePath = "https://i.ibb.co/YZRXt5z/2022-08-26-10-56-05.png";
+
+interface IFoodWithDailyStats extends IFoodWithAuthor {
+  inTheDayWhenLimitReached: boolean;
+  calorieSumOfEntireDay_withCheatedFood: number;
+  calorieSumOfEntireDay_withoutCheatedFood: number;
+}
+
+interface IGlobalStats {
+  entriesToday: number | null;
+  entriesLast_7_days: number | null;
+  entriesFromPast_14_toPast_7: number | null;
+  averageCaloriesPerUserLast_7_days: number | null;
+}
+
+const calcDailyStats = (rawArrOfFood: IFoodWithAuthor[]): IFoodWithDailyStats[] => {
+  const map_withCheatedFood: { [key: string]: number } = {
+    // map: authorId and intake date ----> calorie sum of entire day
+  };
+
+  const map_withoutCheatedFood: { [key: string]: number } = {
+    // map: authorId and intake date ----> calorie sum of entire day
+  };
+
+  // console.log(rawArrOfFood);
+
+  for (const food of rawArrOfFood) {
+    const keyString = `${food.authorId}_${new Date(food.intakeDateTime).toLocaleDateString()}`;
+
+    const curr = map_withCheatedFood[keyString] as number | undefined;
+    map_withCheatedFood[keyString] = curr ? curr + food.calories : food.calories;
+
+    if (!food.dietCheat) {
+      const curr = map_withoutCheatedFood[keyString] as number | undefined;
+      map_withoutCheatedFood[keyString] = curr ? curr + food.calories : food.calories;
+    }
+  }
+
+  // console.log("haaaa");
+  // console.log(map_withCheatedFood);
+  // console.log(map_withoutCheatedFood);
+
+  const newArr = rawArrOfFood.map((food) => {
+    const keyString = `${food.authorId}_${new Date(food.intakeDateTime).toLocaleDateString()}`;
+
+    const overLimit = map_withoutCheatedFood[keyString] > dbApi.dailyCalorieLimit;
+
+    const obj: IFoodWithDailyStats = {
+      ...food,
+      inTheDayWhenLimitReached: overLimit,
+      calorieSumOfEntireDay_withCheatedFood: map_withCheatedFood[keyString] || 0,
+      calorieSumOfEntireDay_withoutCheatedFood: map_withoutCheatedFood[keyString] || 0,
+    };
+
+    return obj;
+  });
+
+  return newArr;
+};
 
 export interface IFoodTableRow extends IFoodEntry {
   imgSrc: string;
@@ -126,60 +184,9 @@ export const FoodListPage: React.FC<{}> = () => {
       return [];
     }
 
-    interface IFoodWithDailyStats extends IFoodWithAuthor {
-      inTheDayWhenLimitReached: boolean;
-      calorieSumOfEntireDay_withCheatedFood: number;
-      calorieSumOfEntireDay_withoutCheatedFood: number;
-    }
+    const arrWithDailyStats = calcDailyStats(foodArr);
 
-    const calcDailyStats = (rawArrOfFood: IFoodWithAuthor[]): IFoodWithDailyStats[] => {
-      const map_withCheatedFood: { [key: string]: number } = {
-        // map: authorId and intake date ----> calorie sum of entire day
-      };
-
-      const map_withoutCheatedFood: { [key: string]: number } = {
-        // map: authorId and intake date ----> calorie sum of entire day
-      };
-
-      // console.log(rawArrOfFood);
-
-      for (const food of rawArrOfFood) {
-        const keyString = `${food.authorId}_${new Date(food.intakeDateTime).toLocaleDateString()}`;
-
-        const curr = map_withCheatedFood[keyString] as number | undefined;
-        map_withCheatedFood[keyString] = curr ? curr + food.calories : food.calories;
-
-        if (!food.dietCheat) {
-          const curr = map_withoutCheatedFood[keyString] as number | undefined;
-          map_withoutCheatedFood[keyString] = curr ? curr + food.calories : food.calories;
-        }
-      }
-
-      // console.log("haaaa");
-      // console.log(map_withCheatedFood);
-      // console.log(map_withoutCheatedFood);
-
-      const newArr = rawArrOfFood.map((food) => {
-        const keyString = `${food.authorId}_${new Date(food.intakeDateTime).toLocaleDateString()}`;
-
-        const overLimit = map_withoutCheatedFood[keyString] > dbApi.dailyCalorieLimit;
-
-        const obj: IFoodWithDailyStats = {
-          ...food,
-          inTheDayWhenLimitReached: overLimit,
-          calorieSumOfEntireDay_withCheatedFood: map_withCheatedFood[keyString] || 0,
-          calorieSumOfEntireDay_withoutCheatedFood: map_withoutCheatedFood[keyString] || 0,
-        };
-
-        return obj;
-      });
-
-      return newArr;
-    };
-
-    const arrWithStats = calcDailyStats(foodArr);
-
-    const rows = arrWithStats.map((x) => {
+    const rows = arrWithDailyStats.map((x) => {
       const thaaaRow: IFoodTableRow = {
         ...x,
         imgSrc: genFoodImagePath,
@@ -192,6 +199,21 @@ export const FoodListPage: React.FC<{}> = () => {
 
     return rows;
   }, [foodArr]);
+
+  const globalStats = useMemo<null | IGlobalStats>(() => {
+    if (!veryCurrUser || !veryCurrUser.roles.admin) {
+      return null;
+    }
+
+    const obj: IGlobalStats = {
+      entriesToday: 0,
+      entriesLast_7_days: 0,
+      entriesFromPast_14_toPast_7: 0,
+      averageCaloriesPerUserLast_7_days: 0,
+    };
+
+    return obj;
+  }, [veryCurrUser]);
 
   const tableColumns = React.useMemo(() => {
     const columns: MyColumnsT = [
@@ -650,6 +672,29 @@ export const FoodListPage: React.FC<{}> = () => {
         eachPageSize={eachPageSize}
         changeEachPageSize={changeEachPageSize}
       />
+
+      {veryCurrUser && veryCurrUser.roles.admin && (
+        <div className={cla(style.reportBox)}>
+          <div>
+            <span>Number of added entries today:</span> <span>{globalStats?.entriesToday}</span>
+          </div>
+
+          <div>
+            <span>Number of added entries in the last 7 days:</span>{" "}
+            <span>{globalStats?.entriesLast_7_days}</span>
+          </div>
+
+          <div>
+            <span>added entries the week before that.</span>{" "}
+            <span>{globalStats?.entriesFromPast_14_toPast_7}</span>
+          </div>
+
+          <div>
+            <span>The average number of calories added per user for the last 7 days:</span>{" "}
+            <span>{globalStats?.averageCaloriesPerUserLast_7_days}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
