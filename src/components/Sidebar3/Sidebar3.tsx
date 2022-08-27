@@ -6,7 +6,7 @@ import { cla } from "src/App";
 
 import { ReactComponent as LogoutSvg } from "src/styling-constants/svg-items/log-out.svg";
 
-import { ReactComponent as WheelSvg } from "src/styling-constants/svg-items/b-logo.svg";
+import { ReactComponent as FoodSvg } from "src/styling-constants/svg-items/food-vector.svg";
 import { ReactComponent as AllUsersSvg } from "src/styling-constants/svg-items/allusers.svg";
 
 // import { ReactComponent as TimeSvg } from "src/styling-constants/svg-items/time.svg";
@@ -79,7 +79,7 @@ export const Sidebar3: React.FC<{ className?: string }> = ({ className }) => {
         id: NavEnum.foodlist,
         link: "/foodlist",
         title: "Food list",
-        ic: <WheelSvg />,
+        ic: <FoodSvg />,
 
         clickFn: () => 8,
       },

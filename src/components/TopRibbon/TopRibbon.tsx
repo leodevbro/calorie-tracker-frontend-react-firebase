@@ -9,7 +9,7 @@ import {
 import style from "./TopRibbon.module.scss";
 import { useAppSelector } from "src/app/hooks";
 
-import bLogoSvgPath from "src/styling-constants/svg-items/b-logo.svg";
+import bLogoSvgPath from "src/styling-constants/svg-items/food-vector.svg";
 
 // import searchSvgPath from "src/styling-constants/svg-items/search.svg";
 
