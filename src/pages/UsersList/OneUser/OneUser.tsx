@@ -77,7 +77,7 @@ export const OneUser: React.FC<{
           />
         </div>
 
-        <div
+        {/* <div
           className={cla(style.item, style.delete)}
           // onClick={async () => {
           //   await deleteOneUser({ userId: user.id });
@@ -90,7 +90,7 @@ export const OneUser: React.FC<{
               getUsers();
             }}
           />
-        </div>
+        </div> */}
       </div>
 
       <AnimateHeight height={seeBikes ? "auto" : 0} className={style.top2Box}>
