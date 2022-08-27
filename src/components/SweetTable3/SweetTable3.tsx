@@ -41,6 +41,7 @@ import { Paginate } from "../Paginate/Paginate";
 import { useMediaQuery } from "react-responsive";
 
 import { TheFilters } from "src/components/SweetTable3/superCustomFiltering/TheFilters/TheFilters";
+import { IFoodTableRow } from "src/pages/FoodListPage/FoodListPage";
 
 export type tyFilterType = "string" | "boo" | "minmax" | "dateRange";
 
@@ -117,18 +118,24 @@ const customGlobalFilter: FilterFnOfTableT = (rows, columns, filterValue: string
     // console.log(rows[0]);
 
     return rows.filter((ro) => {
-      const obj = {
-        ...ro.original,
-        rentalDays: undefined,
+      const obj: {
+        [key in keyof IFoodTableRow]: any;
+      } = {
+        ...(ro.original as IFoodTableRow),
         created: undefined,
-        delete: undefined,
-        edit: undefined,
+        // delete: undefined,
+        // edit: undefined,
         imgSrc: undefined,
         id: undefined,
+        dietCheat: undefined,
+        intakeDateTime: undefined,
+        author: undefined,
+        authorId: undefined,
+        calorieSumOfEntireDay_withCheatedFood: undefined,
+        inTheDayWhenLimitReached: undefined,
       }; // remove some properties from search/filter
 
       const rowStr = JSON.stringify(Object.values(obj)).toLowerCase();
-      // console.log(rowStr);
 
       return wordsArr.every((word) => {
         return rowStr.includes(word);
@@ -469,7 +476,7 @@ export const SweetTable3: React.FC<{
   );
 
   const searchPlaceholder = useMemo(() => {
-    let str = "Search brand, color, location, rate...";
+    let str = "Search name, calories and author email.";
 
     return str;
   }, []);
