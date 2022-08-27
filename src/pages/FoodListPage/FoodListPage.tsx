@@ -152,6 +152,10 @@ const calcGlobalStats = (tableInfo: IFoodTableRow[]): IGlobalStats => {
     day_6_step_beforeToday,
   );
 
+  // ----
+  const hashMap_authorId_caloriesLast7Days: { [key: string]: number } = {};
+  // ----
+
   let entriesToday = 0;
   let entriesLast_7_days = 0;
   let entriesFromPast_14_toPast_7 = 0;
@@ -174,23 +178,38 @@ const calcGlobalStats = (tableInfo: IFoodTableRow[]): IGlobalStats => {
 
     if (dateStringsOfLast_7_days.hashMap[dateStringOfCurrIntake] === true) {
       entriesLast_7_days += row.calories;
+
+      // averageCaloriesPerUserLast_7_days
+      const currAuthorId = row.authorId;
+      const inHashmap: number | undefined = hashMap_authorId_caloriesLast7Days[currAuthorId];
+      hashMap_authorId_caloriesLast7Days[currAuthorId] = inHashmap
+        ? inHashmap + row.calories
+        : row.calories;
     }
 
     // --------------------
 
-    // for entriesFromPast_14_toPast_7
+    // for entriesFromPast_14_toPast_7 (part1)
     if (dateStringsOfLast_7_days_beforeLast_7.hashMap[dateStringOfCurrIntake] === true) {
       entriesFromPast_14_toPast_7 += row.calories;
     }
   }
 
-  // console.log("entriesToday:", entriesToday);
+  // for entriesFromPast_14_toPast_7 (part2)
+  const caloriesPerUserLast7Days = Object.values(hashMap_authorId_caloriesLast7Days);
+
+  if (caloriesPerUserLast7Days.length >= 1) {
+    averageCaloriesPerUserLast_7_days =
+      caloriesPerUserLast7Days.reduce((a, b) => a + b, 0) / caloriesPerUserLast7Days.length;
+  }
+
+  // console.log("averageCaloriesPerUserLast_7_days:", averageCaloriesPerUserLast_7_days);
 
   const obj: IGlobalStats = {
     entriesToday,
     entriesLast_7_days,
     entriesFromPast_14_toPast_7,
-    averageCaloriesPerUserLast_7_days: 0,
+    averageCaloriesPerUserLast_7_days,
   };
 
   return obj;
