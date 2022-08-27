@@ -102,6 +102,19 @@ const calcDailyStats = (rawArrOfFood: IFoodWithAuthor[]): IFoodWithDailyStats[] 
   return newArr;
 };
 
+const calcGlobalStats = (tableInfo: IFoodTableRow[]): IGlobalStats => {
+  //
+
+  const obj: IGlobalStats = {
+    entriesToday: 0,
+    entriesLast_7_days: 0,
+    entriesFromPast_14_toPast_7: 0,
+    averageCaloriesPerUserLast_7_days: 0,
+  };
+
+  return obj;
+};
+
 export interface IFoodTableRow extends IFoodEntry {
   imgSrc: string;
   authorEmail: string;
@@ -205,15 +218,10 @@ export const FoodListPage: React.FC<{}> = () => {
       return null;
     }
 
-    const obj: IGlobalStats = {
-      entriesToday: 0,
-      entriesLast_7_days: 0,
-      entriesFromPast_14_toPast_7: 0,
-      averageCaloriesPerUserLast_7_days: 0,
-    };
+    const coolGlobalStats = calcGlobalStats(tableData);
 
-    return obj;
-  }, [veryCurrUser]);
+    return coolGlobalStats;
+  }, [tableData, veryCurrUser]);
 
   const tableColumns = React.useMemo(() => {
     const columns: MyColumnsT = [
