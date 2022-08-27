@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+
 import {
   Row,
   useTable,
@@ -14,7 +15,9 @@ import {
   useFilters,
   useAsyncDebounce,
   usePagination,
+  useSortBy,
 } from "react-table";
+
 import { cla } from "src/App";
 // import { Link } from "react-router-dom";
 // import { useAppSelector } from "../app/hooks";
@@ -37,9 +40,6 @@ import { SweetArrow } from "../SweetDrop/SweetArrow";
 import { Paginate } from "../Paginate/Paginate";
 import { useMediaQuery } from "react-responsive";
 
-import { ColumnFilterByString } from "./superCustomFiltering/ColumnFilterByString/ColumnFilterByString";
-import { ColumnFilterByMinMax } from "./superCustomFiltering/ColumnFilterByMinMax/ColumnFilterByMinMax";
-import { ColumnFilterByBool } from "./superCustomFiltering/ColumnFilterByBool/ColumnFilterByBool";
 import { TheFilters } from "src/components/SweetTable3/superCustomFiltering/TheFilters/TheFilters";
 
 export type tyFilterType = "string" | "boo" | "minmax" | "dateRange";
@@ -68,6 +68,7 @@ export interface IMyColumn {
   Header: Exclude<ReactNode | (() => ReactNode), null>;
   accessor: string;
   filterType?: tyFilterType;
+  trySortable?: boolean;
   Cell?: (cell: IMyCell) => ReactNode;
 
   prioritizedStyles: {
@@ -230,15 +231,18 @@ export const SweetTable3: React.FC<{
       data: tableData,
       // @ts-ignore
       initialState: { pageSize: eachPageSize },
+
       manualGlobalFilter: false, // this is global of global.
       // ------------------------- I mean, if true, it desables custom and also factory global filtering,
       // ------------------------- maybe when you want to globally filter outside of the table engine.
 
       globalFilter: customGlobalFilter,
+      autoResetPage: true,
     },
 
     useFilters, // must be before global filter
     useGlobalFilter,
+    useSortBy,
     usePagination,
   );
 
@@ -253,6 +257,18 @@ export const SweetTable3: React.FC<{
     // @ts-ignore
     setFilter,
   } = tableInstance;
+
+  /*
+  useEffect(() => {
+    console.log("steitiiiiiiiiiiii", state);
+    setTimeout(() => {
+      // gotoPage(0);
+      console.log("haaaa");
+    }, 3000);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [`${(state as any)?.sortBy[0]?.id}_${(state as any)?.sortBy[0]?.desc}`]);
+  */
 
   useEffect(() => {
     setGlobalFilter(searchString);
@@ -568,6 +584,7 @@ export const SweetTable3: React.FC<{
                 goToPage: (n: number) => gotoPage(n),
               }}
               tData={tableData}
+              tableState={state}
             />
           </div>
 
@@ -597,8 +614,19 @@ export const SweetTable3: React.FC<{
               {...headerGroup.getHeaderGroupProps()}
             >
               {headerGroup.headers.map((column, columnIndex) => {
+                const trySortable = tableColumns[columnIndex].trySortable;
+                // console.log(column);
+
                 return (
                   <div
+                    className={cla(
+                      style.tH,
+
+                      cl_narrowTable_wideTable,
+                    )}
+                    {...column.getHeaderProps(
+                      trySortable ? (column as any).getSortByToggleProps() : undefined,
+                    )}
                     style={{
                       minWidth: `${tableColumns[columnIndex].prioritizedStyles.minWidth}px`,
                       width: tableIsNarrow
@@ -606,25 +634,30 @@ export const SweetTable3: React.FC<{
                         : `${tableColumns[columnIndex].prioritizedStyles.minWidth}px`,
                       flexGrow: `${tableColumns[columnIndex].prioritizedStyles.flexGrow}`,
                     }}
-                    className={cla(
-                      style.tH,
-
-                      cl_narrowTable_wideTable,
-                    )}
-                    {...column.getHeaderProps()}
                   >
                     <div
                       style={{
                         maxWidth: "100%",
                         display: "flex",
                         flexDirection: "column",
-                        rowGap: "4px",
+                        // rowGap: "4px",
                         justifyContent: "space-between",
                       }}
                     >
                       <div>{column.render("Header")}</div>
                       <div style={{ maxWidth: "100%" }}>
                         {(column as any).canFilter && column.render("Filter")}
+                      </div>
+                      <div>
+                        {(column as any).isSorted ? (
+                          (column as any).isSortedDesc ? (
+                            "▼"
+                          ) : (
+                            "▲"
+                          )
+                        ) : (
+                          <span style={{ visibility: "hidden" }}>-</span>
+                        )}
                       </div>
                     </div>
                   </div>

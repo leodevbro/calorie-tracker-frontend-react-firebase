@@ -28,13 +28,25 @@ import { MyTableDataT } from "../SweetTable3/SweetTable3";
 // }
 
 export const Paginate: React.FC<{
+  tableState: any;
   className?: string;
   itemsPerPage: number;
   changeNumItemsPerPage: (num: number) => any;
   itemsCount: number;
   fns: { goToNext: () => any; goToPre: () => any; goToPage: (n: number) => any };
   tData: MyTableDataT;
-}> = ({ className, itemsPerPage, changeNumItemsPerPage, fns, itemsCount, tData }) => {
+}> = ({ className, itemsPerPage, changeNumItemsPerPage, fns, itemsCount, tData, tableState }) => {
+  const [superPageNum, setSuperPageNum] = useState<number>(
+    typeof tableState?.pageIndex === "number" ? tableState?.pageIndex : -1,
+  );
+  const currPageNumRef = useRef(superPageNum);
+
+  useEffect(() => {
+    const newNum = typeof tableState?.pageIndex === "number" ? tableState?.pageIndex : -1;
+    currPageNumRef.current = newNum;
+    setSuperPageNum(newNum);
+  }, [tableState?.pageIndex]);
+
   const items = useMemo(() => {
     return Array(itemsCount)
       .fill(0)
@@ -61,8 +73,6 @@ export const Paginate: React.FC<{
     setPageCount(Math.ceil(items.length / itemsPerPage));
   }, [endItem, itemOffset, items.length, itemsCount, itemsPerPage]);
 
-  const currPageNumRef = useRef(-1);
-
   // Invoke when user click to request another page.
   const handlePageClick: (selectedItem: { selected: number }) => void = (event) => {
     const newOffset = (event.selected * itemsPerPage) % items.length;
@@ -70,6 +80,7 @@ export const Paginate: React.FC<{
     setItemOffset(newOffset);
     fns.goToPage(event.selected);
     currPageNumRef.current = event.selected;
+    setSuperPageNum(event.selected);
     // fns.goToNext();
   };
 
@@ -122,6 +133,7 @@ export const Paginate: React.FC<{
 
       <div className={style.pagingData}>
         <ReactPaginate
+          forcePage={pageCount > 0 ? superPageNum : -1}
           nextLabel={<RightSvg />}
           onPageChange={handlePageClick}
           pageRangeDisplayed={1}

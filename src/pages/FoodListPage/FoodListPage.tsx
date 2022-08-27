@@ -135,6 +135,8 @@ export const FoodListPage: React.FC<{}> = () => {
         Header: "",
         accessor: "imgSrc", // accessor is the "key" in the data
         filterType: undefined,
+        trySortable: undefined,
+
         prioritizedStyles: {
           minWidth: 50,
           flexGrow: 0,
@@ -155,6 +157,8 @@ export const FoodListPage: React.FC<{}> = () => {
         Header: "Diet Cheat",
         accessor: "dietCheat",
         filterType: "boo",
+
+        trySortable: undefined,
 
         prioritizedStyles: {
           minWidth: 85,
@@ -196,6 +200,8 @@ export const FoodListPage: React.FC<{}> = () => {
         Header: "name".toUpperCase() || undefined,
         accessor: "name",
         filterType: "string",
+        trySortable: true,
+
         prioritizedStyles: {
           minWidth: 100,
           flexGrow: 1,
@@ -226,6 +232,7 @@ export const FoodListPage: React.FC<{}> = () => {
         Header: "calories".toUpperCase() || undefined,
         accessor: "calories",
         filterType: "string",
+        trySortable: true,
         prioritizedStyles: {
           minWidth: 100,
           flexGrow: 0,
@@ -254,6 +261,7 @@ export const FoodListPage: React.FC<{}> = () => {
         Header: "Intake DateTime".toUpperCase() || undefined,
         accessor: "intakeDateTime",
         filterType: "dateRange",
+        trySortable: true,
         prioritizedStyles: {
           minWidth: 100,
           flexGrow: 1,
@@ -277,11 +285,43 @@ export const FoodListPage: React.FC<{}> = () => {
         // disableFilters: true,
         // disableGlobalFilter: true,
       },
+
+      {
+        // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
+        Header: "Created DateTime".toUpperCase() || undefined,
+        accessor: "created",
+        filterType: "dateRange",
+        trySortable: true,
+        prioritizedStyles: {
+          minWidth: 100,
+          flexGrow: 1,
+        },
+
+        Cell: (cell) => {
+          const dateNum = cell.value as number;
+          const viewVal = new Date(dateNum).toString();
+
+          const indexOfGMT = viewVal.indexOf("GMT");
+          // console.log("gmt______", indexOfGMT);
+          const shorter = viewVal.slice(0, indexOfGMT - 4);
+
+          return <div>{shorter}</div>;
+        },
+
+        filter: myCustomFilterFnOfDateRange,
+        // Filter: ColumnFilter,
+        Filter: () => null,
+
+        // disableFilters: true,
+        // disableGlobalFilter: true,
+      },
+
       {
         // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
         Header: "author".toUpperCase() || undefined,
         accessor: "author",
         filterType: "string",
+        trySortable: true,
         prioritizedStyles: {
           minWidth: 100,
           flexGrow: 1,

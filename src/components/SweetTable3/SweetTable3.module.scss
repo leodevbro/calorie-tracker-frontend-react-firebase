@@ -331,6 +331,10 @@
           }
 
           min-height: 58px;
+
+          &:hover {
+            cursor: pointer;
+          }
         }
       }
     }
