@@ -7,7 +7,7 @@ import style from "./ColumnFilterByDateRange.module.scss";
 
 import { useAsyncDebounce } from "react-table";
 import { FilterFnOfTableT } from "../../SweetTable3";
-import DateTimePicker from "react-datetime-picker";
+
 import { SweetDateTimePicker } from "src/components/SweetDateTimePicker/SweetDateTimePicker";
 
 export interface IDateTimePeriod {
@@ -128,14 +128,13 @@ export const ColumnFilterByDateRange: React.FC<{
           valueOfDateTime={valueOfDateTime_from}
         />
 
-        <DateTimePicker
-          className={style.myDateTimePicker}
-          calendarClassName={style.datePickFrame}
+        <SweetDateTimePicker
           onChange={(newDate) => {
             setValueOfDateTime_to((prev) => newDate);
             parentChange();
           }}
-          value={valueOfDateTime_to as Date | undefined}
+          setValueOfDateTime={setValueOfDateTime_from}
+          valueOfDateTime={valueOfDateTime_to}
         />
       </div>
     </div>
