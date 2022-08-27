@@ -34,9 +34,9 @@ export const CreateUpdateFoodEntry: React.FC<{
   const [bigError, setBigError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [valueOfDateTime, setValueOfDateTime] = useState<Date | [Date, Date] | undefined>(
-    new Date(),
-  );
+  // const [valueOfDateTime, setValueOfDateTime] = useState<Date | [Date, Date] | undefined>(
+  //   new Date(),
+  // );
 
   const idOfOtherUserRef = useRef("");
 
@@ -77,7 +77,7 @@ export const CreateUpdateFoodEntry: React.FC<{
       [naming.dietCheat]: currFoodEntry?.dietCheat ? true : false,
       [naming.name]: currFoodEntry?.name || "",
       [naming.calories]: currFoodEntry?.calories || "",
-      [naming.intakeDateTime]: currFoodEntry?.intakeDateTime || null,
+      [naming.intakeDateTime]: currFoodEntry?.intakeDateTime || undefined,
     },
 
     validationSchema: Yup.object({
@@ -315,10 +315,14 @@ export const CreateUpdateFoodEntry: React.FC<{
           /> */}
 
           <SweetDateTimePicker
-            valueOfDateTime={valueOfDateTime}
+            valueOfDateTime={
+              formik.values[naming.intakeDateTime]
+                ? new Date(formik.values[naming.intakeDateTime] as number)
+                : undefined
+            }
             onChange={(newDate) => {
               formik.setFieldValue(naming.intakeDateTime, newDate ? newDate.getTime() : null, true);
-              setValueOfDateTime((prev) => newDate);
+              // setValueOfDateTime((prev) => newDate);
             }}
           />
 

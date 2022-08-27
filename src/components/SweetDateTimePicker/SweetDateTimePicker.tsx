@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { cla } from "src/App";
 // import { Link } from "react-router-dom";
@@ -13,10 +13,12 @@ export const SweetDateTimePicker: React.FC<{
 
   onChange: (value: Date | undefined) => void;
 }> = ({ className, valueOfDateTime, onChange }) => {
+  /*
   useEffect(() => {
-    onChange(undefined);
+    // onChange(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  */
 
   return (
     <div className={cla(className, style.ground)}>
