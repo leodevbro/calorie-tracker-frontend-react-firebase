@@ -35,7 +35,7 @@ import { CoolLoader } from "src/components/CoolLoader/CoolLoader";
 // import { ColumnFilter } from "src/components/SweetTable3/ColumnFilter/ColumnFilter";
 
 import { myCustomFilterFnOfBool } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByBool/ColumnFilterByBool";
-import { IFoodEntry } from "src/app/redux-slices/sweetSlice";
+
 import { PopOfUpdateFoodEntry } from "./PopOfUpdateFoodEntry/PopOfUpdateFoodEntry";
 import { PopOfDeleteFoodEntry } from "./PopOfDeleteFoodEntry/PopOfDeleteFoodEntry";
 import { PopOfCreateFoodEntry } from "./PopOfCreateFoodEntry/PopOfCreateFoodEntry";
@@ -48,6 +48,11 @@ interface IFoodWithDailyStats extends IFoodWithAuthor {
   inTheDayWhenLimitReached: boolean;
   calorieSumOfEntireDay_withCheatedFood: number;
   calorieSumOfEntireDay_withoutCheatedFood: number;
+}
+
+export interface IFoodTableRow extends IFoodWithDailyStats {
+  imgSrc: string;
+  authorEmail: string;
 }
 
 interface IGlobalStats {
@@ -103,7 +108,7 @@ const calcDailyStats = (rawArrOfFood: IFoodWithAuthor[]): IFoodWithDailyStats[] 
 };
 
 const calcGlobalStats = (tableInfo: IFoodTableRow[]): IGlobalStats => {
-  //
+  // const entriesPerUser_last_14_days =
 
   const obj: IGlobalStats = {
     entriesToday: 0,
@@ -114,16 +119,6 @@ const calcGlobalStats = (tableInfo: IFoodTableRow[]): IGlobalStats => {
 
   return obj;
 };
-
-export interface IFoodTableRow extends IFoodEntry {
-  imgSrc: string;
-  authorEmail: string;
-  inTheDayWhenLimitReached: boolean;
-  calorieSumOfEntireDay_withCheatedFood: number;
-  calorieSumOfEntireDay_withoutCheatedFood: number;
-  // edit: string; // id
-  // delete: string; // id
-}
 
 // const myCustomFilter2: FilterFnOfTableT = (rows, columnIds, filterValue: string) => {
 //   const columnId = columnIds[0];
