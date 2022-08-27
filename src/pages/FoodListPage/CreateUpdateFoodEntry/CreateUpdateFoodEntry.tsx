@@ -123,7 +123,7 @@ export const CreateUpdateFoodEntry: React.FC<{
 
           const theOb: Omit<IFoodEntry, "authorId" | "created"> = {
             id: currFoodEntry.id,
-            calories: values[naming.calories] as number,
+            calories: Number(values[naming.calories]),
             dietCheat: values[naming.dietCheat] as boolean,
             intakeDateTime: values[naming.intakeDateTime] as number,
             name: values[naming.name] as string,
@@ -150,7 +150,7 @@ export const CreateUpdateFoodEntry: React.FC<{
 
           const newFoodId = await dbApi.createOneFood({
             authorId: mode === "forOtherUser" ? idOfOtherUserRef.current : veryCurrUser.id,
-            calories: values[naming.calories] as number,
+            calories: Number(values[naming.calories]),
             dietCheat: values[naming.dietCheat] as boolean,
             intakeDateTime: values[naming.intakeDateTime] as number,
             name: values[naming.name] as string,
