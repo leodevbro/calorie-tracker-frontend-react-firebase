@@ -118,22 +118,28 @@ export const ColumnFilterByDateRange: React.FC<{
     <div className={cla(className, style.ground)}>
       <div className={style.theLabel}>{label}</div>
 
-      <div className={style.theInputs}>
-        <SweetDateTimePicker
-          onChange={(newDate) => {
-            setValueOfDateTime_from((prev) => newDate);
-            parentChange();
-          }}
-          valueOfDateTime={valueOfDateTime_from}
-        />
+      <div>
+        <div style={{ fontSize: "12px" }}>From:</div>
+        <div className={style.theInputs}>
+          <SweetDateTimePicker
+            onChange={(newDate) => {
+              setValueOfDateTime_from((prev) => newDate);
+              parentChange();
+            }}
+            valueOfDateTime={valueOfDateTime_from}
+          />
+        </div>
 
-        <SweetDateTimePicker
-          onChange={(newDate) => {
-            setValueOfDateTime_to((prev) => newDate);
-            parentChange();
-          }}
-          valueOfDateTime={valueOfDateTime_to}
-        />
+        <div>
+          <div style={{ fontSize: "12px" }}>To:</div>
+          <SweetDateTimePicker
+            onChange={(newDate) => {
+              setValueOfDateTime_to((prev) => newDate);
+              parentChange();
+            }}
+            valueOfDateTime={valueOfDateTime_to}
+          />
+        </div>
       </div>
     </div>
   );
