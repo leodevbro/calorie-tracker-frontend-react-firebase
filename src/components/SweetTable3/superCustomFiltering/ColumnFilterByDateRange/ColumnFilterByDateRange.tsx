@@ -8,7 +8,7 @@ import style from "./ColumnFilterByDateRange.module.scss";
 import { useAsyncDebounce } from "react-table";
 import { FilterFnOfTableT } from "../../SweetTable3";
 import DateTimePicker from "react-datetime-picker";
-// import { SweetDateTimePicker } from "src/components/SweetDateTimePicker/SweetDateTimePicker";
+import { SweetDateTimePicker } from "src/components/SweetDateTimePicker/SweetDateTimePicker";
 
 export interface IDateTimePeriod {
   from: number | null;
@@ -101,7 +101,7 @@ export const ColumnFilterByDateRange: React.FC<{
 
   // console.log("latestValRef.current:", latestValRef.current);
 
-  const onChange = useAsyncDebounce(() => {
+  const parentChange = useAsyncDebounce(() => {
     setFilter(columnId, {
       from: latestValRef.current.from,
       to: latestValRef.current.to,
@@ -119,17 +119,13 @@ export const ColumnFilterByDateRange: React.FC<{
       <div className={style.theLabel}>{label}</div>
 
       <div className={style.theInputs}>
-        {/* <SweetDateTimePicker /> */}
-
-        <DateTimePicker
-          className={style.myDateTimePicker}
-          calendarClassName={style.datePickFrame}
+        <SweetDateTimePicker
           onChange={(newDate) => {
             setValueOfDateTime_from((prev) => newDate);
-            onChange();
+            parentChange();
           }}
-          value={valueOfDateTime_from as Date | undefined}
-          // format={`YYYY/MM/DD/HH:mm`}
+          setValueOfDateTime={setValueOfDateTime_from}
+          valueOfDateTime={valueOfDateTime_from}
         />
 
         <DateTimePicker
@@ -137,7 +133,7 @@ export const ColumnFilterByDateRange: React.FC<{
           calendarClassName={style.datePickFrame}
           onChange={(newDate) => {
             setValueOfDateTime_to((prev) => newDate);
-            onChange();
+            parentChange();
           }}
           value={valueOfDateTime_to as Date | undefined}
         />

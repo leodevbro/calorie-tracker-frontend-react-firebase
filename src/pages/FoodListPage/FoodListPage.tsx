@@ -308,7 +308,7 @@ export const FoodListPage: React.FC<{}> = () => {
       },
     ];
 
-    if (veryCurrUser && veryCurrUser?.roles.admin) {
+    if (veryCurrUser) {
       columns.push(
         {
           // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
