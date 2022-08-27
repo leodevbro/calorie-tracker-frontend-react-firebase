@@ -239,3 +239,30 @@
   outline: 1px solid rgba(128, 128, 128, 0.342);
   border-radius: 6px;
 }
+
+.theCalories {
+  width: 100%;
+  height: 100%;
+
+  .oneEntry {
+    &.isCheated {
+      color: rgba(128, 128, 128, 0.699);
+
+    }
+  }
+
+  .entireDay {
+    font-size: 12px;
+
+    &.inTheDayWhenLimitReached {
+      color: red;
+
+      outline: 1px solid red;
+    }
+
+    &.isCheated {
+      color: rgba(128, 128, 128, 0.507);
+      outline: 1px solid transparent;
+    }
+  }
+}

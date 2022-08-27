@@ -65,6 +65,7 @@ export type FilterFnOfTableT = (
 ) => any[];
 
 export interface IMyColumn {
+  headTitle: string;
   Header: Exclude<ReactNode | (() => ReactNode), null>;
   accessor: string;
   filterType?: tyFilterType;

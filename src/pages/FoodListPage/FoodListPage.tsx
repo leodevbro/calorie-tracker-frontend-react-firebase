@@ -29,7 +29,7 @@ import { useAppSelector } from "src/app/hooks";
 
 // import { cla } from "src/App";
 
-import { equalFnForCurrUserDocChange } from "src/App";
+import { cla, equalFnForCurrUserDocChange } from "src/App";
 import { CoolLoader } from "src/components/CoolLoader/CoolLoader";
 // import { db } from "src/connection-to-backend/db/firebase/config";
 // import { ColumnFilter } from "src/components/SweetTable3/ColumnFilter/ColumnFilter";
@@ -46,6 +46,10 @@ const genFoodImagePath = "https://i.ibb.co/YZRXt5z/2022-08-26-10-56-05.png";
 
 export interface IFoodTableRow extends IFoodEntry {
   imgSrc: string;
+  authorEmail: string;
+  inTheDayWhenLimitReached: boolean;
+  calorieSumOfEntireDay_withCheatedFood: number;
+  calorieSumOfEntireDay_withoutCheatedFood: number;
   // edit: string; // id
   // delete: string; // id
 }
@@ -117,13 +121,73 @@ export const FoodListPage: React.FC<{}> = () => {
     [veryCurrUser],
   );
 
-  const tableData: IFoodTableRow[] = React.useMemo(() => {
+  const tableData = React.useMemo(() => {
     if (!foodArr) {
       return [];
     }
 
-    const rows = foodArr.map((x) => {
-      return { ...x, imgSrc: genFoodImagePath, edit: x.id, delete: x.id, author: x.author.email };
+    interface IFoodWithDailyStats extends IFoodWithAuthor {
+      inTheDayWhenLimitReached: boolean;
+      calorieSumOfEntireDay_withCheatedFood: number;
+      calorieSumOfEntireDay_withoutCheatedFood: number;
+    }
+
+    const calcDailyStats = (rawArrOfFood: IFoodWithAuthor[]): IFoodWithDailyStats[] => {
+      const map_withCheatedFood: { [key: string]: number } = {
+        // map: authorId and intake date ----> calorie sum of entire day
+      };
+
+      const map_withoutCheatedFood: { [key: string]: number } = {
+        // map: authorId and intake date ----> calorie sum of entire day
+      };
+
+      // console.log(rawArrOfFood);
+
+      for (const food of rawArrOfFood) {
+        const keyString = `${food.authorId}_${new Date(food.intakeDateTime).toLocaleDateString()}`;
+
+        const curr = map_withCheatedFood[keyString] as number | undefined;
+        map_withCheatedFood[keyString] = curr ? curr + food.calories : food.calories;
+
+        if (!food.dietCheat) {
+          const curr = map_withoutCheatedFood[keyString] as number | undefined;
+          map_withoutCheatedFood[keyString] = curr ? curr + food.calories : food.calories;
+        }
+      }
+
+      // console.log("haaaa");
+      // console.log(map_withCheatedFood);
+      // console.log(map_withoutCheatedFood);
+
+      const newArr = rawArrOfFood.map((food) => {
+        const keyString = `${food.authorId}_${new Date(food.intakeDateTime).toLocaleDateString()}`;
+
+        const overLimit = map_withoutCheatedFood[keyString] > dbApi.dailyCalorieLimit;
+
+        const obj: IFoodWithDailyStats = {
+          ...food,
+          inTheDayWhenLimitReached: overLimit,
+          calorieSumOfEntireDay_withCheatedFood: map_withCheatedFood[keyString] || 0,
+          calorieSumOfEntireDay_withoutCheatedFood: map_withoutCheatedFood[keyString] || 0,
+        };
+
+        return obj;
+      });
+
+      return newArr;
+    };
+
+    const arrWithStats = calcDailyStats(foodArr);
+
+    const rows = arrWithStats.map((x) => {
+      const thaaaRow: IFoodTableRow = {
+        ...x,
+        imgSrc: genFoodImagePath,
+
+        authorEmail: x.author.email,
+      };
+
+      return thaaaRow;
     });
 
     return rows;
@@ -132,6 +196,7 @@ export const FoodListPage: React.FC<{}> = () => {
   const tableColumns = React.useMemo(() => {
     const columns: MyColumnsT = [
       {
+        headTitle: "",
         Header: "",
         accessor: "imgSrc", // accessor is the "key" in the data
         filterType: undefined,
@@ -154,6 +219,7 @@ export const FoodListPage: React.FC<{}> = () => {
         Filter: () => null,
       },
       {
+        headTitle: "Diet Cheat",
         Header: "Diet Cheat",
         accessor: "dietCheat",
         filterType: "boo",
@@ -196,6 +262,7 @@ export const FoodListPage: React.FC<{}> = () => {
       },
 
       {
+        headTitle: "Name",
         // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
         Header: "name".toUpperCase() || undefined,
         accessor: "name",
@@ -229,7 +296,54 @@ export const FoodListPage: React.FC<{}> = () => {
 
       {
         // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
-        Header: "calories".toUpperCase() || undefined,
+        // Header: "calories".toUpperCase() || undefined,
+
+        headTitle: "Calories",
+
+        Header: () => (
+          <div style={{ display: "flex", flexWrap: "nowrap", columnGap: "4px" }}>
+            <span>Calories</span>{" "}
+            <Tippy
+              hideOnClick={false}
+              // showOnCreate={true}
+              // visible={true}
+              theme="light"
+              interactive={true}
+              arrow={true}
+              content={
+                // <span className={style.popInfo}>
+                <div style={{ minWidth: "100px", padding: "4px", outline: "1px solid gray" }}>
+                  <div>{"this entry / entire day"}</div>
+                  <div style={{ color: "red" }}>{`Daily limit is ${dbApi.dailyCalorieLimit}`}</div>
+                </div>
+                // </span>
+              }
+              // content="Hel11dlo"
+              maxWidth={350}
+              // popperOptions={{modifiers: {
+
+              // }}}
+              // inertia={true}
+              interactiveBorder={3}
+              interactiveDebounce={200}
+            >
+              <span
+                style={{
+                  display: "flex",
+                  width: "18px",
+                  height: "18px",
+                  border: "1px solid gray",
+                  borderRadius: "100px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                ?
+              </span>
+            </Tippy>
+          </div>
+        ),
+
         accessor: "calories",
         filterType: "string",
         trySortable: true,
@@ -238,17 +352,33 @@ export const FoodListPage: React.FC<{}> = () => {
           flexGrow: 0,
         },
 
-        // Cell: (cell) => {
-        //   return (
-        //     <div className={style.downloadIconWrap}>
-        //       <img
-        //         className={style.downloadIcon}
-        //         src={cell.value as string}
-        //         alt={"download icon"}
-        //       />
-        //     </div>
-        //   );
-        // },
+        Cell: (cell) => {
+          const calorieNum = cell.value as number;
+
+          const row = cell.row;
+
+          const inTheDayWhenLimitReached = row.original.inTheDayWhenLimitReached;
+          const cl_inTheDayWhenLimitReached = inTheDayWhenLimitReached
+            ? style.inTheDayWhenLimitReached
+            : "";
+
+          const entireDayCalorie = row.original.calorieSumOfEntireDay_withoutCheatedFood as number;
+          // console.log("entireDayCalorie:", entireDayCalorie);
+
+          const isCheated = row.original.dietCheat;
+          const cl_isCheated = isCheated ? style.isCheated : "";
+
+          return (
+            <div className={cla(style.theCalories, cl_inTheDayWhenLimitReached, cl_isCheated)}>
+              <div className={cla(style.oneEntry, cl_inTheDayWhenLimitReached, cl_isCheated)}>
+                {calorieNum}
+              </div>
+              <div className={cla(style.entireDay, cl_inTheDayWhenLimitReached, cl_isCheated)}>
+                {entireDayCalorie}
+              </div>
+            </div>
+          );
+        },
 
         // Filter: ColumnFilter,
         Filter: () => null,
@@ -257,6 +387,7 @@ export const FoodListPage: React.FC<{}> = () => {
       },
 
       {
+        headTitle: "Intake DateTime",
         // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
         Header: "Intake DateTime".toUpperCase() || undefined,
         accessor: "intakeDateTime",
@@ -287,6 +418,7 @@ export const FoodListPage: React.FC<{}> = () => {
       },
 
       {
+        headTitle: "Created DateTime",
         // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
         Header: "Created DateTime".toUpperCase() || undefined,
         accessor: "created",
@@ -317,9 +449,10 @@ export const FoodListPage: React.FC<{}> = () => {
       },
 
       {
+        headTitle: "Author email",
         // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
-        Header: "author".toUpperCase() || undefined,
-        accessor: "author",
+        Header: "author email".toUpperCase() || undefined,
+        accessor: "authorEmail",
         filterType: "string",
         trySortable: true,
         prioritizedStyles: {
@@ -351,6 +484,7 @@ export const FoodListPage: React.FC<{}> = () => {
     if (veryCurrUser) {
       columns.push(
         {
+          headTitle: "",
           // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
           Header: "",
           accessor: "edit",
@@ -377,6 +511,7 @@ export const FoodListPage: React.FC<{}> = () => {
         },
 
         {
+          headTitle: "",
           // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
           Header: "",
           accessor: "delete",

@@ -31,41 +31,7 @@ export interface IFoodWithAuthor extends IFoodEntry {
 }
 
 export const dbApi = {
-  /*
-  addDoc: firebaseDb_addDoc,
-
-  getBooksOfPatrick: async () => {
-    const myItems = await firebaseDb_getCollection_byQuery(
-      query(
-        collection(db, "/", "books"),
-        where("author", "==", "Patrick Rothfuss"),
-        orderBy("tist", "asc"),
-      ),
-    );
-
-    return myItems;
-  },
-
-  getAllbooks: async () => {
-    const myItems = await firebaseDb_getCollection_byQuery(
-      query(
-        collection(db, "/", "books"),
-        // where("author", "==", "Patrick Rothfuss"),
-        // orderBy("tist", "asc"),
-      ),
-    );
-
-    return myItems;
-  },
-
-  updateOneBook: async () => {
-    const idOfupdated = await firebaseDb_updateDoc_byPath(["books", "6afuR5Toy0FjZ95h9HCi"], {
-      title: "------",
-    });
-    return idOfupdated;
-  },
-
-  */
+  dailyCalorieLimit: 2100,
 
   // -------------------
   // -------------------
