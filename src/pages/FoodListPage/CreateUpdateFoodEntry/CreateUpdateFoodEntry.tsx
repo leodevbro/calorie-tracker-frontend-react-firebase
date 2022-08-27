@@ -13,12 +13,13 @@ import style from "./CreateUpdateFoodEntry.module.scss";
 // import { createUser } from "src/app/db-api";
 import { CheckboxInp } from "src/components/SweetInput/CheckboxInp";
 import { IFoodTableRow } from "../FoodListPage";
-import DateTimePicker from "react-datetime-picker";
+
 // import { db } from "src/connection-to-backend/db/firebase/config";
 import { dbApi } from "src/connection-to-backend/db/bridge";
 import { cla, equalFnForCurrUserDocChange } from "src/App";
 import { useAppSelector } from "src/app/hooks";
 import { IFoodEntry } from "src/app/redux-slices/sweetSlice";
+import { SweetDateTimePicker } from "src/components/SweetDateTimePicker/SweetDateTimePicker";
 
 // import { db } from "src/connection-to-backend/db/firebase/config";
 // import { useAppSelector } from "src/app/hooks";
@@ -304,13 +305,21 @@ export const CreateUpdateFoodEntry: React.FC<{
 
           <h4 style={{ color: "gray" }}>Date/time of intake</h4>
 
-          <DateTimePicker
+          {/* <DateTimePicker
             calendarClassName={style.datePickFrame}
             onChange={(newDate) => {
               formik.setFieldValue(naming.intakeDateTime, newDate ? newDate.getTime() : null, true);
               setValueOfDateTime((prev) => newDate);
             }}
             value={valueOfDateTime}
+          /> */}
+
+          <SweetDateTimePicker
+            valueOfDateTime={valueOfDateTime}
+            onChange={(newDate) => {
+              formik.setFieldValue(naming.intakeDateTime, newDate ? newDate.getTime() : null, true);
+              setValueOfDateTime((prev) => newDate);
+            }}
           />
 
           <SweetInput

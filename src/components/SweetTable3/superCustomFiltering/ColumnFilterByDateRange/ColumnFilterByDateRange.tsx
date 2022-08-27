@@ -124,7 +124,6 @@ export const ColumnFilterByDateRange: React.FC<{
             setValueOfDateTime_from((prev) => newDate);
             parentChange();
           }}
-          setValueOfDateTime={setValueOfDateTime_from}
           valueOfDateTime={valueOfDateTime_from}
         />
 
@@ -133,7 +132,6 @@ export const ColumnFilterByDateRange: React.FC<{
             setValueOfDateTime_to((prev) => newDate);
             parentChange();
           }}
-          setValueOfDateTime={setValueOfDateTime_from}
           valueOfDateTime={valueOfDateTime_to}
         />
       </div>
