@@ -10,6 +10,7 @@ import { equalFnForCurrUserDocChange } from "src/App";
 
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import { EditUserButton } from "../UsersList/OneUser/EditUserButton/EditUserButton";
 
 export const ProfilePage: React.FC<{}> = () => {
   const thisUser = useAppSelector((store) => store.sweet.currUser, equalFnForCurrUserDocChange);
@@ -60,8 +61,16 @@ export const ProfilePage: React.FC<{}> = () => {
           </tbody>
         </Table>
 
-        <div>
-          {/* <button onClick={handleLogout}>Log out</button> */}
+        <div className={style.wrapOfButtons}>
+          <EditUserButton
+            className={style.editButton}
+            userToUpdate={thisUser}
+            successFn={() => {
+              // getUsers();
+            }}
+            // listId={-1}
+          />
+
           <Button onClick={handleLogout} variant="outline-primary">
             Log out
           </Button>

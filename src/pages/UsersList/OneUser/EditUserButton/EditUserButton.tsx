@@ -14,16 +14,17 @@ import { CreateUpdateUser } from "../CreateUpdateUser/CreateUpdateUser";
 // import { useAppSelector } from "src/app/hooks";
 
 export const EditUserButton: React.FC<{
+  className?: string;
   userToUpdate: ISiteUser;
   successFn: () => any;
   listId?: string;
-}> = ({ successFn, userToUpdate, listId }) => {
+}> = ({ successFn, userToUpdate, listId, className }) => {
   const [showEditUserPop, setShowEditUserPop] = useState(false);
 
   // const navigate = useNavigate();
 
   return (
-    <div className={cla(style.download, style.ground)}>
+    <div className={cla(style.download, style.ground, className)}>
       <span
         onClick={() => {
           setShowEditUserPop((prev) => true);
