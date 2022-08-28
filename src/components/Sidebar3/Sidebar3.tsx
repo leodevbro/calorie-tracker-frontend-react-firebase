@@ -163,7 +163,7 @@ export const Sidebar3: React.FC<{ className?: string }> = ({ className }) => {
         <PillButton
           className={style.videoLink}
           text={"Video"}
-          link={`https://drive.google.com/file/d/19tNW7HoXETcsX-WTII3ZLE_uBDwM0gFz/view`}
+          // link={`#`}
         />
 
         {infosOfItems.map((item, ind) => {
