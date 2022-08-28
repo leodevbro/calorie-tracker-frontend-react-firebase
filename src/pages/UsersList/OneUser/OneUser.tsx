@@ -39,14 +39,14 @@ export const OneUser: React.FC<{
 
   return (
     <div className={cla(style.ground, style.oneUser, className)}>
-      <div
+      {/* <div
         className={cla(style.toggleButton, { [style.expanded]: seeBikes })}
         onClick={() => {
           setSeeBikes((prev) => !prev);
         }}
       >
         <span className={style.symb}>{">"}</span>
-      </div>
+      </div> */}
 
       <div className={style.topBox}>
         <div className={cla(style.item, style.indexOne)}>{`${userListIndex + 1})`}</div>

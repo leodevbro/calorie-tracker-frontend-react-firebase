@@ -149,14 +149,14 @@ export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
 
         {loading && <CoolLoader />}
 
-        <button
+        {/* <button
           className={style.toggleExpandAll}
           onClick={() => {
             dispatch(changeToggleExpandAllUsers());
           }}
         >
           Toggle Expand all
-        </button>
+        </button> */}
 
         <div className={style.allUsers}>
           {users.map((user, index) => {
