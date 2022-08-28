@@ -22,6 +22,8 @@ import { ISiteUser, IUserRoles } from "src/app/redux-slices/sweetSlice";
 import { dbApi } from "src/connection-to-backend/db/bridge";
 import { useAppSelector } from "src/app/hooks";
 import { equalFnForCurrUserDocChange } from "src/App";
+// import { tryGetAllKeys, waitMs } from "src/app/helper-functions";
+import { ISweetHttpsError } from "src/main-interfaces/sweet";
 import { waitMs } from "src/app/helper-functions";
 
 // import { useAppSelector } from "src/app/hooks";
@@ -118,8 +120,8 @@ export const CreateUpdateUser: React.FC<{
 
       setIsLoading((prev) => true);
 
-      try {
-        if (userToUpdate) {
+      if (userToUpdate) {
+        try {
           const claimingCurrPassword = values[naming.currPassword] as string;
 
           if (forMyself) {
@@ -175,6 +177,8 @@ export const CreateUpdateUser: React.FC<{
           const res = await dbApi.updateOneUser(theOb2);
           const theData = res.data;
 
+          // console.log("theData:", res);
+
           if (theData && theData.actorId === theData.idOfUserToUpdate) {
             // console.log("jaaaaaaa???????????", theData);
             await waitMs(500);
@@ -187,8 +191,22 @@ export const CreateUpdateUser: React.FC<{
 
           // and in App file we have a real-time database listener of the current user doc change
           // it trigers corresponding updates for UI
-        } else {
-          // we are creating a new user
+
+          successFn();
+        } catch (err: any) {
+          const myError = err as ISweetHttpsError;
+          // console.log( err);
+          // console.log(Object.entries( err));
+          console.log("myError.details.message:", myError.details?.message);
+
+          // console.log( err.propertyIsEnumerable(`message`));
+          // console.log(tryGetAllKeys( err));
+
+          setBigError(myError.details?.message);
+        }
+      } else {
+        // we are creating a new user
+        try {
           const newDateNumber = new Date().getTime();
 
           const theOb = {
@@ -214,22 +232,24 @@ export const CreateUpdateUser: React.FC<{
 
           console.log(theId);
 
-          successFn();
+          if (theId) {
+            successFn();
+          }
+        } catch (err: any) {
+          const myError = err as ISweetHttpsError;
+          // console.log( err);
+          setBigError(myError.details?.message);
         }
-
-        // console.log("vqlouzdebi");
-        setTimeout(() => {
-          setIsLoading((prev) => false);
-        }, 1000);
-
-        successFn();
-
-        // navigate("/first");
-      } catch (err: any) {
-        // console.log({...err as any}, typeof err);
-        console.log(err, typeof err);
-        setBigError(err.code);
       }
+
+      // console.log("vqlouzdebi");
+      setTimeout(() => {
+        setIsLoading((prev) => false);
+      }, 100);
+
+      // successFn();
+
+      // navigate("/first");
     },
   });
 
