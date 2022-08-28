@@ -21,7 +21,7 @@ import { CheckboxInp } from "src/components/SweetInput/CheckboxInp";
 import { ISiteUser, IUserRoles } from "src/app/redux-slices/sweetSlice";
 import { dbApi } from "src/connection-to-backend/db/bridge";
 import { useAppSelector } from "src/app/hooks";
-import { equalFnForCurrUserDocChange } from "src/App";
+import { cla, equalFnForCurrUserDocChange } from "src/App";
 // import { tryGetAllKeys, waitMs } from "src/app/helper-functions";
 import { ISweetHttpsError } from "src/main-interfaces/sweet";
 import { waitMs } from "src/app/helper-functions";
@@ -267,6 +267,10 @@ export const CreateUpdateUser: React.FC<{
           <div className={style.bigError}>{bigError}</div>
 
           <SweetInput
+            className={cla(
+              style.inp,
+              theActor && theActor.roles.admin ? style.doShow : style.doHide,
+            )}
             id={naming.email}
             name={naming.email}
             autoComplete="off"
@@ -274,7 +278,7 @@ export const CreateUpdateUser: React.FC<{
             label={"Email"}
             placeHolder={"Email"}
             //
-            className={style.inp}
+            // className={style.inp}
             value={formik.values[naming.email] as string}
             onChange={formik.handleChange}
             onFocus={undefined}
@@ -287,7 +291,7 @@ export const CreateUpdateUser: React.FC<{
           <SweetInput
             id={naming.firstName}
             name={naming.firstName}
-            // autoComplete={"given-name"}
+            autoComplete={"given-name"}
             kind={"kFirstName"}
             label={"First name"}
             placeHolder={"First name"}
@@ -305,7 +309,7 @@ export const CreateUpdateUser: React.FC<{
           <SweetInput
             id={naming.lastName}
             name={naming.lastName}
-            // autoComplete={"family-name"}
+            autoComplete={"family-name"}
             kind={"kLastName"}
             label={"Last name"}
             placeHolder={"Last name"}
@@ -320,45 +324,31 @@ export const CreateUpdateUser: React.FC<{
             error={formik.touched[naming.lastName] && formik.errors[naming.lastName]}
           />
 
-          <h3>Roles:</h3>
+          {theActor && theActor.roles.admin && (
+            <div>
+              <h3>Roles:</h3>
 
-          <span>
-            {/* <CheckboxInp
-              className={style.myCheck}
-              isChecked={formik.values.zzzhasRoleUser}
-              id={"zzzhasRoleUser"}
-              label={"User"}
-              name={"zzzhasRoleUser"}
-              onBlur={() => 4}
-              textualValue={"zzzhasRoleUser"}
-              // onChange={formik.handleChange}
-              tryToChange={(change) => {
-                if (change.isChecked !== undefined) {
-                  formik.setFieldValue("zzzhasRoleUser", change.isChecked);
-                }
-              }}
-              // isLastIndex={isLast}
-              error={formik.touched.zzzhasRoleUser && formik.errors.zzzhasRoleUser}
-            /> */}
-
-            <CheckboxInp
-              className={style.myCheck}
-              isChecked={formik.values[naming.hasRoleAdmin] as boolean}
-              id={naming.hasRoleAdmin}
-              label={"Admin"}
-              name={naming.hasRoleAdmin}
-              onBlur={() => 4}
-              textualValue={naming.hasRoleAdmin}
-              // onChange={formik.handleChange}
-              tryToChange={(change) => {
-                if (change.isChecked !== undefined) {
-                  formik.setFieldValue(naming.hasRoleAdmin, change.isChecked);
-                }
-              }}
-              // isLastIndex={isLast}
-              error={formik.touched[naming.hasRoleAdmin] && formik.errors[naming.hasRoleAdmin]}
-            />
-          </span>
+              <span>
+                <CheckboxInp
+                  className={style.myCheck}
+                  isChecked={formik.values[naming.hasRoleAdmin] as boolean}
+                  id={naming.hasRoleAdmin}
+                  label={"Admin"}
+                  name={naming.hasRoleAdmin}
+                  onBlur={() => 4}
+                  textualValue={naming.hasRoleAdmin}
+                  // onChange={formik.handleChange}
+                  tryToChange={(change) => {
+                    if (change.isChecked !== undefined) {
+                      formik.setFieldValue(naming.hasRoleAdmin, change.isChecked);
+                    }
+                  }}
+                  // isLastIndex={isLast}
+                  error={formik.touched[naming.hasRoleAdmin] && formik.errors[naming.hasRoleAdmin]}
+                />
+              </span>
+            </div>
+          )}
 
           {forMyself && (
             <SweetInput
