@@ -680,21 +680,21 @@ export const FoodListPage: React.FC<{}> = () => {
               <tr>
                 <td>1</td>
                 <td>Number of added entries today</td>
-                <td>{globalStats?.byIntakeDates.entriesToday?.toFixed(2) || "-"}</td>
-                <td>{globalStats?.byCreatedDates.entriesToday?.toFixed(2) || "-"}</td>
+                <td>{globalStats?.byIntakeDates.entriesToday?.toFixed(0) || "-"}</td>
+                <td>{globalStats?.byCreatedDates.entriesToday?.toFixed(0) || "-"}</td>
               </tr>
               <tr>
                 <td>2</td>
                 <td>Number of added entries in the last 7 days</td>
-                <td>{globalStats?.byIntakeDates.entriesLast_7_days?.toFixed(2) || "-"}</td>
-                <td>{globalStats?.byCreatedDates.entriesLast_7_days?.toFixed(2) || "-"}</td>
+                <td>{globalStats?.byIntakeDates.entriesLast_7_days?.toFixed(0) || "-"}</td>
+                <td>{globalStats?.byCreatedDates.entriesLast_7_days?.toFixed(0) || "-"}</td>
               </tr>
               <tr>
                 <td>3</td>
                 <td>Added entries the week before previous 7th day</td>
-                <td>{globalStats?.byIntakeDates.entriesFromPast_14_toPast_7?.toFixed(2) || "-"}</td>
+                <td>{globalStats?.byIntakeDates.entriesFromPast_14_toPast_7?.toFixed(0) || "-"}</td>
                 <td>
-                  {globalStats?.byCreatedDates.entriesFromPast_14_toPast_7?.toFixed(2) || "-"}
+                  {globalStats?.byCreatedDates.entriesFromPast_14_toPast_7?.toFixed(0) || "-"}
                 </td>
               </tr>
               <tr>
