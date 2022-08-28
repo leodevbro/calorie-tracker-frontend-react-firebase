@@ -27,7 +27,7 @@ import { SweetTable3 } from "src/components/SweetTable3/SweetTable3";
 import { CheckboxInp } from "src/components/SweetInput/CheckboxInp";
 // import { BasicButton } from "src/components/buttons/BasicButton";
 
-import { useAppSelector } from "src/app/hooks";
+import { useAppDispatch, useAppSelector } from "src/app/hooks";
 
 // import { cla } from "src/App";
 
@@ -47,6 +47,7 @@ import { myCustomFilterFnOfCalories } from "src/components/SweetTable3/superCust
 // import { getDateAfterNDays, msInOneDay } from "src/app/helper-functions";
 import { calcDailyStats, calcGlobalStats } from "./specialFns";
 import { getConstant } from "src/app/constants";
+import { changeTryShowFoodOfAllUsers } from "src/app/redux-slices/sweetSlice";
 
 const genFoodImagePath = "https://i.ibb.co/YZRXt5z/2022-08-26-10-56-05.png";
 
@@ -91,7 +92,23 @@ export interface IGlobalStats {
 
 export const FoodListPage: React.FC<{}> = () => {
   const veryCurrUser = useAppSelector((store) => store.sweet.currUser, equalFnForCurrUserDocChange);
+  const nowTryToShowFoodOfAllUsers = useAppSelector(
+    (store) => store.sweet.tryShowFoodOfAllUsers,
+    (a, b) => a === b,
+  );
+
+  // console.log(nowTryToShowFoodOfAllUsers);
+
+  const dispatch = useAppDispatch();
   // console.log("veryCurrUser:", veryCurrUser);
+
+  const fnToChangeShowingFoodOfAllUsers = useCallback(
+    (boo: boolean) => {
+      // console.log(boo);
+      dispatch(changeTryShowFoodOfAllUsers(boo));
+    },
+    [dispatch],
+  );
 
   // const navigate = useNavigate();
   const [foodArr, setFoodArr] = useState<null | IFoodWithAuthor[]>(null);
@@ -107,7 +124,7 @@ export const FoodListPage: React.FC<{}> = () => {
       let data: IFoodWithAuthor[] = [];
 
       try {
-        if (veryCurrUser.roles.admin) {
+        if (veryCurrUser.roles.admin && nowTryToShowFoodOfAllUsers) {
           data = await dbApi.getEntireFoodListOfAllUsers();
           // data = [];
         } else {
@@ -138,8 +155,12 @@ export const FoodListPage: React.FC<{}> = () => {
         });
       }
     },
-    [veryCurrUser],
+    [nowTryToShowFoodOfAllUsers, veryCurrUser],
   );
+
+  useEffect(() => {
+    getFoodArr();
+  }, [getFoodArr, nowTryToShowFoodOfAllUsers]);
 
   const tableData = React.useMemo(() => {
     if (!foodArr) {
@@ -300,7 +321,9 @@ export const FoodListPage: React.FC<{}> = () => {
                   }}
                 >
                   <div>{"this entry / entire day (minus cheat)"}</div>
-                  <div style={{ color: "red" }}>{`Daily limit is ${getConstant("dailyCalorieLimit")}`}</div>
+                  <div style={{ color: "red" }}>{`Daily limit is ${getConstant(
+                    "dailyCalorieLimit",
+                  )}`}</div>
                 </div>
                 // </span>
               }
@@ -435,8 +458,10 @@ export const FoodListPage: React.FC<{}> = () => {
         // disableFilters: true,
         // disableGlobalFilter: true,
       },
+    ];
 
-      {
+    if (veryCurrUser && veryCurrUser.roles.admin && nowTryToShowFoodOfAllUsers) {
+      columns.push({
         headTitle: "Author email",
         // Header: () => <div style={{ border: "1px solid blue" }}>{t("download")}</div>,
         Header: "author email".toUpperCase() || undefined,
@@ -466,8 +491,8 @@ export const FoodListPage: React.FC<{}> = () => {
 
         // disableFilters: true,
         // disableGlobalFilter: true,
-      },
-    ];
+      });
+    }
 
     if (veryCurrUser) {
       columns.push(
@@ -528,7 +553,7 @@ export const FoodListPage: React.FC<{}> = () => {
     }
 
     return columns;
-  }, [getFoodArr, tableData, veryCurrUser]);
+  }, [getFoodArr, nowTryToShowFoodOfAllUsers, tableData, veryCurrUser]);
 
   const narrowRowTopBoxContentMaker: React.FC<ICustomTopBottom> = useCallback(
     ({ columns, row }) => {
@@ -629,6 +654,7 @@ export const FoodListPage: React.FC<{}> = () => {
         // idsOfDatings={idsOfDatings}
         eachPageSize={eachPageSize}
         changeEachPageSize={changeEachPageSize}
+        fnForTopLeftSwitch={fnToChangeShowingFoodOfAllUsers}
       />
 
       {veryCurrUser && veryCurrUser.roles.admin && (

@@ -17,7 +17,6 @@ import { ButtonToCreateUser } from "./buttonToCreateUser/ButtonToCreateUser";
 export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<ISiteUser[]>([]);
-  const [bikes, setBikes] = useState<{}[]>([]);
 
   const dispatch = useAppDispatch();
 
@@ -26,7 +25,7 @@ export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
 
   const getFoodArr = useCallback(async (isMounted?: { v: boolean }) => {
     // const dataArr = await dbApi.getAllBikes();
-    const dataArr = [];
+    // const dataArr = [];
     // console.log("daaa:", data);
 
     if (isMounted === undefined || isMounted.v === true) {
@@ -122,13 +121,13 @@ export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <div className={cla(className, style.ground)}>
       <div className={cla(className, style.ground2)}>
-      { (
-        <ButtonToCreateUser
-          successFn={() => {
-            getUsers();
-          }}
-        />
-      )}
+        {
+          <ButtonToCreateUser
+            successFn={() => {
+              getUsers();
+            }}
+          />
+        }
 
         {/* <input
         type={"text"}
@@ -161,8 +160,6 @@ export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
 
         <div className={style.allUsers}>
           {users.map((user, index) => {
-            
-
             return (
               // <div key={x.id} className={style.oneUser}>
               //   <h4>{`${x.firstName} ${x.lastName}`}</h4>
@@ -181,13 +178,7 @@ export const UsersList: React.FC<{ className?: string }> = ({ className }) => {
               //   </button>
               // </div>
 
-              <OneUser
-               
-                userListIndex={index}
-                user={user}
-                key={user.id}
-                getUsers={getUsers}
-              />
+              <OneUser userListIndex={index} user={user} key={user.id} getUsers={getUsers} />
             );
           })}
         </div>

@@ -22,6 +22,8 @@ import { cla } from "src/App";
 // import { Link } from "react-router-dom";
 // import { useAppSelector } from "../app/hooks";
 
+import Form from "react-bootstrap/Form";
+
 import searchSvgPath from "src/styling-constants/svg-items/search.svg";
 // import { ReactComponent as ArrowRightSvg } from "src/styling-constants/svg-items/arrow-right.svg";
 
@@ -155,6 +157,7 @@ export const SweetTable3: React.FC<{
   narrowRowBottomBoxContentMaker?: React.FC<ICustomTopBottom>;
   eachPageSize?: number;
   changeEachPageSize: (num: number) => any;
+  fnForTopLeftSwitch: (boo: boolean) => any;
 }> = ({
   className,
   tableColumns,
@@ -166,6 +169,7 @@ export const SweetTable3: React.FC<{
   narrowRowBottomBoxContentMaker,
   eachPageSize = 5,
   changeEachPageSize,
+  fnForTopLeftSwitch,
 }) => {
   const basicMinHeight = eachPageSize * 56;
   const numberOfCols = tableColumns.length;
@@ -625,6 +629,16 @@ export const SweetTable3: React.FC<{
           </div> */}
         </div>
       </div>
+
+      <Form.Check
+        type="switch"
+        id="custom-switch"
+        label="Show entries of all users"
+        onChange={(e) => {
+          const checked = e.target.checked;
+          fnForTopLeftSwitch(checked);
+        }}
+      />
 
       <div
         ref={tableRef}

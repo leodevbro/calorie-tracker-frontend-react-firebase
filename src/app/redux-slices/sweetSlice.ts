@@ -49,6 +49,7 @@ export interface ISweetState {
   currUser: tyUserState;
 
   allUsers: ISiteUser[];
+  tryShowFoodOfAllUsers: boolean;
 
   showDevControl: boolean;
 
@@ -80,6 +81,7 @@ const initialState: ISweetState = {
   currUser: "",
 
   allUsers: [],
+  tryShowFoodOfAllUsers: false,
 
   // userStatus: AuthFlowEnum.notLoggedIn,
 
@@ -122,6 +124,12 @@ export const sweetSlice = createSlice({
       window.localStorage.setItem(LSEnum.t_showSidebarForMobile, cand ? "true" : "false");
     },
 
+    changeTryShowFoodOfAllUsers: (state, payload: PayloadAction<boolean>) => {
+      const cand = payload.payload;
+
+      state.tryShowFoodOfAllUsers = cand;
+    },
+
     // changeHighlightedUser: (state, payload: PayloadAction<null | string>) => {
     //   const cand = payload.payload;
     //   state.highlightedUserId = cand;
@@ -142,6 +150,7 @@ export const {
   changeShowSidebarForMobile,
   // changeHighlightedUser,
   changeToggleExpandAllUsers,
+  changeTryShowFoodOfAllUsers,
 } = sweetSlice.actions;
 
 export const sweetReducer = sweetSlice.reducer;
