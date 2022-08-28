@@ -31,7 +31,7 @@ export interface IFoodWithAuthor extends IFoodEntry {
 }
 
 export const dbApi = {
-  dailyCalorieLimit: 2100,
+  // dailyCalorieLimit: 2100,
 
   // -------------------
   // -------------------

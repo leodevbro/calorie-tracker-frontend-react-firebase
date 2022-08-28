@@ -46,6 +46,7 @@ import { myCustomFilterFnOfDateRange } from "src/components/SweetTable3/superCus
 import { myCustomFilterFnOfCalories } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByMinMax/ColumnFilterByMinMax";
 // import { getDateAfterNDays, msInOneDay } from "src/app/helper-functions";
 import { calcDailyStats, calcGlobalStats } from "./specialFns";
+import { getConstant } from "src/app/constants";
 
 const genFoodImagePath = "https://i.ibb.co/YZRXt5z/2022-08-26-10-56-05.png";
 
@@ -299,7 +300,7 @@ export const FoodListPage: React.FC<{}> = () => {
                   }}
                 >
                   <div>{"this entry / entire day (minus cheat)"}</div>
-                  <div style={{ color: "red" }}>{`Daily limit is ${dbApi.dailyCalorieLimit}`}</div>
+                  <div style={{ color: "red" }}>{`Daily limit is ${getConstant("dailyCalorieLimit")}`}</div>
                 </div>
                 // </span>
               }

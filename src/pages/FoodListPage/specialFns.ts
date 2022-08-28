@@ -1,5 +1,6 @@
+import { getConstant } from "src/app/constants";
 import { getDateAfterNDays, msInOneDay } from "src/app/helper-functions";
-import { dbApi, IFoodWithAuthor } from "src/connection-to-backend/db/bridge";
+import { IFoodWithAuthor } from "src/connection-to-backend/db/bridge";
 import { IFoodTableRow, IFoodWithDailyStats, IGlobalStats } from "./FoodListPage";
 
 export const calcDailyStats = (rawArrOfFood: IFoodWithAuthor[]): IFoodWithDailyStats[] => {
@@ -32,7 +33,7 @@ export const calcDailyStats = (rawArrOfFood: IFoodWithAuthor[]): IFoodWithDailyS
   const newArr = rawArrOfFood.map((food) => {
     const keyString = `${food.authorId}_${new Date(food.intakeDateTime).toLocaleDateString()}`;
 
-    const overLimit = map_withoutCheatedFood[keyString] > dbApi.dailyCalorieLimit;
+    const overLimit = map_withoutCheatedFood[keyString] > getConstant("dailyCalorieLimit");
 
     const obj: IFoodWithDailyStats = {
       ...food,
