@@ -655,6 +655,7 @@ export const FoodListPage: React.FC<{}> = () => {
         eachPageSize={eachPageSize}
         changeEachPageSize={changeEachPageSize}
         fnForTopLeftSwitch={fnToChangeShowingFoodOfAllUsers}
+        valForTopLeftSwitch={nowTryToShowFoodOfAllUsers}
       />
 
       {veryCurrUser && veryCurrUser.roles.admin && (

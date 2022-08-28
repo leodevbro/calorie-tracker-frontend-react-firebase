@@ -158,6 +158,7 @@ export const SweetTable3: React.FC<{
   eachPageSize?: number;
   changeEachPageSize: (num: number) => any;
   fnForTopLeftSwitch: (boo: boolean) => any;
+  valForTopLeftSwitch: boolean;
 }> = ({
   className,
   tableColumns,
@@ -170,6 +171,7 @@ export const SweetTable3: React.FC<{
   eachPageSize = 5,
   changeEachPageSize,
   fnForTopLeftSwitch,
+  valForTopLeftSwitch,
 }) => {
   const basicMinHeight = eachPageSize * 56;
   const numberOfCols = tableColumns.length;
@@ -634,6 +636,7 @@ export const SweetTable3: React.FC<{
         type="switch"
         id="custom-switch"
         label="Show entries of all users"
+        checked={valForTopLeftSwitch}
         onChange={(e) => {
           const checked = e.target.checked;
           fnForTopLeftSwitch(checked);
