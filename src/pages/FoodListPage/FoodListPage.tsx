@@ -9,6 +9,8 @@ import {
 } from "src/components/SweetTable3/SweetTable3";
 // import { useAppSelector } from "../app/hooks";
 
+import Table from "react-bootstrap/Table";
+
 import style from "./FoodListPage.module.scss";
 
 // import checkIconSvgPath from "src/styling-constants/svg-items/check.svg";
@@ -57,11 +59,16 @@ export interface IFoodTableRow extends IFoodWithDailyStats {
   authorEmail: string;
 }
 
-interface IGlobalStats {
-  entriesToday: number | null;
-  entriesLast_7_days: number | null;
-  entriesFromPast_14_toPast_7: number | null;
+interface ISpecificStats {
+  entriesToday: number;
+  entriesLast_7_days: number;
+  entriesFromPast_14_toPast_7: number;
   averageCaloriesPerUserLast_7_days: number | null;
+}
+
+interface IGlobalStats {
+  byIntakeDates: ISpecificStats;
+  byCreatedDates: ISpecificStats;
 }
 
 const calcDailyStats = (rawArrOfFood: IFoodWithAuthor[]): IFoodWithDailyStats[] => {
@@ -156,10 +163,21 @@ const calcGlobalStats = (tableInfo: IFoodTableRow[]): IGlobalStats => {
   const hashMap_authorId_caloriesLast7Days: { [key: string]: number } = {};
   // ----
 
-  let entriesToday = 0;
-  let entriesLast_7_days = 0;
-  let entriesFromPast_14_toPast_7 = 0;
-  let averageCaloriesPerUserLast_7_days = 0;
+  const zStats: IGlobalStats = {
+    byIntakeDates: {
+      entriesToday: 0,
+      entriesLast_7_days: 0,
+      entriesFromPast_14_toPast_7: 0,
+      averageCaloriesPerUserLast_7_days: null,
+    },
+
+    byCreatedDates: {
+      entriesToday: 0,
+      entriesLast_7_days: 0,
+      entriesFromPast_14_toPast_7: 0,
+      averageCaloriesPerUserLast_7_days: null,
+    },
+  };
 
   for (const row of tableInfo) {
     // for entriesToday
@@ -169,7 +187,9 @@ const calcGlobalStats = (tableInfo: IFoodTableRow[]): IGlobalStats => {
     // console.log(dateStringOfCurrIntake, nowDateString);
 
     if (dateStringOfCurrIntake === nowDateString) {
-      entriesToday += row.calories;
+      // entriesToday += row.calories;
+      // entriesToday__byIntakeDate += 1;
+      zStats.byIntakeDates.entriesToday += 1;
     }
 
     // --------------------
@@ -177,7 +197,9 @@ const calcGlobalStats = (tableInfo: IFoodTableRow[]): IGlobalStats => {
     // for entriesLast_7_days
 
     if (dateStringsOfLast_7_days.hashMap[dateStringOfCurrIntake] === true) {
-      entriesLast_7_days += row.calories;
+      // entriesLast_7_days += row.calories;
+      // entriesLast_7_days__byIntakeDate += 1;
+      zStats.byIntakeDates.entriesLast_7_days += 1;
 
       // averageCaloriesPerUserLast_7_days
       const currAuthorId = row.authorId;
@@ -191,7 +213,9 @@ const calcGlobalStats = (tableInfo: IFoodTableRow[]): IGlobalStats => {
 
     // for entriesFromPast_14_toPast_7 (part1)
     if (dateStringsOfLast_7_days_beforeLast_7.hashMap[dateStringOfCurrIntake] === true) {
-      entriesFromPast_14_toPast_7 += row.calories;
+      // entriesFromPast_14_toPast_7 += row.calories;
+      // entriesFromPast_14_toPast_7__byIntakeDate += 1;
+      zStats.byIntakeDates.entriesFromPast_14_toPast_7 += 1;
     }
   }
 
@@ -199,20 +223,14 @@ const calcGlobalStats = (tableInfo: IFoodTableRow[]): IGlobalStats => {
   const caloriesPerUserLast7Days = Object.values(hashMap_authorId_caloriesLast7Days);
 
   if (caloriesPerUserLast7Days.length >= 1) {
-    averageCaloriesPerUserLast_7_days =
+    const rawAverage =
       caloriesPerUserLast7Days.reduce((a, b) => a + b, 0) / caloriesPerUserLast7Days.length;
+    zStats.byIntakeDates.averageCaloriesPerUserLast_7_days = rawAverage;
   }
 
-  // console.log("averageCaloriesPerUserLast_7_days:", averageCaloriesPerUserLast_7_days);
+  // console.log(zStats.byIntakeDates.averageCaloriesPerUserLast_7_days);
 
-  const obj: IGlobalStats = {
-    entriesToday,
-    entriesLast_7_days,
-    entriesFromPast_14_toPast_7,
-    averageCaloriesPerUserLast_7_days,
-  };
-
-  return obj;
+  return zStats;
 };
 
 // const myCustomFilter2: FilterFnOfTableT = (rows, columnIds, filterValue: string) => {
@@ -251,6 +269,7 @@ export const FoodListPage: React.FC<{}> = () => {
       try {
         if (veryCurrUser.roles.admin) {
           data = await dbApi.getEntireFoodListOfAllUsers();
+          // data = [];
         } else {
           data = (await dbApi.getEntireFoodListOfOneAuthor(veryCurrUser.id)) || [];
         }
@@ -499,10 +518,10 @@ export const FoodListPage: React.FC<{}> = () => {
           return (
             <div className={cla(style.theCalories, cl_inTheDayWhenLimitReached, cl_isCheated)}>
               <div className={cla(style.oneEntry, cl_inTheDayWhenLimitReached, cl_isCheated)}>
-                {calorieNum}
+                {calorieNum.toFixed(0)}
               </div>
               <div className={cla(style.entireDay, cl_inTheDayWhenLimitReached, cl_isCheated)}>
-                {entireDayCalorie}
+                {entireDayCalorie.toFixed(0)}
               </div>
             </div>
           );
@@ -774,24 +793,48 @@ export const FoodListPage: React.FC<{}> = () => {
 
       {veryCurrUser && veryCurrUser.roles.admin && (
         <div className={cla(style.reportBox)}>
-          <div>
-            <span>Number of added entries today:</span> <span>{globalStats?.entriesToday}</span>
-          </div>
+          <h3 style={{ marginTop: "52px" }} className={style.byIntakeDates}>
+            Interesting Stats
+          </h3>
 
-          <div>
-            <span>Number of added entries in the last 7 days:</span>{" "}
-            <span>{globalStats?.entriesLast_7_days}</span>
-          </div>
-
-          <div>
-            <span>added entries the week before that.</span>{" "}
-            <span>{globalStats?.entriesFromPast_14_toPast_7}</span>
-          </div>
-
-          <div>
-            <span>The average number of calories added per user for the last 7 days:</span>{" "}
-            <span>{globalStats?.averageCaloriesPerUserLast_7_days}</span>
-          </div>
+          <Table striped bordered hover style={{ maxWidth: "808px" }}>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Stat Name</th>
+                <th>By Intake Dates</th>
+                <th>By Created Dates</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Number of added entries today</td>
+                <td>{globalStats?.byIntakeDates.entriesToday?.toFixed(2) || "-"}</td>
+                <td>200</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Number of added entries in the last 7 days</td>
+                <td>{globalStats?.byIntakeDates.entriesLast_7_days?.toFixed(2) || "-"}</td>
+                <td>2000</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Added entries the week before last 7th day</td>
+                <td>{globalStats?.byIntakeDates.entriesFromPast_14_toPast_7?.toFixed(2) || "-"}</td>
+                <td>400</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>The average number of calories added per user for the last 7 days</td>
+                <td>
+                  {globalStats?.byIntakeDates.averageCaloriesPerUserLast_7_days?.toFixed(2) || "-"}
+                </td>
+                <td>400</td>
+              </tr>
+            </tbody>
+          </Table>
         </div>
       )}
     </div>
