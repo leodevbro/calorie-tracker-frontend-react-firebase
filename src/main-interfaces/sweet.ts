@@ -7,3 +7,12 @@ export interface IMyEnv extends NodeJS.ProcessEnv {
   REACT_APP_FIREBASE_APP_ID: string;
   REACT_APP_FIREBASE_MEASUREMENT_ID: string;
 }
+
+export interface ISweetHttpsError {
+  code: string;
+  name: string;
+  details: {
+    message: string;
+    code: string;
+  };
+}

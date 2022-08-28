@@ -650,19 +650,21 @@ export const FoodListPage: React.FC<{}> = () => {
                 <td>1</td>
                 <td>Number of added entries today</td>
                 <td>{globalStats?.byIntakeDates.entriesToday?.toFixed(2) || "-"}</td>
-                <td>200</td>
+                <td>{globalStats?.byCreatedDates.entriesToday?.toFixed(2) || "-"}</td>
               </tr>
               <tr>
                 <td>2</td>
                 <td>Number of added entries in the last 7 days</td>
                 <td>{globalStats?.byIntakeDates.entriesLast_7_days?.toFixed(2) || "-"}</td>
-                <td>2000</td>
+                <td>{globalStats?.byCreatedDates.entriesLast_7_days?.toFixed(2) || "-"}</td>
               </tr>
               <tr>
                 <td>3</td>
-                <td>Added entries the week before last 7th day</td>
+                <td>Added entries the week before previous 7th day</td>
                 <td>{globalStats?.byIntakeDates.entriesFromPast_14_toPast_7?.toFixed(2) || "-"}</td>
-                <td>400</td>
+                <td>
+                  {globalStats?.byCreatedDates.entriesFromPast_14_toPast_7?.toFixed(2) || "-"}
+                </td>
               </tr>
               <tr>
                 <td>3</td>
@@ -670,7 +672,9 @@ export const FoodListPage: React.FC<{}> = () => {
                 <td>
                   {globalStats?.byIntakeDates.averageCaloriesPerUserLast_7_days?.toFixed(2) || "-"}
                 </td>
-                <td>400</td>
+                <td>
+                  {globalStats?.byCreatedDates.averageCaloriesPerUserLast_7_days?.toFixed(2) || "-"}
+                </td>
               </tr>
             </tbody>
           </Table>
