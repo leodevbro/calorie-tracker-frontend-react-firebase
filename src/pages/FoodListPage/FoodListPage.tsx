@@ -695,7 +695,7 @@ export const FoodListPage: React.FC<{}> = () => {
                 </td>
               </tr>
               <tr>
-                <td>3</td>
+                <td>4</td>
                 <td>The average number of calories added per user for the last 7 days</td>
                 <td>
                   {globalStats?.byIntakeDates.averageCaloriesPerUserLast_7_days?.toFixed(2) || "-"}
