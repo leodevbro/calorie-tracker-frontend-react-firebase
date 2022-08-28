@@ -6,13 +6,13 @@ import eyeIconSvgPath from "src/styling-constants/svg-items/eye-1.svg";
 import eyeOffIconSvgPath from "src/styling-constants/svg-items/eye-off.svg";
 import style from "./SweetInput.module.scss";
 
-export type InputTypesT = "text" | "email" | "password";
+export type InputTypesT = "text" | "email" | "password" | "number";
 
 export const SweetInput: React.FC<{
   autoComplete?: string;
   id: string;
   name: string;
-  kind: "kFirstName" | "kLastName" | "kEmail" | "kPassword" | "general";
+  kind: "kFirstName" | "kLastName" | "kEmail" | "kPassword" | "general" | "number";
   label: string;
 
   placeHolder?: string;
@@ -49,6 +49,8 @@ export const SweetInput: React.FC<{
       iType = "email";
     } else if (kind === "kPassword") {
       iType = "password";
+    } else if (kind === "number") {
+      iType = "number";
     }
     return iType;
     // eslint-disable-next-line react-hooks/exhaustive-deps

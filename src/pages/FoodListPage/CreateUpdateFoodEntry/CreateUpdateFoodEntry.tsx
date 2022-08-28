@@ -289,7 +289,7 @@ export const CreateUpdateFoodEntry: React.FC<{
             id={naming.calories}
             name={naming.calories}
             // autoComplete={"family-name"}
-            kind={"general"}
+            kind={"number"}
             label={"Calories"}
             placeHolder={"Calories"}
             //
