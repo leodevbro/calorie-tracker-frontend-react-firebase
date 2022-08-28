@@ -654,8 +654,11 @@ export const FoodListPage: React.FC<{}> = () => {
         // idsOfDatings={idsOfDatings}
         eachPageSize={eachPageSize}
         changeEachPageSize={changeEachPageSize}
-        fnForTopLeftSwitch={fnToChangeShowingFoodOfAllUsers}
-        valForTopLeftSwitch={nowTryToShowFoodOfAllUsers}
+        listSwitchProps={{
+          fnForSwitch: fnToChangeShowingFoodOfAllUsers,
+          valForSwitch: nowTryToShowFoodOfAllUsers,
+          canSee: !!veryCurrUser && veryCurrUser.roles.admin,
+        }}
       />
 
       {veryCurrUser && veryCurrUser.roles.admin && (

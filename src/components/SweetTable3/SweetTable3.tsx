@@ -157,8 +157,11 @@ export const SweetTable3: React.FC<{
   narrowRowBottomBoxContentMaker?: React.FC<ICustomTopBottom>;
   eachPageSize?: number;
   changeEachPageSize: (num: number) => any;
-  fnForTopLeftSwitch: (boo: boolean) => any;
-  valForTopLeftSwitch: boolean;
+  listSwitchProps: {
+    fnForSwitch: (boo: boolean) => any;
+    valForSwitch: boolean;
+    canSee: boolean;
+  };
 }> = ({
   className,
   tableColumns,
@@ -170,8 +173,7 @@ export const SweetTable3: React.FC<{
   narrowRowBottomBoxContentMaker,
   eachPageSize = 5,
   changeEachPageSize,
-  fnForTopLeftSwitch,
-  valForTopLeftSwitch,
+  listSwitchProps,
 }) => {
   const basicMinHeight = eachPageSize * 56;
   const numberOfCols = tableColumns.length;
@@ -632,16 +634,18 @@ export const SweetTable3: React.FC<{
         </div>
       </div>
 
-      <Form.Check
-        type="switch"
-        id="custom-switch"
-        label="Show entries of all users"
-        checked={valForTopLeftSwitch}
-        onChange={(e) => {
-          const checked = e.target.checked;
-          fnForTopLeftSwitch(checked);
-        }}
-      />
+      {listSwitchProps.canSee && (
+        <Form.Check
+          type="switch"
+          id="custom-switch"
+          label="Show entries of all users"
+          checked={listSwitchProps.valForSwitch}
+          onChange={(e) => {
+            const checked = e.target.checked;
+            listSwitchProps.fnForSwitch(checked);
+          }}
+        />
+      )}
 
       <div
         ref={tableRef}
