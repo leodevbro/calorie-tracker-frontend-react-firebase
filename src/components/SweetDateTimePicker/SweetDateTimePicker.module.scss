@@ -6,7 +6,7 @@
   opacity: initial;
 
   //   border: 1px solid red;
-  outline: 2px solid rgb(95, 180, 255);
+  outline: 2px solid rgb(200, 229, 255);
 
   display: flex;
   flex-wrap: nowrap;
@@ -32,7 +32,7 @@
 
   :global {
     .react-datetime-picker__wrapper {
-        border: none;
+      border: none;
     }
   }
 }

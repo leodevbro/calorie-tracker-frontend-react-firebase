@@ -189,16 +189,16 @@
 
       .resetAllFilters {
         border-radius: 6px;
-        background-color: #e7f9ff;
+        background-color: rgb(231, 243, 253);
         padding: 6px;
-        border: 1px solid #bdedff;
+        border: 1px solid rgb(200, 229, 255);
 
         font-size: 14px;
 
         &:hover {
           cursor: pointer;
-          border: 1px solid #9de5ff;
-          background-color: #e4f8ff;
+          border: 1px solid rgb(161, 211, 255);
+          background-color: rgb(210, 235, 255);
         }
       }
 
@@ -735,4 +735,9 @@
       opacity: 0.3;
     }
   }
+}
+
+.switchList {
+  margin-bottom: 16px !important;
+  color: rgb(143, 203, 255);
 }

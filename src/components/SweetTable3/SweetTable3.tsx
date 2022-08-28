@@ -640,6 +640,7 @@ export const SweetTable3: React.FC<{
           id="custom-switch"
           label="Show entries of all users"
           checked={listSwitchProps.valForSwitch}
+          className={style.switchList}
           onChange={(e) => {
             const checked = e.target.checked;
             listSwitchProps.fnForSwitch(checked);
