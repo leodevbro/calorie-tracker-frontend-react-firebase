@@ -381,10 +381,14 @@ export const FoodListPage: React.FC<{}> = () => {
           return (
             <div className={cla(style.theCalories, cl_inTheDayWhenLimitReached, cl_isCheated)}>
               <div className={cla(style.oneEntry, cl_inTheDayWhenLimitReached, cl_isCheated)}>
-                {calorieNum.toFixed(0)}
+                {Math.floor(calorieNum) === calorieNum
+                  ? calorieNum.toFixed(0)
+                  : calorieNum.toFixed(2)}
               </div>
               <div className={cla(style.entireDay, cl_inTheDayWhenLimitReached, cl_isCheated)}>
-                {entireDayCalorie.toFixed(0)}
+                {Math.floor(entireDayCalorie) === entireDayCalorie
+                  ? entireDayCalorie.toFixed(0)
+                  : entireDayCalorie.toFixed(2)}
               </div>
             </div>
           );
@@ -703,7 +707,11 @@ export const FoodListPage: React.FC<{}> = () => {
               </tr>
               <tr>
                 <td>4</td>
-                <td>The average number of calories added per user for the last 7 days</td>
+                <td>
+                  {nowTryToShowFoodOfAllUsers
+                    ? `Average number of calories added per user for the last 7 days`
+                    : `Number of calories added by me for the last 7 days`}
+                </td>
                 <td>
                   {globalStats?.byIntakeDates.averageCaloriesPerUserLast_7_days?.toFixed(2) || "-"}
                 </td>
