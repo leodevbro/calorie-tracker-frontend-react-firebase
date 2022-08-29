@@ -255,6 +255,8 @@ export const SweetTable3: React.FC<{
       globalFilter: customGlobalFilter,
       autoResetPage: false,
       autoResetSortBy: false,
+      autoResetGlobalFilter: false,
+      autoResetFilters: false,
     },
 
     useFilters, // must be before global filter
