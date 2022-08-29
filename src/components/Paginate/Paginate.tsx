@@ -36,14 +36,16 @@ export const Paginate: React.FC<{
   fns: { goToNext: () => any; goToPre: () => any; goToPage: (n: number) => any };
   tData: MyTableDataT;
 }> = ({ className, itemsPerPage, changeNumItemsPerPage, fns, itemsCount, tData, tableState }) => {
+  const [forcedVal, setForcedVal] = useState(0);
   const [superPageNum, setSuperPageNum] = useState<number>(
-    typeof tableState?.pageIndex === "number" ? tableState?.pageIndex : -1,
+    typeof tableState?.pageIndex === "number" ? tableState?.pageIndex : 0,
   );
   const currPageNumRef = useRef(superPageNum);
 
   useEffect(() => {
-    const newNum = typeof tableState?.pageIndex === "number" ? tableState?.pageIndex : -1;
+    const newNum = typeof tableState?.pageIndex === "number" ? tableState?.pageIndex : 0;
     currPageNumRef.current = newNum;
+    // console.log("new Num:", newNum);
     setSuperPageNum(newNum);
   }, [tableState?.pageIndex]);
 
@@ -81,6 +83,7 @@ export const Paginate: React.FC<{
     fns.goToPage(event.selected);
     currPageNumRef.current = event.selected;
     setSuperPageNum(event.selected);
+    setForcedVal(event.selected);
     // fns.goToNext();
   };
 
@@ -89,15 +92,15 @@ export const Paginate: React.FC<{
   const handlePageClickRef = useRef(handlePageClick);
   handlePageClickRef.current = handlePageClick;
 
-  useEffect(() => {
-    // console.log("haaaa:", currPageNumRef.current);
+  // useEffect(() => {
+  //   // console.log("haaaa:", currPageNumRef.current);
 
-    setTimeout(() => {
-      if (currPageNumRef.current >= 0) {
-        handlePageClickRef.current({ selected: currPageNumRef.current });
-      }
-    }, 100);
-  }, [tData]);
+  //   setTimeout(() => {
+  //     if (currPageNumRef.current >= 0) {
+  //       handlePageClickRef.current({ selected: currPageNumRef.current });
+  //     }
+  //   }, 100);
+  // }, [tData]);
 
   // console.log("pageCount", pageCount);
 
@@ -110,6 +113,25 @@ export const Paginate: React.FC<{
 
     return list;
   }, []);
+
+  useEffect(() => {
+    let pi = 0;
+    if (pageCount > 0) {
+      pi = currPageNumRef.current;
+
+      // console.log("currPageNumRef.current, pageCount", currPageNumRef.current, pageCount);
+
+      if (currPageNumRef.current >= pageCount) {
+        pi = 0;
+      }
+    }
+
+    // console.log("ppppppppppppp:", pi);
+    setForcedVal(pi);
+    fns.goToPage(pi);
+  }, [fns, pageCount, tData]);
+
+  // console.log("forcedVal=========", forcedVal);
 
   return (
     <div className={cla(style.ground, className)}>
@@ -133,7 +155,7 @@ export const Paginate: React.FC<{
 
       <div className={style.pagingData}>
         <ReactPaginate
-          forcePage={pageCount > 0 ? superPageNum : -1}
+          forcePage={forcedVal}
           nextLabel={<RightSvg />}
           onPageChange={handlePageClick}
           pageRangeDisplayed={1}
