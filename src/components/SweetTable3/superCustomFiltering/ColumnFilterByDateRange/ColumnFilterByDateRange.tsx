@@ -111,9 +111,10 @@ export const ColumnFilterByDateRange: React.FC<{
 
   // const superId = useId();
 
-  useEffect(() => {
-    setFilter(columnId, currDateRange);
-  }, [columnId, currDateRange, setFilter, tableData]);
+  // useEffect(() => {
+  //   console.log("aaa2:", currDateRange.from);
+  //   setFilter(columnId, currDateRange);
+  // }, [columnId, currDateRange, setFilter, tableData]);
 
   useEffect(() => {
     if (tState.filters.length === 0) {
@@ -121,6 +122,32 @@ export const ColumnFilterByDateRange: React.FC<{
       setValueOfDateTime_to(null);
     }
   }, [tState.filters]);
+
+  /*
+  useEffect(() => {
+    const filterFromParent = tState?.filters?.find((x: any) => x.id === columnId);
+    // console.log(filterFromParent);
+
+    if (filterFromParent) {
+      // console.log(filterFromParent.value);
+
+      console.log(filterFromParent);
+      if (!filterFromParent.value.from) {
+        setValueOfDateTime_from(null);
+      } else {
+        setValueOfDateTime_from(new Date(filterFromParent.value.from));
+      }
+
+      if (!filterFromParent.value.to) {
+        setValueOfDateTime_to(null);
+      } else {
+        setValueOfDateTime_to(new Date(filterFromParent.value.to));
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [columnId, tableData]);
+  */
 
   return (
     <div className={cla(className, style.ground)}>
