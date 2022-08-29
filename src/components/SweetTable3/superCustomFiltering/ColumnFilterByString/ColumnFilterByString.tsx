@@ -21,7 +21,7 @@ export const ColumnFilterByString: React.FC<{
   valRef.current = val;
 
   const onChange = useAsyncDebounce(() => {
-    console.log(columnId, valRef.current);
+    // console.log(columnId, valRef.current);
     setFilter(columnId, valRef.current);
   }, 1000);
 
