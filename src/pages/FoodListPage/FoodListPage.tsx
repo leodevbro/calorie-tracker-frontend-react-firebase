@@ -664,7 +664,11 @@ export const FoodListPage: React.FC<{}> = () => {
       {veryCurrUser && veryCurrUser.roles.admin && (
         <div className={cla(style.reportBox)}>
           <h3 style={{ marginTop: "52px" }} className={style.byIntakeDates}>
-            Interesting Stats
+            {`Interesting Stats ${
+              nowTryToShowFoodOfAllUsers
+                ? "(With the entries of all users)"
+                : "(With only my entries)"
+            }`}
           </h3>
 
           <Table striped bordered hover style={{ maxWidth: "808px" }}>
