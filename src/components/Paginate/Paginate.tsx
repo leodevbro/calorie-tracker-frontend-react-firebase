@@ -128,7 +128,7 @@ export const Paginate: React.FC<{
 
     // console.log("ppppppppppppp:", pi);
     setForcedVal(pi);
-    fns.goToPage(pi);
+    handlePageClickRef.current({ selected: pi });
   }, [fns, pageCount, tData]);
 
   // console.log("forcedVal=========", forcedVal);
