@@ -107,11 +107,27 @@ export const ColumnFilterByMinMax: React.FC<{
     } as IMinMax);
   }, [columnId, setFilter, tableData]);
 
+  // useEffect(() => {
+  //   if (tState.filters.length === 0) {
+
+  //   }
+  // }, [tState.filters]);
+
   useEffect(() => {
     if (tState.filters.length === 0) {
       setVal({ min: null, max: null });
+      return;
     }
-  }, [tState.filters]);
+
+    const filterFromParent = tState?.filters?.find((x: any) => x.id === columnId);
+    // console.log(filterFromParent);
+
+    if (filterFromParent) {
+      // console.log(filterFromParent.value);
+      setVal(filterFromParent.value);
+    }
+    // console.log(tState.filters);
+  }, [columnId, tState.filters, tableData]);
 
   return (
     <div className={cla(className, style.ground)}>

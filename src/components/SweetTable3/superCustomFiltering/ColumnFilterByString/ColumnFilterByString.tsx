@@ -21,6 +21,7 @@ export const ColumnFilterByString: React.FC<{
   valRef.current = val;
 
   const onChange = useAsyncDebounce(() => {
+    console.log(columnId, valRef.current);
     setFilter(columnId, valRef.current);
   }, 1000);
 
@@ -33,8 +34,18 @@ export const ColumnFilterByString: React.FC<{
   useEffect(() => {
     if (tState.filters.length === 0) {
       setVal("");
+      return;
     }
-  }, [tState.filters]);
+
+    const filterFromParent = tState?.filters?.find((x: any) => x.id === columnId);
+    // console.log(filterFromParent);
+
+    if (filterFromParent) {
+      // console.log(filterFromParent.value);
+      setVal(filterFromParent.value);
+    }
+    // console.log(tState.filters);
+  }, [columnId, tState.filters, tableData]);
 
   return (
     <div className={cla(className, style.ground)}>

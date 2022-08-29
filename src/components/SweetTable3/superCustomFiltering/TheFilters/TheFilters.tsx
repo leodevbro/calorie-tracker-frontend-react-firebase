@@ -119,7 +119,7 @@ export const TheFilters: React.FC<{
           return <div key={y.accessor}>{theCompo}</div>;
         })} */}
 
-      <div className={style.nonDating}>{arrOfNonDating.map((node) => node)}</div>
+      {/* <div className={style.nonDating}>{arrOfNonDating.map((node) => node)}</div> */}
       <div className={style.dating}>{arrOfDating.map((node) => node)}</div>
 
       {/* <ColumnFilterByBool
