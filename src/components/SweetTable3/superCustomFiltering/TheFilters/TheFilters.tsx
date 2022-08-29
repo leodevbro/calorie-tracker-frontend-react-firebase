@@ -2,9 +2,9 @@ import React, { ReactNode, useMemo } from "react";
 
 import { cla } from "src/App";
 import { capitalizeFirstLetter } from "src/app/helper-functions";
-import { ColumnFilterByBool } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByBool/ColumnFilterByBool";
-import { ColumnFilterByMinMax } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByMinMax/ColumnFilterByMinMax";
-import { ColumnFilterByString } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByString/ColumnFilterByString";
+// import { ColumnFilterByBool } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByBool/ColumnFilterByBool";
+// import { ColumnFilterByMinMax } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByMinMax/ColumnFilterByMinMax";
+// import { ColumnFilterByString } from "src/components/SweetTable3/superCustomFiltering/ColumnFilterByString/ColumnFilterByString";
 import { IFoodTableRow } from "src/pages/FoodListPage/FoodListPage";
 
 import { MyColumnsT, tyFilterType } from "../../SweetTable3";
@@ -22,6 +22,7 @@ export const TheFilters: React.FC<{
 }> = ({ className, setFilter, tableData, tableColumns, tState }) => {
   // console.log(tState);
 
+  /*
   const arrOfNonDating = useMemo(() => {
     const theArr: ReactNode[] = tableColumns
       .filter((x) => x.filterType && x.filterType !== "dateRange")
@@ -53,6 +54,7 @@ export const TheFilters: React.FC<{
 
     return theArr;
   }, [setFilter, tState, tableColumns, tableData]);
+  */
 
   const arrOfDating = useMemo(() => {
     const theArr: ReactNode[] = tableColumns
