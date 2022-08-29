@@ -253,7 +253,8 @@ export const SweetTable3: React.FC<{
       // ------------------------- maybe when you want to globally filter outside of the table engine.
 
       globalFilter: customGlobalFilter,
-      autoResetPage: true,
+      autoResetPage: false,
+      autoResetSortBy: false,
     },
 
     useFilters, // must be before global filter
@@ -496,30 +497,6 @@ export const SweetTable3: React.FC<{
     return str;
   }, []);
 
-  const datingIndexRef = useRef<number>(-1);
-  const datingIndexPrevRef = useRef<number>(-1);
-  const datingFilterInitiated = useRef(false);
-
-  useEffect(() => {
-    const filt = filters as { id: string; value: number }[];
-    const nowDatingFilter = filt.find((x) => x.id === "date")?.value;
-
-    if (!datingFilterInitiated.current && typeof nowDatingFilter === "number") {
-      datingFilterInitiated.current = true;
-    }
-
-    if (datingFilterInitiated.current && nowDatingFilter === undefined) {
-      setTimeout(() => {
-        setFilter("date", datingIndexPrevRef.current);
-      }, 50);
-    }
-
-    datingIndexRef.current = nowDatingFilter || -1;
-    if (typeof nowDatingFilter === "number") {
-      datingIndexPrevRef.current = nowDatingFilter;
-    }
-  }, [filters, setFilter]);
-
   useEffect(() => {
     if ((state as any).globalFilter === "") {
       setSearchString("");
@@ -536,7 +513,7 @@ export const SweetTable3: React.FC<{
               Reset all filters
             </div>
 
-            <div className={style.searchBox}>
+            {/* <div className={style.searchBox}>
               <div className={style.searchIconWrap}>
                 <img className={style.searchIcon} src={searchSvgPath} alt={"search icon"} />
               </div>
@@ -546,7 +523,7 @@ export const SweetTable3: React.FC<{
                 value={searchString}
                 onChange={searchStringChanger}
               />
-            </div>
+            </div> */}
           </div>
 
           <div className={cla(style.columnFilters)}>
