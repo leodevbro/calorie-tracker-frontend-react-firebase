@@ -155,7 +155,7 @@ export const Paginate: React.FC<{
 
       <div className={style.pagingData}>
         <ReactPaginate
-          forcePage={forcedVal}
+          forcePage={pageCount > 0 ? forcedVal : -1}
           nextLabel={<RightSvg />}
           onPageChange={handlePageClick}
           pageRangeDisplayed={1}
