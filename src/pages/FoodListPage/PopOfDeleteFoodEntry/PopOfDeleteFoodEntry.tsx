@@ -48,9 +48,9 @@ export const PopOfDeleteFoodEntry: React.FC<{
         }}
         content={
           <div className={style.delConfirm}>
-            <h2
+            <h3
               className={style.h2}
-            >{`Really want to delete ${currFoodEntry?.name} ${currFoodEntry?.calories}?`}</h2>
+            >{`Really want to delete ${currFoodEntry?.name} ${currFoodEntry?.calories}?`}</h3>
 
             <WideButton
               className={style.goDel}
