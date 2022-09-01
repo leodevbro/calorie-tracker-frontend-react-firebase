@@ -78,6 +78,19 @@ export const ProtectedRoutesWrapper: React.FC<{}> = () => {
   //   return <Outlet />;
   // }
 
+  if (thisUser === null) {
+    return (
+      <p
+        style={{
+          textAlign: "center",
+          marginTop: "70px",
+        }}
+      >
+        You are not logged in.
+      </p>
+    );
+  }
+
   return (
     <div
       style={{

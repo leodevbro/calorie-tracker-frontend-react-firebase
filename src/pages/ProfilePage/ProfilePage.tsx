@@ -26,7 +26,7 @@ export const ProfilePage: React.FC<{}> = () => {
   }, [navigate]);
 
   if (!thisUser) {
-    return <p>You don't have access to this data</p>;
+    return <p>You are not logged in.</p>;
   }
 
   return (
