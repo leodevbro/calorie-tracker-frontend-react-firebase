@@ -1,12 +1,18 @@
 ## Live:
 
-<a target="_blank" href="https://calorie-tracker-frontend-react-firebase.vercel.app/">https://calorie-tracker-frontend-react-firebase.vercel.app/</a>
+<a target="_blank" href="https://calorie-tracker-frontend-react-firebase.vercel.app">https://calorie-tracker-frontend-react-firebase.vercel.app</a>
 
 ## Video instruction:
 
 <a target="_blank" href="https://drive.google.com/file/d/1vJoygfWOv5I5kUVRYKlcDi7_QrftXAYE/view">https://drive.google.com/file/d/1vJoygfWOv5I5kUVRYKlcDi7_QrftXAYE/view</a>
 
 <br />
+
+This is the frontend side.
+
+For the backend side, see this repo:
+
+https://github.com/leodevbro/calorie-tracker-backend-firebase
 
 <br />
 
