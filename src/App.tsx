@@ -188,7 +188,7 @@ const App: React.FC = () => {
                   element={
                     <div style={{ padding: "20px" }}>
                       <span>Page not found (You can go to </span>
-                      <Link to={"/"}>home page</Link>
+                      <Link to={"/"}>This is home page</Link>
                       <span>)</span>
                     </div>
                   }
